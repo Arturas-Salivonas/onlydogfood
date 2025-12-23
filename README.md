@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OnlyDogFood.com
+
+A modern, high-performance dog food comparison platform built with Next.js, TypeScript, and Supabase.
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React, TypeScript
+- **Styling**: TailwindCSS
+- **Database**: Supabase (PostgreSQL)
+- **API**: GraphQL (Apollo Server)
+- **State Management**: Apollo Client, TanStack Query
+- **Testing**: Jest, Playwright
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18+
+- npm or yarn
+- Supabase account
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+   - Copy `.env.example` to `.env.local`
+   - Fill in your Supabase credentials
+
+4. Set up database:
+   - Create a Supabase project
+   - Run the migration in `supabase/migrations/001_initial_schema.sql`
+
+5. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000)
+
+## Project Structure
+
+```
+├── app/                 # Next.js App Router pages
+├── components/          # React components
+│   ├── ui/             # UI components
+│   ├── layout/         # Layout components
+│   └── features/       # Feature-specific components
+├── lib/                # Utilities and helpers
+│   ├── api/           # API utilities
+│   ├── graphql/       # GraphQL schema and resolvers
+│   ├── queries/       # TanStack Query hooks
+│   └── utils/         # Helper functions
+├── types/              # TypeScript type definitions
+├── hooks/              # Custom React hooks
+├── scraper/            # Web scraping scripts
+├── scoring/            # Scoring algorithm
+├── scripts/            # Utility scripts
+└── tests/              # Test files
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm test` - Run tests
+- `npm run scrape:brands` - Scrape brand data
+- `npm run scrape:products` - Scrape product data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Features
 
-## Learn More
+- 🐕 Dog food product database
+- 📊 Nutritional scoring algorithm
+- 🏆 Brand leaderboard
+- ⚖️ Product comparison tool
+- 💰 Daily cost calculator
+- 🔍 Advanced filtering and search
+- 📱 Fully responsive design
+- ⚡ Optimized for performance (Lighthouse 95+)
+- 🔐 Admin dashboard for content management
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
