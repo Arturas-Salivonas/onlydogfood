@@ -155,7 +155,7 @@ We'll create REST API routes for:
 
 ### B. Create Core Pages
 
-1. **Dog Food Directory** (`/app/dog-food/page.tsx`)
+1. **Dog Food ** (`/app/dog-food/page.tsx`)
    - Product grid with filters
    - Pagination
    - Search

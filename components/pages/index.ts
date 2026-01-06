@@ -8,6 +8,7 @@ const DogFoodPage = dynamic(() => import('@/components/pages/DogFoodPage'));
 const BrandsPage = dynamic(() => import('@/components/pages/BrandsPage'));
 const ComparePage = dynamic(() => import('@/components/pages/ComparePage'));
 const MethodologyPage = dynamic(() => import('@/components/pages/MethodologyPage'));
+const HowWeScorePage = dynamic(() => import('@/components/pages/HowWeScorePage'));
 
 // Export the components directly (Next.js dynamic handles loading)
-export { HomePage, DogFoodPage, BrandsPage, ComparePage, MethodologyPage };
+export { HomePage, DogFoodPage, BrandsPage, ComparePage, MethodologyPage, HowWeScorePage };

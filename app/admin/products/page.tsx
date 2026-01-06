@@ -82,7 +82,7 @@ export default function ProductsManagementPage() {
         </div>
         <Link
           href="/admin/products/new"
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
+          className="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-semibold transition-colors"
         >
           <Plus size={20} />
           Add Product
@@ -103,7 +103,7 @@ export default function ProductsManagementPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search products or brands..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               />
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function ProductsManagementPage() {
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="all">All Categories</option>
               <option value="dry">Dry Food</option>
@@ -208,7 +208,7 @@ export default function ProductsManagementPage() {
                       <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/admin/products/${product.id}/edit`}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-primary hover:text-primary-900"
                         >
                           <Edit size={18} />
                         </Link>
@@ -236,3 +236,6 @@ export default function ProductsManagementPage() {
     </Container>
   );
 }
+
+
+

@@ -43,19 +43,19 @@ export function ModalToastDemo() {
       <h2 className="text-2xl font-bold">Modal & Toast Demo</h2>
 
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold">Toast Examples</h3>
+        <h3 className="text-lg font-semibold">Toast examples</h3>
         <div className="flex flex-wrap gap-2">
-          <Button onClick={showSuccessToast} variant="success" size="sm">
-            Success Toast
+          <Button onClick={showSuccessToast} variant="default" size="sm">
+            Success toast
           </Button>
-          <Button onClick={showErrorToast} variant="destructive" size="sm">
-            Error Toast
+          <Button onClick={showErrorToast} variant="secondary" size="sm">
+            Error toast
           </Button>
-          <Button onClick={showWarningToast} variant="warning" size="sm">
-            Warning Toast
+          <Button onClick={showWarningToast} variant="secondary" size="sm">
+            Warning toast
           </Button>
-          <Button onClick={showInfoToast} variant="info" size="sm">
-            Info Toast
+          <Button onClick={showInfoToast} variant="secondary" size="sm">
+            Info toast
           </Button>
           <Button onClick={showToastWithAction} variant="outline" size="sm">
             Toast with Action

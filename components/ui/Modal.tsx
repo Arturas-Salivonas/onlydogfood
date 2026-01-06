@@ -82,7 +82,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         <div
           ref={ref}
           className={cn(
-            'relative bg-white rounded-lg shadow-xl border border-gray-200',
+            'relative rounded-lg border bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-large)]',
             'animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-4 duration-200',
             !isOpen && 'animate-out fade-out-0 zoom-out-95 slide-out-to-bottom-4',
             {
@@ -178,13 +178,13 @@ export function ConfirmModal({
 }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">
-      {description && <p className="text-gray-600 mb-6">{description}</p>}
+      {description && <p className="mb-6 text-[var(--color-text-secondary)]">{description}</p>}
       <div className="flex justify-end space-x-3">
         <Button variant="outline" onClick={onClose} disabled={isLoading}>
           {cancelText}
         </Button>
         <Button
-          variant={variant === 'destructive' ? 'destructive' : 'default'}
+          variant="default"
           onClick={onConfirm}
           loading={isLoading}
         >

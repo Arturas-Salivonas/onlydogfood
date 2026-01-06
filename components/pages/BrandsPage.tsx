@@ -24,7 +24,7 @@ export default function BrandsPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-[var(--color-background-neutral)]">
       <Header />
 
       <PageSEO
@@ -34,7 +34,7 @@ export default function BrandsPage() {
       />
 
       <PageHero
-        title="Dog Food Brands"
+        title="Dog food brands"
         description="Compare trusted manufacturers and their product lines"
         breadcrumbs={[
           { label: 'Home', href: '/' },
@@ -45,13 +45,13 @@ export default function BrandsPage() {
       <main className="flex-1">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Sort Controls */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+          <div className="rounded-lg border p-4 mb-6 bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <h2 className="text-xl font-bold text-gray-900">
-                  {total || 0} Brands Available
+                <h2 className="text-xl font-bold text-[var(--color-text-primary)]">
+                  {total || 0} brands available
                 </h2>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-[var(--color-text-secondary)]">
                   Page {currentPage || 1} of {totalPages || 1}
                 </span>
               </div>
@@ -60,8 +60,8 @@ export default function BrandsPage() {
                 value={sort}
                 onChange={handleSortChange}
                 options={[
-                  { value: 'score-desc', label: 'Highest Rated' },
-                  { value: 'score-asc', label: 'Lowest Rated' },
+                  { value: 'score-desc', label: 'Highest rated' },
+                  { value: 'score-asc', label: 'Lowest rated' },
                   { value: 'name-asc', label: 'Name A-Z' },
                   { value: 'name-desc', label: 'Name Z-A' },
                 ]}
@@ -80,10 +80,10 @@ export default function BrandsPage() {
           {/* Error State */}
           {error && (
             <div className="text-center py-12">
-              <p className="text-red-600 mb-4">Error loading brands. Please try again.</p>
+              <p className="mb-4 text-[var(--color-caution)]">Error loading brands. Please try again.</p>
               <button
                 onClick={() => window.location.reload()}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="px-4 py-2 rounded-lg hover:opacity-90 bg-[var(--color-trust)] text-[var(--color-background-card)]"
               >
                 Retry
               </button>
@@ -126,7 +126,7 @@ export default function BrandsPage() {
                           onClick={() => handlePageChange(pageNum)}
                           className={`px-4 py-3 border rounded-xl text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md ${
                             isActive
-                              ? 'bg-blue-600 text-white border-blue-600 shadow-blue-100 hover:shadow-blue-200'
+                              ? 'bg-primary text-white border-primary shadow-foreground hover:shadow-secondary'
                               : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
                           }`}
                         >

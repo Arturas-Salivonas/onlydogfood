@@ -58,7 +58,7 @@ export default function AdminNav({ user }: AdminNavProps) {
                     href={item.href}
                     className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       isActive
-                        ? 'bg-blue-50 text-blue-700'
+                        ? 'bg-background text-primary-hover'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                     }`}
                   >
@@ -117,7 +117,7 @@ export default function AdminNav({ user }: AdminNavProps) {
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center px-3 py-2 text-base font-medium rounded-md ${
                     isActive
-                      ? 'bg-blue-50 text-blue-700'
+                      ? 'bg-background text-primary-hover'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                   }`}
                 >
@@ -154,3 +154,6 @@ export default function AdminNav({ user }: AdminNavProps) {
     </nav>
   );
 }
+
+
+

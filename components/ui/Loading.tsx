@@ -17,12 +17,12 @@ export function Loading({ size = 'md', className, text }: LoadingProps) {
     <div className={cn('flex flex-col items-center justify-center gap-3', className)}>
       <div
         className={cn(
-          'animate-spin rounded-full border-2 border-gray-300 border-t-blue-600',
+          'animate-spin rounded-full border-2 border-[var(--color-border)] border-t-[var(--color-trust)]',
           sizeClasses[size]
         )}
       />
       {text && (
-        <p className="text-sm text-gray-600 animate-pulse">{text}</p>
+        <p className="text-sm animate-pulse text-[var(--color-text-secondary)]">{text}</p>
       )}
     </div>
   );
@@ -37,7 +37,7 @@ export function Skeleton({ className, lines = 1 }: SkeletonProps) {
   if (lines === 1) {
     return (
       <div
-        className={cn('animate-pulse rounded-md bg-gray-200', className)}
+        className={cn('animate-pulse rounded-md bg-[var(--color-background-neutral)]', className)}
       />
     );
   }
@@ -48,7 +48,7 @@ export function Skeleton({ className, lines = 1 }: SkeletonProps) {
         <div
           key={i}
           className={cn(
-            'animate-pulse rounded-md bg-gray-200 h-4',
+            'animate-pulse rounded-md h-4 bg-[var(--color-background-neutral)]',
             i === lines - 1 && lines > 1 ? 'w-3/4' : 'w-full',
             className
           )}
@@ -60,7 +60,7 @@ export function Skeleton({ className, lines = 1 }: SkeletonProps) {
 
 export function ProductCardSkeleton() {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="rounded-lg border p-6 bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
       <div className="flex items-start gap-4">
         <Skeleton className="w-16 h-16 rounded-lg flex-shrink-0" />
         <div className="flex-1 min-w-0">

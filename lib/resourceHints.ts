@@ -59,7 +59,7 @@ export function generateResourceHints({
 // Common resource hints for the app
 export const commonResourceHints: Metadata = generateResourceHints({
   fonts: [
-    // Geist fonts are already loaded via CSS imports
+    // Inter font is loaded via Google Fonts in globals.css
   ],
   images: [
     // Add critical hero images or logos here

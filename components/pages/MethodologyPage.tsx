@@ -5,7 +5,7 @@ import { PageSEO, FAQStructuredData, commonDogFoodFAQs, ArticleStructuredData } 
 
 export default function MethodologyPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-[var(--color-background-neutral)]">
       <Header />
 
       <PageSEO
@@ -15,7 +15,7 @@ export default function MethodologyPage() {
       />
 
       <PageHero
-        title="Our Methodology"
+        title="Our methodology"
         description="Science-based scoring system for dog food evaluation"
         breadcrumbs={[
           { label: 'Home', href: '/' },
@@ -26,10 +26,10 @@ export default function MethodologyPage() {
       <main className="flex-1">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Introduction */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8">
+          <div className="rounded-lg border p-8 mb-8 bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">How We Score Dog Food</h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
+              <h2 className="text-3xl font-bold mb-4 text-[var(--color-text-primary)]">How we score dog food</h2>
+              <p className="text-lg leading-relaxed text-[var(--color-text-secondary)]">
                 Our comprehensive scoring system evaluates dog food based on scientific research, nutritional analysis,
                 and ingredient quality. We believe in evidence-based ratings that help you
                 make informed decisions for your dog's health.
@@ -39,78 +39,78 @@ export default function MethodologyPage() {
 
           {/* Scoring Categories */}
           <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="rounded-lg border p-6 text-center bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-[var(--color-trust-bg)]">
                 <span className="text-2xl">🌱</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Ingredients</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="text-xl font-bold mb-2 text-[var(--color-text-primary)]">Ingredients</h3>
+              <p className="text-sm text-[var(--color-text-secondary)]">
                 Quality of meat sources, fillers, artificial additives
               </p>
-              <div className="mt-4 text-2xl font-bold text-green-600">45%</div>
+              <div className="mt-4 text-2xl font-bold text-[var(--color-trust)]">45%</div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="rounded-lg border p-6 text-center bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-[var(--color-trust-bg)]">
                 <span className="text-2xl">🥦</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Nutrition</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="text-xl font-bold mb-2 text-[var(--color-text-primary)]">Nutrition</h3>
+              <p className="text-sm text-[var(--color-text-secondary)]">
                 Protein, fat, carbs, vitamins, and mineral content analysis
               </p>
-              <div className="mt-4 text-2xl font-bold text-blue-600">33%</div>
+              <div className="mt-4 text-2xl font-bold text-[var(--color-trust)]">33%</div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
-              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="rounded-lg border p-6 text-center bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-[var(--color-caution-bg)]">
                 <span className="text-2xl">💰</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Value</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="text-xl font-bold mb-2 text-[var(--color-text-primary)]">Value</h3>
+              <p className="text-sm text-[var(--color-text-secondary)]">
                 Price per serving vs. nutritional quality
               </p>
-              <div className="mt-4 text-2xl font-bold text-yellow-600">22%</div>
+              <div className="mt-4 text-2xl font-bold text-[var(--color-caution)]">22%</div>
             </div>
           </div>
 
           {/* Detailed Scoring Breakdown */}
           <div className="grid lg:grid-cols-2 gap-8 mb-12">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Nutrition Scoring (33%)</h3>
+            <div className="rounded-lg border p-8 bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
+              <h3 className="text-2xl font-bold mb-6 text-[var(--color-text-primary)]">Nutrition scoring (33%)</h3>
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-700">High-quality protein sources</span>
-                  <span className="font-semibold text-green-600">+15 points</span>
+                <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
+                  <span className="text-[var(--color-text-secondary)]">High-quality protein sources</span>
+                  <span className="font-semibold text-[var(--color-trust)]">+15 points</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-700">Balanced fat content (15-25%)</span>
-                  <span className="font-semibold text-green-600">+10 points</span>
+                <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
+                  <span className="text-[var(--color-text-secondary)]">Balanced fat content (15-25%)</span>
+                  <span className="font-semibold text-[var(--color-trust)]">+10 points</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-700">Low carbohydrate content</span>
-                  <span className="font-semibold text-green-600">+10 points</span>
+                <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
+                  <span className="text-[var(--color-text-secondary)]">Low carbohydrate content</span>
+                  <span className="font-semibold text-[var(--color-trust)]">+10 points</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-700">Complete vitamin/mineral profile</span>
-                  <span className="font-semibold text-green-600">+5 points</span>
+                <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
+                  <span className="text-[var(--color-text-secondary)]">Complete vitamin/mineral profile</span>
+                  <span className="font-semibold text-[var(--color-trust)]">+5 points</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Ingredients Scoring (45%)</h3>
+            <div className="rounded-lg border p-8 bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
+              <h3 className="text-2xl font-bold mb-6 text-[var(--color-text-primary)]">Ingredients scoring (45%)</h3>
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-700">Named meat sources</span>
-                  <span className="font-semibold text-green-600">+12 points</span>
+                <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
+                  <span className="text-[var(--color-text-secondary)]">Named meat sources</span>
+                  <span className="font-semibold text-[var(--color-trust)]">+12 points</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-700">No artificial additives</span>
-                  <span className="font-semibold text-green-600">+10 points</span>
+                <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
+                  <span className="text-[var(--color-text-secondary)]">No artificial additives</span>
+                  <span className="font-semibold text-[var(--color-trust)]">+10 points</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-700">No fillers (corn, wheat, soy)</span>
-                  <span className="font-semibold text-green-600">+8 points</span>
+                <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
+                  <span className="text-[var(--color-text-secondary)]">No fillers (corn, wheat, soy)</span>
+                  <span className="font-semibold text-[var(--color-trust)]">+8 points</span>
                 </div>
               </div>
             </div>
@@ -142,7 +142,7 @@ export default function MethodologyPage() {
           </div>
 
           {/* Score Ranges */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 mb-8">
+          <div className="bg-background rounded-2xl p-8 mb-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Score Ranges</h3>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="text-center">

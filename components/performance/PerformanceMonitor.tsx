@@ -113,3 +113,6 @@ function sendToAnalytics(metric: WebVitalsMetric) {
   // You can also send to other analytics services here
   // Example: Sentry, LogRocket, etc.
 }
+
+
+

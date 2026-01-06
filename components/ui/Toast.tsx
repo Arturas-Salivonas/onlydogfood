@@ -118,10 +118,10 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
       className={cn(
         'flex items-start p-4 rounded-lg border shadow-lg bg-white transition-all duration-300',
         {
-          'border-green-200 bg-green-50': toast.type === 'success',
-          'border-red-200 bg-red-50': toast.type === 'error',
-          'border-yellow-200 bg-yellow-50': toast.type === 'warning',
-          'border-blue-200 bg-blue-50': toast.type === 'info',
+          'border-success bg-primary': toast.type === 'success',
+          'border-error bg-primary': toast.type === 'error',
+          'border-warning bg-primary': toast.type === 'warning',
+          'border-info bg-primary': toast.type === 'info',
         },
         isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       )}
@@ -131,7 +131,7 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
           'text-green-600': toast.type === 'success',
           'text-red-600': toast.type === 'error',
           'text-yellow-600': toast.type === 'warning',
-          'text-blue-600': toast.type === 'info',
+          'text-primary': toast.type === 'info',
         })}
       />
       <div className="ml-3 flex-1">
@@ -196,3 +196,6 @@ export function useToasts() {
     info: useToastInfo(),
   };
 }
+
+
+

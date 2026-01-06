@@ -95,7 +95,7 @@ export default function NewBrandPage() {
       <div className="mb-6">
         <Link
           href="/admin/brands"
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold mb-4"
+          className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-semibold mb-4"
         >
           <ArrowLeft size={20} />
           Back to Brands
@@ -122,7 +122,7 @@ export default function NewBrandPage() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring ${
                   errors.name ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="e.g., Royal Canin"
@@ -139,7 +139,7 @@ export default function NewBrandPage() {
                 name="slug"
                 value={formData.slug}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring ${
                   errors.slug ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="royal-canin"
@@ -156,7 +156,7 @@ export default function NewBrandPage() {
                 name="logo_url"
                 value={formData.logo_url}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="https://example.com/logo.png"
               />
             </div>
@@ -170,7 +170,7 @@ export default function NewBrandPage() {
                 name="website_url"
                 value={formData.website_url}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="https://www.brand-website.com"
               />
             </div>
@@ -184,7 +184,7 @@ export default function NewBrandPage() {
                 name="country_of_origin"
                 value={formData.country_of_origin}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., United Kingdom"
               />
             </div>
@@ -199,7 +199,7 @@ export default function NewBrandPage() {
               value={formData.description}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Tell us about this brand..."
             />
           </div>
@@ -213,7 +213,7 @@ export default function NewBrandPage() {
               value={formData.meta_description}
               onChange={handleChange}
               rows={2}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Brief description for search engines..."
               maxLength={160}
             />
@@ -229,7 +229,7 @@ export default function NewBrandPage() {
                 name="is_sponsored"
                 checked={formData.is_sponsored}
                 onChange={handleChange}
-                className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-ring"
               />
               <span className="text-sm font-semibold text-gray-700">
                 Sponsored Brand
@@ -249,7 +249,7 @@ export default function NewBrandPage() {
           <button
             type="submit"
             disabled={loading}
-            className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-8 py-4 bg-secondary hover:from-primary-hover hover:to-primary text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {loading ? (
               <>
@@ -268,3 +268,6 @@ export default function NewBrandPage() {
     </Container>
   );
 }
+
+
+

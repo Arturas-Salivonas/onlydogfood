@@ -53,3 +53,6 @@ export const commonDogFoodFAQs = [
     "Not necessarily. Some dogs benefit from grain-free diets due to allergies, but grains like rice and oats can be healthy carbohydrate sources. The quality of ingredients matters more than grain content. Consult your vet for allergy concerns."
   ),
 ];
+
+
+

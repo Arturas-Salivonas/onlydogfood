@@ -1,3 +1,4 @@
+import React from 'react';
 import { useQuery } from '@apollo/client/react';
 import { GET_HOME_PRODUCTS, GET_PRODUCT_DETAIL, GET_PRODUCTS_BY_BRAND, SEARCH_PRODUCTS } from '../graphql/queries/products';
 import { FilterOptions, Product, PaginatedResponse } from '@/types';
@@ -45,16 +46,24 @@ export function useProducts(filters: FilterOptions = {}) {
   console.log('useProducts - input filters:', JSON.stringify(filters, null, 2));
   console.log('useProducts - cleaned filters:', JSON.stringify(cleanedFilters, null, 2));
 
-  const { data, loading, error } = useQuery(GET_HOME_PRODUCTS, {
+  const { data, loading, error } = useQuery<{ products: PaginatedResponse<Product> }>(GET_HOME_PRODUCTS, {
     variables: { filters: cleanedFilters },
     fetchPolicy: 'network-only', // Changed from cache-first to force fresh data
-    onCompleted: (data) => {
-      console.log('useProducts - query completed:', data?.products ? { total: data.products.total, dataLength: data.products.data?.length } : 'no data');
-    },
-    onError: (error) => {
-      console.error('useProducts - query error:', error);
-    },
   });
+
+  // Log query completion
+  React.useEffect(() => {
+    if (data) {
+      console.log('useProducts - query completed:', data?.products ? { total: data.products.total, dataLength: data.products.data?.length } : 'no data');
+    }
+  }, [data]);
+
+  // Log query errors
+  React.useEffect(() => {
+    if (error) {
+      console.error('useProducts - query error:', error);
+    }
+  }, [error]);
 
   console.log('useProducts - result:', {
     hasData: !!data,

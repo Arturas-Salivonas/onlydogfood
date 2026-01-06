@@ -8,3 +8,6 @@ const ComparePage = dynamic(() => import('@/components/pages').then(mod => ({ de
 export default function ComparePageRoute() {
   return <ComparePage />;
 }
+
+
+

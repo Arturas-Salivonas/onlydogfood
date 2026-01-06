@@ -6,17 +6,6 @@ import { Providers } from "./providers";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { OrganizationStructuredData, WebSiteStructuredData } from "@/components/seo";
 
-// Import Geist fonts
-import "@fontsource/geist-sans/400.css";
-import "@fontsource/geist-sans/500.css";
-import "@fontsource/geist-sans/600.css";
-import "@fontsource/geist-sans/700.css";
-
-import "@fontsource/geist-mono/400.css";
-import "@fontsource/geist-mono/500.css";
-import "@fontsource/geist-mono/600.css";
-import "@fontsource/geist-mono/700.css";
-
 export const metadata: Metadata = {
   title: {
     default: "OnlyDogFood.com - Dog Food Ratings & Comparisons",

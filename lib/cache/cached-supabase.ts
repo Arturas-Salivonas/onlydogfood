@@ -149,12 +149,12 @@ export class CachedSupabaseClient {
         .select('*')
         .in('id', validBrandIds);
 
-      const brandMap = new Map(brandsData?.map(brand => [brand.id, brand]) || []);
+      const brandMap = new Map((brandsData as any)?.map((brand: any) => [brand.id, brand]) || []);
 
       // Assign brands to products
       result.data.forEach(product => {
         if (product.brand_id && brandMap.has(product.brand_id)) {
-          product.brand = brandMap.get(product.brand_id);
+          product.brand = brandMap.get(product.brand_id) as any;
         }
       });
     }
@@ -169,6 +169,14 @@ export class CachedSupabaseClient {
 
   async getProductBySlug(slug: string): Promise<Product | null> {
     const cacheKey = cacheKeys.products.detail(slug);
+
+    // Validate UUID helper
+    const isValidUUID = (str: string) => {
+      if (typeof str !== 'string') return false;
+      if (str === 'undefined' || str === 'null' || str === 'NaN' || str === '') return false;
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      return uuidRegex.test(str);
+    };
 
     // Try cache first
     const cached = await this.cache.get<Product>(cacheKey);
@@ -219,7 +227,13 @@ export class CachedSupabaseClient {
 
   async getProduct(slug: string): Promise<{ product: Product; relatedProducts: Product[] } | null> {
     const cacheKey = cacheKeys.products.detail(slug);
-
+    // Validate UUID helper
+    const isValidUUID = (str: string) => {
+      if (typeof str !== 'string') return false;
+      if (str === 'undefined' || str === 'null' || str === 'NaN' || str === '') return false;
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      return uuidRegex.test(str);
+    };
     // Try cache first
     const cached = await this.cache.get<{ product: Product; relatedProducts: Product[] }>(cacheKey);
     if (cached) {
@@ -273,11 +287,6 @@ export class CachedSupabaseClient {
       .neq('id', product.id);
 
     // Only filter by brand if brand_id is valid
-    const isValidUUID = (str: string) => {
-      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      return uuidRegex.test(str);
-    };
-
     if (product.brand_id && isValidUUID(product.brand_id)) {
       relatedQuery = relatedQuery.or(`brand_id.eq.${product.brand_id},category.eq.${product.category}`);
     } else {
@@ -305,12 +314,12 @@ export class CachedSupabaseClient {
         .select('*')
         .in('id', validRelatedBrandIds);
 
-      const brandMap = new Map(brandsData?.map(brand => [brand.id, brand]) || []);
+      const brandMap = new Map((brandsData as any)?.map((brand: any) => [brand.id, brand]) || []);
 
       // Assign brands to related products
       relatedProducts.forEach(product => {
         if (product.brand_id && brandMap.has(product.brand_id)) {
-          product.brand = brandMap.get(product.brand_id);
+          product.brand = brandMap.get(product.brand_id) as any;
         }
       });
     }
@@ -540,6 +549,14 @@ export class CachedSupabaseClient {
   async getProductsByIds(ids: string[]): Promise<Product[]> {
     const cacheKey = cacheKeys.products.byIds(ids.sort().join(','));
 
+    // Validate UUID helper
+    const isValidUUID = (str: string) => {
+      if (typeof str !== 'string') return false;
+      if (str === 'undefined' || str === 'null' || str === 'NaN' || str === '') return false;
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      return uuidRegex.test(str);
+    };
+
     // Try cache first
     const cached = await this.cache.get<Product[]>(cacheKey);
     if (cached) {
@@ -577,12 +594,12 @@ export class CachedSupabaseClient {
         .select('*')
         .in('id', validBrandIds);
 
-      const brandMap = new Map(brandsData?.map(brand => [brand.id, brand]) || []);
+      const brandMap = new Map((brandsData as any)?.map((brand: any) => [brand.id, brand]) || []);
 
       // Assign brands to products
       products.forEach(product => {
         if (product.brand_id && brandMap.has(product.brand_id)) {
-          product.brand = brandMap.get(product.brand_id);
+          product.brand = brandMap.get(product.brand_id) as any;
         }
       });
     }
@@ -595,6 +612,14 @@ export class CachedSupabaseClient {
 
   async searchProducts(query: string, limit: number = 10): Promise<Product[]> {
     const cacheKey = cacheKeys.products.search(query);
+
+    // Validate UUID helper
+    const isValidUUID = (str: string) => {
+      if (typeof str !== 'string') return false;
+      if (str === 'undefined' || str === 'null' || str === 'NaN' || str === '') return false;
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      return uuidRegex.test(str);
+    };
 
     // Try cache first
     const cached = await this.cache.get<Product[]>(cacheKey);
@@ -635,12 +660,12 @@ export class CachedSupabaseClient {
         .select('*')
         .in('id', validBrandIds);
 
-      const brandMap = new Map(brandsData?.map(brand => [brand.id, brand]) || []);
+      const brandMap = new Map((brandsData as any)?.map((brand: any) => [brand.id, brand]) || []);
 
       // Assign brands to products
       products.forEach(product => {
         if (product.brand_id && brandMap.has(product.brand_id)) {
-          product.brand = brandMap.get(product.brand_id);
+          product.brand = brandMap.get(product.brand_id) as any;
         }
       });
     }

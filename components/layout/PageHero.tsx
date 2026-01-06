@@ -18,28 +18,28 @@ interface PageHeroProps {
 
 export function PageHero({ title, description, breadcrumbs, stats }: PageHeroProps) {
   return (
-    <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white pt-24">
+    <div className="relative pt-16 bg-[var(--color-trust-bg)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumbs */}
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <div className="flex items-center justify-center gap-2 text-sm mb-6 flex-wrap font-mono">
+          <div className="flex items-center justify-center gap-2 text-sm mb-6 flex-wrap">
             {breadcrumbs[0]?.label !== 'Home' && (
               <>
-                <Link href="/" className="text-blue-100 hover:text-white font-medium transition-colors">
+                <Link href="/" className="font-normal transition-colors text-[var(--color-text-primary)]">
                   Home
                 </Link>
                 <div className="flex items-center gap-2">
-                  <ChevronRight size={16} className="text-blue-300" />
+                  <ChevronRight size={16} className="text-[var(--color-text-secondary)]" />
                 </div>
               </>
             )}
             {breadcrumbs.map((crumb, index) => (
               <div key={index} className="flex items-center gap-2">
-                {index > 0 && <ChevronRight size={16} className="text-blue-300" />}
+                {index > 0 && <ChevronRight size={16} className="text-[var(--color-text-secondary)]" />}
                 {index === breadcrumbs.length - 1 ? (
-                  <span className="text-white font-semibold">{crumb.label}</span>
+                  <span className="font-bold text-[var(--color-text-primary)]">{crumb.label}</span>
                 ) : (
-                  <Link href={crumb.href} className="text-blue-100 hover:text-white font-medium transition-colors">
+                  <Link href={crumb.href} className="font-normal transition-colors text-[var(--color-text-primary)]">
                     {crumb.label}
                   </Link>
                 )}
@@ -50,9 +50,9 @@ export function PageHero({ title, description, breadcrumbs, stats }: PageHeroPro
 
         {/* Title & Description */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">{title}</h1>
+          <h1 className="text-3xl md:text-4xl font-normal mb-4 leading-tight text-[var(--color-text-primary)]">{title}</h1>
           {description && (
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg max-w-3xl mx-auto leading-relaxed text-[var(--color-text-secondary)]">
               {description}
             </p>
           )}
@@ -62,9 +62,9 @@ export function PageHero({ title, description, breadcrumbs, stats }: PageHeroPro
         {stats && stats.length > 0 && (
           <div className={`grid grid-cols-2 md:grid-cols-${Math.min(stats.length, 4)} gap-4`}>
             {stats.map((stat, index) => (
-              <div key={index} className="bg-white/10 backdrop-blur rounded-2xl p-4 text-center">
-                <div className="text-3xl font-bold mb-1">{stat.value}</div>
-                <div className="text-sm text-blue-100">{stat.label}</div>
+              <div key={index} className="backdrop-blur rounded-lg p-4 text-center border bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
+                <div className="text-2xl font-bold mb-1 text-[var(--color-text-primary)]">{stat.value}</div>
+                <div className="text-sm text-[var(--color-text-secondary)]">{stat.label}</div>
               </div>
             ))}
           </div>

@@ -35,11 +35,11 @@ export function FormField({
           htmlFor={fieldId}
           className={cn(
             'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-            hasError ? 'text-red-700' : hasSuccess ? 'text-green-700' : 'text-gray-700'
+            hasError ? 'text-error' : hasSuccess ? 'text-success' : 'text-foreground'
           )}
         >
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-error ml-1">*</span>}
         </label>
       )}
 
@@ -48,18 +48,18 @@ export function FormField({
       </div>
 
       {hint && !hasError && !hasSuccess && (
-        <p className="text-sm text-gray-500">{hint}</p>
+        <p className="text-sm text-text-secondary">{hint}</p>
       )}
 
       {hasError && (
-        <div className="flex items-center space-x-1 text-sm text-red-600">
+        <div className="flex items-center space-x-1 text-sm text-error">
           <AlertCircle className="h-4 w-4 flex-shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
       {hasSuccess && (
-        <div className="flex items-center space-x-1 text-sm text-green-600">
+        <div className="flex items-center space-x-1 text-sm text-success">
           <CheckCircle className="h-4 w-4 flex-shrink-0" />
           <span>{success}</span>
         </div>
@@ -87,7 +87,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            'flex h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-700 placeholder:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+            'flex h-10 rounded-md border border-primary-light bg-surface px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-text-secondary placeholder:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-foreground',
             leftIcon && 'pl-10',
             rightIcon && 'pr-10',
             fullWidth && 'w-full',
@@ -152,7 +152,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <textarea
         className={cn(
-          'flex min-h-[80px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-700 placeholder:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          'flex min-h-[80px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-700 placeholder:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
           resize === 'none' && 'resize-none',
           resize === 'vertical' && 'resize-y',
           resize === 'horizontal' && 'resize-x',
@@ -181,7 +181,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <select
         className={cn(
-          'flex h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          'flex h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
           fullWidth && 'w-full',
           className
         )}
@@ -224,7 +224,7 @@ export function Checkbox({ className, label, error, id, ...props }: CheckboxProp
         type="checkbox"
         id={checkboxId}
         className={cn(
-          'h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2',
+          'h-4 w-4 rounded border-gray-300 text-primary focus:ring-ring focus:ring-2',
           error && 'border-red-300 focus:ring-red-500',
           className
         )}
@@ -271,7 +271,7 @@ export function RadioGroup({ name, options, value, onChange, error, className }:
               onChange={(e) => onChange?.(e.target.value)}
               disabled={option.disabled}
               className={cn(
-                'h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2',
+                'h-4 w-4 border-gray-300 text-primary focus:ring-ring focus:ring-2',
                 error && 'border-red-300 focus:ring-red-500'
               )}
             />

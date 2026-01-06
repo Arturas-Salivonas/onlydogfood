@@ -148,27 +148,27 @@ export function LiveSearchBar({
   // Styling based on variant
   const inputClasses = variant === 'dark'
     ? 'bg-white/25 backdrop-blur-md border-white/40 text-white placeholder:text-white/70 focus:border-white/80 focus:ring-white/60 shadow-2xl ring-1 ring-white/20'
-    : 'bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500 shadow-sm';
+    : 'bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-ring focus:ring-ring shadow-sm';
 
   const dropdownClasses = variant === 'dark'
     ? 'bg-white/98 backdrop-blur-xl border-white/30 shadow-2xl ring-1 ring-white/20'
     : 'bg-white border-gray-200 shadow-xl';
 
-  const iconColor = variant === 'dark' ? 'text-blue-200' : 'text-gray-400';
+  const iconColor = variant === 'dark' ? 'text-secondary' : 'text-gray-400';
 
   const resultItemClasses = (isSelected: boolean) => variant === 'dark'
-    ? `flex items-center gap-3 px-4 py-3 hover:bg-blue-50/80 transition-all duration-200 cursor-pointer border-l-2 ${
+    ? `flex items-center gap-3 px-4 py-3 hover:bg-background/80 transition-all duration-200 cursor-pointer border-l-2 ${
         isSelected
-          ? 'bg-blue-100/90 border-blue-400 shadow-sm'
-          : 'border-transparent hover:border-blue-300'
+          ? 'bg-foreground/90 border-primary shadow-sm'
+          : 'border-transparent hover:border-secondary'
       }`
-    : `flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors cursor-pointer border-l-2 border-transparent hover:border-orange-500 ${
-        isSelected ? 'bg-orange-50 border-orange-500' : ''
+    : `flex items-center gap-3 px-4 py-3 hover:bg-primary transition-colors cursor-pointer border-l-2 border-transparent hover:border-warning ${
+        isSelected ? 'bg-primary border-warning' : ''
       }`;
 
   const scoreBadgeClasses = variant === 'dark'
-    ? 'text-sm font-bold text-blue-700 bg-blue-100 px-3 py-1.5 rounded-full shadow-sm border border-blue-200'
-    : 'text-sm font-semibold text-green-600 bg-green-50 px-2 py-1 rounded';
+    ? 'text-sm font-bold text-primary-hover bg-foreground px-3 py-1.5 rounded-full shadow-sm border border-secondary'
+    : 'text-sm font-semibold text-success bg-primary px-2 py-1 rounded';
 
   return (
     <div className={`relative ${className}`}>
@@ -186,7 +186,7 @@ export function LiveSearchBar({
             searchTerm && (
               <button
                 onClick={clearSearch}
-                className={`${variant === 'dark' ? 'text-blue-200 hover:text-blue-100' : 'text-gray-400 hover:text-gray-600'} transition-colors p-1 hover:bg-white/10 rounded-full`}
+                className={`${variant === 'dark' ? 'text-secondary hover:text-foreground' : 'text-gray-400 hover:text-gray-600'} transition-colors p-1 hover:bg-white/10 rounded-full`}
                 aria-label="Clear search"
               >
                 <X className="w-4 h-4" />
@@ -207,7 +207,7 @@ export function LiveSearchBar({
             {isLoading && (
               <div className="px-6 py-8 text-center">
                 <div className="inline-flex items-center gap-3 text-sm text-gray-600">
-                  <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-5 h-5 border-2 border-ring border-t-transparent rounded-full animate-spin"></div>
                   <span className="font-medium">Searching...</span>
                 </div>
               </div>
@@ -215,7 +215,7 @@ export function LiveSearchBar({
 
             {error && (
               <div className="px-6 py-6 text-center">
-                <div className={`text-sm font-medium ${variant === 'dark' ? 'text-red-600 bg-red-50' : 'text-red-600 bg-red-50'} px-4 py-3 rounded-xl border border-red-200`}>
+                <div className={`text-sm font-medium text-error bg-primary px-4 py-3 rounded-xl border border-error`}>
                   {error}
                 </div>
               </div>
@@ -300,3 +300,6 @@ export function LiveSearchBar({
     </div>
   );
 }
+
+
+

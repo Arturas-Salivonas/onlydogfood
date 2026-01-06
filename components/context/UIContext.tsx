@@ -183,3 +183,6 @@ export function useComparison() {
     canAddMore: state.comparisonItems.length < 4,
   };
 }
+
+
+

@@ -10,11 +10,11 @@ async function getContentPages() {
   // In a real implementation, this would fetch from a content table
   return [
     {
-      id: 'methodology',
-      title: 'Methodology',
-      slug: 'methodology',
-      description: 'How we rate and score dog food products',
-      lastUpdated: '2025-01-01',
+      id: 'how-we-score',
+      title: 'How We Score',
+      slug: 'how-we-score',
+      description: 'How we rate and score dog food products (v2.0)',
+      lastUpdated: '2025-12-24',
       status: 'published'
     },
     {
@@ -78,7 +78,7 @@ export default async function AdminContentPage() {
               <div className="flex items-center gap-2">
                 <Link
                   href={`/${page.slug}`}
-                  className="inline-flex items-center gap-1 px-3 py-1 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded"
+                  className="inline-flex items-center gap-1 px-3 py-1 text-sm text-primary hover:text-primary-hover hover:bg-background rounded"
                 >
                   <Eye className="w-4 h-4" />
                   View
@@ -98,3 +98,6 @@ export default async function AdminContentPage() {
     </Container>
   );
 }
+
+
+

@@ -77,7 +77,7 @@ export default async function AdminDashboard() {
             <h2 className="text-lg font-semibold text-gray-900">Recent Products</h2>
             <Link
               href="/admin/products"
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              className="text-sm text-primary hover:text-primary-hover font-medium"
             >
               View all →
             </Link>
@@ -114,7 +114,7 @@ export default async function AdminDashboard() {
             <h2 className="text-lg font-semibold text-gray-900">Top Brands</h2>
             <Link
               href="/admin/brands"
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              className="text-sm text-primary hover:text-primary-hover font-medium"
             >
               View all →
             </Link>
@@ -159,7 +159,7 @@ export default async function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Link
             href="/admin/products/new"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-lg text-center font-semibold transition-colors"
+            className="bg-primary hover:bg-primary-hover text-white px-6 py-4 rounded-lg text-center font-semibold transition-colors"
           >
             + Add New Product
           </Link>
@@ -185,9 +185,9 @@ interface StatCardProps {
 
 function StatCard({ title, value, icon: Icon, color, href }: StatCardProps) {
   const colorClasses = {
-    blue: 'bg-blue-50 text-blue-600',
+    blue: 'bg-background text-primary',
     green: 'bg-green-50 text-green-600',
-    purple: 'bg-purple-50 text-purple-600',
+    purple: 'bg-secondary-50 text-secondary-600',
     orange: 'bg-orange-50 text-orange-600',
   };
 
@@ -220,3 +220,6 @@ function StatCard({ title, value, icon: Icon, color, href }: StatCardProps) {
     </div>
   );
 }
+
+
+

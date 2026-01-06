@@ -184,7 +184,7 @@ export default function NewProductPage() {
       <div className="mb-6">
         <Link
           href="/admin/products"
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold mb-4"
+          className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-semibold mb-4"
         >
           <ArrowLeft size={20} />
           Back to Products
@@ -211,7 +211,7 @@ export default function NewProductPage() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring ${
                   errors.name ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="e.g., Premium Chicken & Rice"
@@ -228,7 +228,7 @@ export default function NewProductPage() {
                 name="slug"
                 value={formData.slug}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring ${
                   errors.slug ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="premium-chicken-rice"
@@ -244,7 +244,7 @@ export default function NewProductPage() {
                 name="brand_id"
                 value={formData.brand_id}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring ${
                   errors.brand_id ? 'border-red-500' : 'border-gray-300'
                 }`}
               >
@@ -266,7 +266,7 @@ export default function NewProductPage() {
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="dry">Dry Food</option>
                 <option value="wet">Wet Food</option>
@@ -283,7 +283,7 @@ export default function NewProductPage() {
                 name="sub_category"
                 value={formData.sub_category}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., Adult, Puppy, Senior"
               />
             </div>
@@ -297,7 +297,7 @@ export default function NewProductPage() {
                 name="image_url"
                 value={formData.image_url}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="https://example.com/image.jpg"
               />
             </div>
@@ -321,7 +321,7 @@ export default function NewProductPage() {
                 name="package_size_g"
                 value={formData.package_size_g}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., 2000"
                 step="1"
               />
@@ -336,7 +336,7 @@ export default function NewProductPage() {
                 name="price_gbp"
                 value={formData.price_gbp}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., 25.99"
                 step="0.01"
               />
@@ -351,7 +351,7 @@ export default function NewProductPage() {
                 name="price_per_kg_gbp"
                 value={formData.price_per_kg_gbp}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., 12.99"
                 step="0.01"
               />
@@ -368,7 +368,7 @@ export default function NewProductPage() {
                 name="affiliate_url"
                 value={formData.affiliate_url}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="https://amazon.com/..."
               />
             </div>
@@ -382,7 +382,7 @@ export default function NewProductPage() {
                 name="discount_code"
                 value={formData.discount_code}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., SAVE20"
               />
             </div>
@@ -397,7 +397,7 @@ export default function NewProductPage() {
               name="discount_description"
               value={formData.discount_description}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="e.g., Save 20% on first order"
             />
           </div>
@@ -444,7 +444,7 @@ export default function NewProductPage() {
                 name="protein_percent"
                 value={formData.protein_percent}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., 26.5"
                 step="0.1"
                 min="0"
@@ -461,7 +461,7 @@ export default function NewProductPage() {
                 name="fat_percent"
                 value={formData.fat_percent}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., 15.0"
                 step="0.1"
                 min="0"
@@ -478,7 +478,7 @@ export default function NewProductPage() {
                 name="fiber_percent"
                 value={formData.fiber_percent}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., 3.5"
                 step="0.1"
                 min="0"
@@ -495,7 +495,7 @@ export default function NewProductPage() {
                 name="moisture_percent"
                 value={formData.moisture_percent}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., 10.0"
                 step="0.1"
                 min="0"
@@ -512,7 +512,7 @@ export default function NewProductPage() {
                 name="ash_percent"
                 value={formData.ash_percent}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., 7.0"
                 step="0.1"
                 min="0"
@@ -529,7 +529,7 @@ export default function NewProductPage() {
                 name="calories_per_100g"
                 value={formData.calories_per_100g}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., 380"
                 step="1"
               />
@@ -544,7 +544,7 @@ export default function NewProductPage() {
                 name="meat_content_percent"
                 value={formData.meat_content_percent}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="e.g., 65"
                 step="0.1"
                 min="0"
@@ -570,7 +570,7 @@ export default function NewProductPage() {
               value={formData.ingredients_raw}
               onChange={handleChange}
               rows={6}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Chicken (65%), Sweet Potato (20%), Peas (5%), ..."
             />
           </div>
@@ -592,7 +592,7 @@ export default function NewProductPage() {
               value={formData.meta_description}
               onChange={handleChange}
               rows={3}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Brief description for search engines..."
               maxLength={160}
             />
@@ -608,7 +608,7 @@ export default function NewProductPage() {
                 name="is_sponsored"
                 checked={formData.is_sponsored}
                 onChange={handleChange}
-                className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-ring"
               />
               <span className="text-sm font-semibold text-gray-700">
                 Sponsored Product
@@ -621,7 +621,7 @@ export default function NewProductPage() {
                 name="is_available"
                 checked={formData.is_available}
                 onChange={handleChange}
-                className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-ring"
               />
               <span className="text-sm font-semibold text-gray-700">
                 Available for Sale
@@ -641,7 +641,7 @@ export default function NewProductPage() {
           <button
             type="submit"
             disabled={loading}
-            className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-8 py-4 bg-secondary hover:from-primary-hover hover:to-primary text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {loading ? (
               <>
@@ -660,3 +660,6 @@ export default function NewProductPage() {
     </Container>
   );
 }
+
+
+

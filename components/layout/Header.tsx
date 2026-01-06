@@ -10,64 +10,59 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full py-4">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-lg border border-gray-200/50 px-6 py-3">
+        <div className="rounded-lg p-4 border bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
-              <span className="text-3xl group-hover:scale-110 transition-transform">🐕</span>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">
-                OnlyDogFood
+
+              <span className="text-xl font-bold text-[var(--color-text-primary)]">
+                  <img className="navigation-logo" src="/logo/odf-logo.png" alt="Only Dog Food " width={220}/>
               </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-1 font-mono">
+            <nav className="hidden md:flex items-center gap-1">
               <Link
                 href="/dog-food"
-                className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                className="px-4 py-2 text-sm font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
               >
-                Browse Food
+                Browse food
               </Link>
               <Link
                 href="/brands"
-                className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                className="px-4 py-2 text-sm font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
               >
                 Brands
               </Link>
               <Link
                 href="/compare"
-                className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                className="px-4 py-2 text-sm font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
               >
                 Compare
               </Link>
               <Link
-                href="/methodology"
-                className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                href="/how-we-score"
+                className="px-4 py-2 text-sm font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
               >
-                How We Score
+                How we score
               </Link>
             </nav>
 
             {/* Right side buttons */}
-            <div className="hidden md:flex items-center gap-3">
+            {/* <div className="hidden md:flex items-center gap-3">
+
               <Link
                 href="/admin"
-                className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all"
+                className="px-5 py-2 text-sm font-bold bg-[var(--color-trust)] text-[var(--color-background-card)] rounded-lg hover:opacity-90 transition-all shadow-[var(--shadow-small)]"
               >
                 Admin
               </Link>
-              <Link
-                href="/dog-food"
-                className="px-5 py-2 text-sm font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-xl hover:scale-105"
-              >
-                Get Started
-              </Link>
-            </div>
+            </div> */}
 
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all"
+              className="md:hidden p-2 text-[var(--color-text-primary)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -75,50 +70,50 @@ export function Header() {
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="md:hidden pt-4 mt-4 border-t border-gray-200">
-              <nav className="flex flex-col gap-2 font-mono">
+            <div className="md:hidden pt-4 mt-4 border-t border-[var(--color-border)]">
+              <nav className="flex flex-col gap-2">
                 <Link
                   href="/dog-food"
                   onClick={() => setIsMenuOpen(false)}
-                  className="px-4 py-3 text-base font-semibold text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                  className="px-4 py-3 text-base font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
                 >
-                  Browse Food
+                  Browse food
                 </Link>
                 <Link
                   href="/brands"
                   onClick={() => setIsMenuOpen(false)}
-                  className="px-4 py-3 text-base font-semibold text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                  className="px-4 py-3 text-base font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
                 >
                   Brands
                 </Link>
                 <Link
                   href="/compare"
                   onClick={() => setIsMenuOpen(false)}
-                  className="px-4 py-3 text-base font-semibold text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                  className="px-4 py-3 text-base font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
                 >
                   Compare
                 </Link>
                 <Link
-                  href="/methodology"
+                  href="/how-we-score"
                   onClick={() => setIsMenuOpen(false)}
-                  className="px-4 py-3 text-base font-semibold text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                  className="px-4 py-3 text-base font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
                 >
-                  How We Score
+                  How we score
                 </Link>
-                <div className="border-t border-gray-200 my-2"></div>
+                <div className="border-t border-[var(--color-border)] my-2"></div>
                 <Link
                   href="/admin"
                   onClick={() => setIsMenuOpen(false)}
-                  className="px-4 py-3 text-base font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all"
+                  className="px-4 py-3 text-base font-bold text-[var(--color-text-primary)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
                 >
-                  Admin Panel
+                  Admin panel
                 </Link>
                 <Link
                   href="/dog-food"
                   onClick={() => setIsMenuOpen(false)}
-                  className="px-4 py-3 text-base font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all text-center shadow-md"
+                  className="px-4 py-3 text-base font-bold bg-[var(--color-trust)] text-[var(--color-background-card)] rounded-lg hover:opacity-90 transition-all text-center shadow-[var(--shadow-small)]"
                 >
-                  Get Started
+                  Get started
                 </Link>
               </nav>
             </div>

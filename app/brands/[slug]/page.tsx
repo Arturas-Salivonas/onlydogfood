@@ -4,7 +4,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { PageHero } from '@/components/layout/PageHero';
 import { Container } from '@/components/layout/Container';
-import { ProductCard } from '@/components/ui/ProductCard';
+import { FoodCard } from '@/components/ui/FoodCard';
 import { ScoreDisplay } from '@/components/ui/ScoreDisplay';
 import { getSupabase } from '@/lib/supabase';
 import { Brand, Product } from '@/types';
@@ -194,7 +194,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
                     />
                   </div>
                 ) : (
-                  <div className="w-40 h-40 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center">
+                  <div className="w-40 h-40 bg-primary-light rounded-xl flex items-center justify-center">
                     <span className="text-7xl">🏷️</span>
                   </div>
                 )}
@@ -203,7 +203,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
               {/* Brand Info */}
               <div className="md:col-span-3">
                 {typedBrand.is_sponsored && (
-                  <div className="inline-block bg-gradient-to-r from-yellow-400 to-amber-500 text-white text-sm font-bold px-4 py-1.5 rounded-full mb-4 shadow-md">
+                  <div className="inline-block bg-primary text-surface text-sm font-bold px-4 py-1.5 rounded-full mb-4 shadow-md">
                     ⭐ Sponsored Brand
                   </div>
                 )}
@@ -214,7 +214,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
                     href={typedBrand.website_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-xl hover:scale-105 mb-6"
+                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-xl  mb-6"
                   >
                     Visit Website <ExternalLink size={18} />
                   </a>
@@ -231,8 +231,8 @@ export default async function BrandPage({ params, searchParams }: Props) {
                 href={`/brands/${typedBrand.slug}`}
                 className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                   !category || category === 'all'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-secondary text-surface shadow-md'
+                    : 'bg-neutral text-foreground hover:bg-primary-light'
                 }`}
               >
                 ✨ All ({counts.all})
@@ -242,8 +242,8 @@ export default async function BrandPage({ params, searchParams }: Props) {
                   href={`/brands/${typedBrand.slug}?category=dry`}
                   className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                     category === 'dry'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-secondary text-surface shadow-md'
+                      : 'bg-neutral text-foreground hover:bg-primary-light'
                   }`}
                 >
                   🥘 Dry Food ({counts.dry})
@@ -254,8 +254,8 @@ export default async function BrandPage({ params, searchParams }: Props) {
                   href={`/brands/${typedBrand.slug}?category=wet`}
                   className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                     category === 'wet'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-secondary text-surface shadow-md'
+                      : 'bg-neutral text-foreground hover:bg-primary-light'
                   }`}
                 >
                   🥫 Wet Food ({counts.wet})
@@ -266,8 +266,8 @@ export default async function BrandPage({ params, searchParams }: Props) {
                   href={`/brands/${typedBrand.slug}?category=snack`}
                   className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                     category === 'snack'
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-secondary text-surface shadow-md'
+                      : 'bg-neutral text-foreground hover:bg-primary-light'
                   }`}
                 >
                   🦴 Snacks ({counts.snack})
@@ -280,11 +280,11 @@ export default async function BrandPage({ params, searchParams }: Props) {
           {products && products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {typedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <FoodCard key={product.id} product={product} />
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl border-2 border-dashed border-gray-300">
+            <div className="text-center py-16 bg-neutral rounded-2xl border-2 border-dashed border-primary-light">
               <span className="text-8xl mb-6 block">📦</span>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
                 No products found

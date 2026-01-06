@@ -6,3 +6,6 @@ export const dynamic = 'force-static';
 export default function BrandsPageRoute() {
   return <BrandsPage />;
 }
+
+
+

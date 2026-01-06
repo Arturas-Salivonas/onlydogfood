@@ -57,3 +57,6 @@ export function ProductStructuredData({ product }: ProductStructuredDataProps) {
     />
   );
 }
+
+
+

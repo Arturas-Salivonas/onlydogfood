@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { gql } from '@apollo/client';
 import Link from 'next/link';
 import { Product } from '@/types';
-import { ProductCard } from './ProductCard';
+import { FoodCard } from './FoodCard';
 import { LoadingSpinner } from './LoadingSpinner';
 
 // GraphQL query for top products
@@ -115,18 +115,26 @@ export function BestFoodsSection({ className = '' }: BestFoodsSectionProps) {
   console.log('BestFoodsSection - filters:', JSON.stringify(filters, null, 2));
   console.log('BestFoodsSection - cleaned filters:', JSON.stringify(cleanedFilters, null, 2));
 
-  const { data, loading, error } = useQuery(GET_TOP_PRODUCTS, {
+  const { data, loading, error } = useQuery<{ products?: { data?: Product[]; total?: number } }>(GET_TOP_PRODUCTS, {
     variables: { filters: cleanedFilters },
     fetchPolicy: 'network-only', // Changed from cache-first to force fresh data
-    onCompleted: (data) => {
-      console.log('BestFoodsSection - query completed:', data?.products ? { total: data.products.total, dataLength: data.products.data?.length } : 'no data');
-    },
-    onError: (error) => {
-      console.error('BestFoodsSection - query error:', error);
-    },
   });
 
-  const products = (data as { products?: { data?: Product[] } })?.products?.data || [];
+  // Log query completion
+  React.useEffect(() => {
+    if (data) {
+      console.log('BestFoodsSection - query completed:', data?.products ? { total: data.products.total, dataLength: data.products.data?.length } : 'no data');
+    }
+  }, [data]);
+
+  // Log query errors
+  React.useEffect(() => {
+    if (error) {
+      console.error('BestFoodsSection - query error:', error);
+    }
+  }, [error]);
+
+  const products = data?.products?.data || [];
 
   console.log('BestFoodsSection - result:', { hasData: !!data, productsLength: products.length, loading, hasError: !!error });
 
@@ -137,30 +145,27 @@ export function BestFoodsSection({ className = '' }: BestFoodsSectionProps) {
   ];
 
   return (
-    <section className={`py-16 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 ${className}`}>
+    <section className={`py-16 bg-[var(--color-background-card)] ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            5 Best Dog Foods
+          <h2 className="text-4xl md:text-5xl font-normal mb-4 text-[var(--color-text-primary)]">
+            5 best dog foods
           </h2>
-          {/* <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover the highest-scoring dog foods based on our comprehensive analysis
-          </p> */}
         </div>
 
         {/* Tabs */}
         <div className="flex justify-center mb-8">
-          <div className="bg-white rounded-2xl p-2 shadow-lg border border-gray-200">
+          <div className="rounded-lg p-2 border bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
             <div className="flex space-x-2">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                  className={`px-6 py-3 rounded-lg font-bold text-sm transition-all ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg transform scale-105'
-                      : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                      ? 'bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-medium)]'
+                      : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-trust-bg)]'
                   }`}
                 >
                   {tab.label}
@@ -184,24 +189,21 @@ export function BestFoodsSection({ className = '' }: BestFoodsSectionProps) {
           </div>
         ) : error ? (
           <div className="text-center py-12">
-            <p className="text-red-600 mb-2">Error loading products. Please try again.</p>
-            <p className="text-sm text-gray-500">{error.message || 'Unknown error'}</p>
+            <p className="mb-2 text-[var(--color-caution)]">Error loading products. Please try again.</p>
+            <p className="text-sm text-[var(--color-text-secondary)]">{error.message || 'Unknown error'}</p>
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-600">No products found for this category.</p>
+            <p className="text-[var(--color-text-secondary)]">No products found for this category.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {products.map((product: Product, index: number) => (
-              <ProductCard
+              <FoodCard
                 key={product.id}
                 product={product}
                 ranking={index + 1}
                 showComparison={false}
-                showTags={false}
-                showPricePerMeal={false}
-                imageFit="contain"
               />
             ))}
           </div>
@@ -211,9 +213,9 @@ export function BestFoodsSection({ className = '' }: BestFoodsSectionProps) {
         <div className="text-center mt-12">
           <Link
             href="/dog-food"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-bold text-base hover:opacity-90 transition-all bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-medium)]"
           >
-            View All Products
+            View all products
             <span>→</span>
           </Link>
         </div>

@@ -11,29 +11,25 @@ export default async function AdminContentEditPage({ params }: Props) {
 
   // Mock content data - in real implementation, fetch from database
   const contentData = {
-    methodology: {
-      title: 'How We Rate Dog Food',
-      content: `# How We Rate Dog Food
+    'how-we-score': {
+      title: 'How We Score Dog Food',
+      content: `# How We Score Dog Food
 
-## Our Scoring Methodology
+## Our Scoring Methodology v2.0
 
 At OnlyDogFood, we use a comprehensive 100-point scoring system to evaluate dog food products...
 
-## Ingredient Quality (40 points)
+## Ingredient Quality (45 points)
 
-We analyze every ingredient for quality, sourcing, and nutritional value...
+We analyze every ingredient for quality, sourcing, processing, and nutritional value...
 
-## Nutritional Balance (30 points)
+## Nutritional Balance (33 points)
 
-Complete nutritional profiles are evaluated against AAFCO standards...
+Complete nutritional profiles are evaluated against AAFCO standards and latest research...
 
-## Value for Money (20 points)
+## Value for Money (22 points)
 
-Price per kg is compared against quality scores...
-
-## Transparency (10 points)
-
-We reward brands that provide clear, honest information...`
+Price per feeding is compared against quality scores with ingredient-adjusted value...`
     },
     about: {
       title: 'About OnlyDogFood',

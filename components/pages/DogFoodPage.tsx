@@ -90,11 +90,11 @@ export default function DogFoodPage() {
   ) || [];
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-[var(--color-background-neutral)]">
       <Header />
 
       <PageSEO
-        title="Dog Food Directory - Compare & Find the Best Dog Food"
+        title="Dog Food  - Compare & Find the Best Dog Food"
         description={`Browse and compare ${data?.total || 0} science-backed dog food products with detailed nutritional analysis, ratings, and reviews. Find the perfect food for your dog.`}
         canonicalUrl="/dog-food"
         breadcrumbs={[
@@ -105,7 +105,7 @@ export default function DogFoodPage() {
           {
             type: 'CollectionPage',
             data: {
-              name: 'Dog Food Directory',
+              name: 'Dog Food ',
               description: `Browse and compare ${data?.total || 0} science-backed dog food products`,
               url: 'https://onlydogfood.com/dog-food',
               mainEntity: {
@@ -138,7 +138,7 @@ export default function DogFoodPage() {
       />
 
       <PageHero
-        title="Dog Food Directory"
+        title="Dog Food "
         description={`Browse and compare ${data?.total || 0} science-backed dog food products`}
         breadcrumbs={[
           { label: 'Home', href: '/' },
@@ -151,12 +151,12 @@ export default function DogFoodPage() {
           <div className="flex gap-8">
             {/* Sidebar Filters */}
             <aside className="w-80 flex-shrink-0">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-4">
-                <h3 className="font-bold text-lg text-gray-900 mb-6">Filters</h3>
+              <div className="rounded-lg border p-6 top-4 bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
+                <h3 className="text-lg font-bold mb-6 text-[var(--color-text-primary)]">Filters</h3>
 
                 {/* Category Filter */}
                 <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">Food Type</h4>
+                  <h4 className="font-bold text-[var(--color-text-primary)] mb-3">Food type</h4>
                   <div className="space-y-2">
                     {[
                       { value: 'all', label: 'All Foods' },
@@ -171,9 +171,9 @@ export default function DogFoodPage() {
                           value={category.value}
                           checked={filters.category === category.value}
                           onChange={(e) => handleCategoryChange(e.target.value)}
-                          className="text-blue-600 focus:ring-blue-500"
+                          className="text-[var(--color-trust)] focus:ring-[var(--color-trust)]"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{category.label}</span>
+                        <span className="ml-2 text-sm text-[var(--color-text-secondary)]">{category.label}</span>
                       </label>
                     ))}
                   </div>
@@ -181,7 +181,7 @@ export default function DogFoodPage() {
 
                 {/* Price Range Filter */}
                 <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">Price Range</h4>
+                  <h4 className="font-bold text-[var(--color-text-primary)] mb-3">Price range</h4>
                   <div className="space-y-2">
                     {[
                       { value: 'all', label: 'All Prices' },
@@ -197,9 +197,9 @@ export default function DogFoodPage() {
                           value={range.value}
                           checked={filters.priceRange === range.value}
                           onChange={(e) => setFilters({ ...filters, priceRange: e.target.value })}
-                          className="text-blue-600 focus:ring-blue-500"
+                          className="text-[var(--color-trust)] focus:ring-[var(--color-trust)]"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{range.label}</span>
+                        <span className="ml-2 text-sm text-[var(--color-text-secondary)]">{range.label}</span>
                       </label>
                     ))}
                   </div>
@@ -207,7 +207,7 @@ export default function DogFoodPage() {
 
                 {/* Score Filter */}
                 <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">Minimum Score</h4>
+                  <h4 className="font-bold text-[var(--color-text-primary)] mb-3">Minimum score</h4>
                   <div className="space-y-2">
                     {[
                       { value: 'all', label: 'All Scores' },
@@ -222,9 +222,9 @@ export default function DogFoodPage() {
                           value={score.value}
                           checked={filters.minScoreFilter === score.value}
                           onChange={(e) => setFilters({ ...filters, minScoreFilter: e.target.value })}
-                          className="text-blue-600 focus:ring-blue-500"
+                          className="text-[var(--color-trust)] focus:ring-[var(--color-trust)]"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{score.label}</span>
+                        <span className="ml-2 text-sm text-[var(--color-text-secondary)]">{score.label}</span>
                       </label>
                     ))}
                   </div>
@@ -232,7 +232,7 @@ export default function DogFoodPage() {
 
                 {/* Brand Filter */}
                 <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">Popular Brands</h4>
+                  <h4 className="font-bold text-[var(--color-text-primary)] mb-3">Popular brands</h4>
                   <div className="space-y-2 max-h-48 overflow-y-auto">
                     {[
                       { value: 'all', label: 'All Brands' },
@@ -254,9 +254,9 @@ export default function DogFoodPage() {
                               : currentBrands.filter(b => b !== brand.value);
                             setFilters({ ...filters, brands: newBrands });
                           }}
-                          className="text-blue-600 focus:ring-blue-500"
+                          className="text-[var(--color-trust)] focus:ring-[var(--color-trust)]"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{brand.label}</span>
+                        <span className="ml-2 text-sm text-[var(--color-text-secondary)]">{brand.label}</span>
                       </label>
                     ))}
                   </div>
@@ -264,7 +264,7 @@ export default function DogFoodPage() {
 
                 {/* Life Stage Filter */}
                 <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">Life Stage</h4>
+                  <h4 className="font-bold text-[var(--color-text-primary)] mb-3">Life stage</h4>
                   <div className="space-y-2">
                     {[
                       { value: 'all', label: 'All Life Stages' },
@@ -279,9 +279,9 @@ export default function DogFoodPage() {
                           value={stage.value}
                           checked={filters.lifeStage === stage.value}
                           onChange={(e) => setFilters({ ...filters, lifeStage: e.target.value })}
-                          className="text-blue-600 focus:ring-blue-500"
+                          className="text-[var(--color-trust)] focus:ring-[var(--color-trust)]"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{stage.label}</span>
+                        <span className="ml-2 text-sm text-[var(--color-text-secondary)]">{stage.label}</span>
                       </label>
                     ))}
                   </div>
@@ -289,7 +289,7 @@ export default function DogFoodPage() {
 
                 {/* Breed Size Filter */}
                 <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">Breed Size</h4>
+                  <h4 className="font-bold text-[var(--color-text-primary)] mb-3">Breed size</h4>
                   <div className="space-y-2">
                     {[
                       { value: 'all', label: 'All Sizes' },
@@ -304,9 +304,9 @@ export default function DogFoodPage() {
                           value={size.value}
                           checked={filters.breedSize === size.value}
                           onChange={(e) => setFilters({ ...filters, breedSize: e.target.value })}
-                          className="text-blue-600 focus:ring-blue-500"
+                          className="text-[var(--color-trust)] focus:ring-[var(--color-trust)]"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{size.label}</span>
+                        <span className="ml-2 text-sm text-[var(--color-text-secondary)]">{size.label}</span>
                       </label>
                     ))}
                   </div>
@@ -314,7 +314,7 @@ export default function DogFoodPage() {
 
                 {/* Special Diet Filter */}
                 <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">Special Diet</h4>
+                  <h4 className="font-bold text-[var(--color-text-primary)] mb-3">Special diet</h4>
                   <div className="space-y-2">
                     {[
                       { value: 'all', label: 'All Diets' },
@@ -336,9 +336,9 @@ export default function DogFoodPage() {
                               : currentDiets.filter(d => d !== diet.value);
                             setFilters({ ...filters, specialDiet: newDiets });
                           }}
-                          className="text-blue-600 focus:ring-blue-500"
+                          className="text-[var(--color-trust)] focus:ring-[var(--color-trust)]"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{diet.label}</span>
+                        <span className="ml-2 text-sm text-[var(--color-text-secondary)]">{diet.label}</span>
                       </label>
                     ))}
                   </div>
@@ -358,9 +358,9 @@ export default function DogFoodPage() {
                     breedSize: 'all',
                     specialDiet: [],
                   })}
-                  className="w-full px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="w-full px-4 py-2 text-sm rounded-lg transition-all bg-[var(--color-background-card)] text-[var(--color-text-secondary)] border border-[var(--color-border)] hover:bg-[var(--color-background-neutral)] hover:border-[var(--color-trust)]"
                 >
-                  Clear All Filters
+                  Clear all filters
                 </button>
               </div>
             </aside>
@@ -368,13 +368,13 @@ export default function DogFoodPage() {
             {/* Main Content */}
             <div className="flex-1">
               {/* Sort Controls */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+              <div className="rounded-lg border p-4 mb-6 bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <h2 className="text-xl font-bold text-gray-900">
+                    <h2 className="text-xl font-bold text-[var(--color-text-primary)]">
                       {data?.total || 0} Products Found
                     </h2>
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-[var(--color-text-secondary)]">
                       Page {filters.page || 1} of {Math.ceil((data?.total || 0) / (filters.limit || 20))}
                     </span>
                   </div>
@@ -412,21 +412,21 @@ export default function DogFoodPage() {
               {/* Products Display */}
               {isLoading ? (
                 <div className="flex justify-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-2 border-[var(--color-border)] border-t-[var(--color-trust)]"></div>
                 </div>
               ) : error && !data ? (
                 <div className="text-center py-12">
-                  <p className="text-red-600 mb-4">Error loading products. Please try again.</p>
+                  <p className="mb-4 text-[var(--color-caution)]">Error loading products. Please try again.</p>
                   <button
                     onClick={() => window.location.reload()}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    className="px-4 py-2 rounded-lg transition-all font-bold bg-[var(--color-trust)] text-[var(--color-background-card)] hover:bg-[var(--color-trust-hover)] shadow-[var(--shadow-small)] hover:shadow-[var(--shadow-medium)]"
                   >
                     Retry
                   </button>
                 </div>
               ) : !data?.data || data.data.length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-gray-600">No products found matching your filters.</p>
+                  <p className="text-[var(--color-text-secondary)]">No products found matching your filters.</p>
                 </div>
               ) : (
                 <>
@@ -437,11 +437,11 @@ export default function DogFoodPage() {
                         <Link
                           key={product.id}
                           href={`/dog-food/${product.slug}`}
-                          className="block bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-blue-300 overflow-hidden"
+                          className="block rounded-lg transition-all duration-200 overflow-hidden bg-[var(--color-background-card)] border border-[var(--color-border)] hover:border-[var(--color-trust)] shadow-[var(--shadow-small)] hover:shadow-[var(--shadow-medium)]"
                         >
                           <div className="flex">
                           {/* Product Image */}
-                          <div className="w-32 h-32 flex-shrink-0 relative bg-gray-50 rounded-lg overflow-hidden">
+                          <div className="w-32 h-32 flex-shrink-0 relative rounded-lg overflow-hidden bg-[var(--color-background-neutral)]">
                             <Image
                               src={product.image_url || 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+IRjWjBqO6O2mhP//Z'}
                               alt={product.name}
@@ -536,10 +536,10 @@ export default function DogFoodPage() {
                                   }
                                 })()}
 
-                                <h3 className="font-semibold text-gray-900 text-lg mb-1 hover:text-blue-600 transition-colors">
+                                <h3 className="font-semibold text-lg mb-1 transition-colors text-[var(--color-text-primary)] hover:text-[var(--color-trust)]">
                                   {product.name}
                                 </h3>
-                                <p className="text-sm text-gray-600 mb-2 flex items-center gap-1">
+                                <p className="text-sm mb-2 flex items-center gap-1 text-[var(--color-text-secondary)]">
                                   <span>by {product.brand?.name}</span>
                                   {product.brand?.country_of_origin && (
                                     <span
@@ -554,25 +554,25 @@ export default function DogFoodPage() {
                               </div>
 
                               <div className="text-right ml-4">
-                                <div className="text-xl font-bold text-gray-900 mb-1">
+                                <div className="text-xl font-bold mb-1 text-[var(--color-text-primary)]">
                                   {product.price_per_kg_gbp ? formatPrice((product.price_per_kg_gbp * 0.15)) : 'Price TBA'}
                                 </div>
-                                <div className="text-sm text-gray-500">
+                                <div className="text-sm text-[var(--color-text-secondary)]">
                                   /per meal
                                 </div>
                               </div>
                             </div>
 
                             {/* Additional Info */}
-                            <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                            <div className="flex items-center justify-between mt-3 pt-3 border-t border-[var(--color-border)]">
                               <div className="flex items-center gap-2">
-                                <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-sm">
+                                <div className="px-3 py-1 rounded-full text-sm font-bold shadow-[var(--shadow-small)] bg-[var(--color-caution-bg)] text-[var(--color-text-primary)]">
                                   {product.overall_score || 0}/100
                                 </div>
-                                <span className="text-xs text-gray-500 font-medium">ODF Score</span>
+                                <span className="text-xs font-medium text-[var(--color-text-secondary)]">ODF score</span>
                               </div>
-                              <div className="text-sm text-blue-600 font-medium">
-                                View Details →
+                              <div className="text-sm font-medium text-[var(--color-trust)]">
+                                View details →
                               </div>
                             </div>
                           </div>
@@ -587,7 +587,7 @@ export default function DogFoodPage() {
                       <button
                         onClick={() => handlePageChange((filters.page || 1) - 1)}
                         disabled={(filters.page || 1) <= 1}
-                        className="flex items-center gap-2 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm hover:shadow-md"
+                        className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 bg-[var(--color-background-card)] border border-[var(--color-border)] text-[var(--color-text-primary)] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--color-background-neutral)] hover:border-[var(--color-trust)] shadow-[var(--shadow-small)] hover:shadow-[var(--shadow-medium)]"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -606,10 +606,10 @@ export default function DogFoodPage() {
                             <button
                               key={pageNum}
                               onClick={() => handlePageChange(pageNum)}
-                              className={`px-4 py-3 border rounded-xl text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md ${
+                              className={`px-4 py-3 border rounded-lg text-sm font-medium transition-all duration-200 ${
                                 isActive
-                                  ? 'bg-blue-600 text-white border-blue-600 shadow-blue-100 hover:shadow-blue-200'
-                                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'
+                                  ? 'bg-[var(--color-trust)] text-[var(--color-background-card)] border-[var(--color-trust)] shadow-[var(--shadow-medium)]'
+                                  : 'bg-[var(--color-background-card)] border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-neutral)] hover:border-[var(--color-trust)] shadow-[var(--shadow-small)] hover:shadow-[var(--shadow-medium)]'
                               }`}
                             >
                               {pageNum}
@@ -621,7 +621,7 @@ export default function DogFoodPage() {
                       <button
                         onClick={() => handlePageChange((filters.page || 1) + 1)}
                         disabled={(filters.page || 1) >= data.totalPages}
-                        className="flex items-center gap-2 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm hover:shadow-md"
+                        className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 bg-[var(--color-background-card)] border border-[var(--color-border)] text-[var(--color-text-primary)] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--color-background-neutral)] hover:border-[var(--color-trust)] shadow-[var(--shadow-small)] hover:shadow-[var(--shadow-medium)]"
                       >
                         Next
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

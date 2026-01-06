@@ -91,7 +91,7 @@ export default function BrandsManagementPage() {
         </div>
         <Link
           href="/admin/brands/new"
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
+          className="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-semibold transition-colors"
         >
           <Plus size={20} />
           Add Brand
@@ -110,7 +110,7 @@ export default function BrandsManagementPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search brands..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
           />
         </div>
       </div>
@@ -166,7 +166,7 @@ export default function BrandsManagementPage() {
               <div className="flex items-center gap-2">
                 <Link
                   href={`/admin/brands/${brand.id}/edit`}
-                  className="flex-1 text-center px-3 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-md font-medium text-sm transition-colors"
+                  className="flex-1 text-center px-3 py-2 bg-background text-primary hover:bg-foreground rounded-md font-medium text-sm transition-colors"
                 >
                   <Edit size={16} className="inline mr-1" />
                   Edit
@@ -190,3 +190,6 @@ export default function BrandsManagementPage() {
     </Container>
   );
 }
+
+
+

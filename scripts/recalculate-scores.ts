@@ -56,21 +56,54 @@ async function recalculateScores() {
   const supabase = getServiceSupabase();
 
   console.log('🔄 Fetching all products...');
-  const { data: products, error } = await supabase
-    .from('products')
-    .select('*');
 
-  if (error) {
-    console.error('❌ Error fetching products:', error);
+  // First, get the total count
+  const { count, error: countError } = await supabase
+    .from('products')
+    .select('*', { count: 'exact', head: true });
+
+  if (countError) {
+    console.error('❌ Error counting products:', countError);
     return;
   }
+
+  if (!count) {
+    console.log('📊 No products found in database.');
+    return;
+  }
+
+  console.log(`📊 Found ${count} products total. Fetching all products...`);
+
+  // Fetch all products using pagination (Supabase max is 1000 per request)
+  const pageSize = 1000;
+  const totalPages = Math.ceil(count / pageSize);
+  let allProducts: any[] = [];
+
+  for (let page = 0; page < totalPages; page++) {
+    const { data: pageProducts, error: pageError } = await supabase
+      .from('products')
+      .select('*')
+      .range(page * pageSize, (page + 1) * pageSize - 1);
+
+    if (pageError) {
+      console.error(`❌ Error fetching page ${page + 1}:`, pageError);
+      continue;
+    }
+
+    if (pageProducts) {
+      allProducts = allProducts.concat(pageProducts);
+      console.log(`✓ Fetched page ${page + 1}/${totalPages} (${pageProducts.length} products)`);
+    }
+  }
+
+  const products = allProducts;
 
   if (!products || products.length === 0) {
     console.log('ℹ️  No products found');
     return;
   }
 
-  console.log(`📊 Found ${products.length} products. Recalculating...`);
+  console.log(`\n📊 Total fetched: ${products.length} products. Starting recalculation...\n`);
 
   let updated = 0;
   let errors = 0;

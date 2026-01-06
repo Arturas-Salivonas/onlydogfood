@@ -56,7 +56,7 @@ export default function ComparePage() {
   ) || [];
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-[var(--color-background-neutral)]">
       <Header />
 
       <PageSEO
@@ -66,7 +66,7 @@ export default function ComparePage() {
       />
 
       <PageHero
-        title="Compare Dog Foods"
+        title="Compare dog foods"
         description="Side-by-side analysis of nutritional content and pricing"
         breadcrumbs={[
           { label: 'Home', href: '/' },
@@ -77,9 +77,9 @@ export default function ComparePage() {
       <main className="flex-1">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Instructions */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-            <h2 className="text-lg font-semibold text-blue-900 mb-2">How to Compare Products</h2>
-            <p className="text-blue-800">
+          <div className="rounded-lg p-6 mb-8 border bg-[var(--color-background-card)] border-[var(--color-border)]">
+            <h2 className="text-lg font-semibold mb-2 text-[var(--color-text-primary)]">How to compare products</h2>
+            <p className="text-[var(--color-text-secondary)]">
               Select up to 4 dog food products to compare them side-by-side. You'll see detailed nutritional information,
               pricing, ratings, and ingredient analysis to help you make an informed decision.
             </p>
@@ -88,16 +88,16 @@ export default function ComparePage() {
           {/* Selected Products */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold text-gray-900">
-                Selected Products ({selectedProductIds.length}/4)
+              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">
+                Selected products ({selectedProductIds.length}/4)
               </h2>
               {canAddMore && (
                 <button
                   onClick={() => setShowProductSelector(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors bg-[var(--color-trust)] text-[var(--color-background-card)] hover:opacity-90"
                 >
                   <Plus className="w-4 h-4" />
-                  Add Product
+                  Add product
                 </button>
               )}
             </div>
@@ -146,7 +146,7 @@ export default function ComparePage() {
                         <p className="text-gray-500 text-sm">Empty slot</p>
                         <button
                           onClick={() => setShowProductSelector(true)}
-                          className="mt-2 text-blue-600 hover:text-blue-700 text-sm font-medium"
+                          className="mt-2 text-primary hover:text-primary-hover text-sm font-medium"
                         >
                           Add product
                         </button>
@@ -188,7 +188,7 @@ export default function ComparePage() {
                       placeholder="Search products..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-ring"
                     />
                   </div>
                 </div>
@@ -203,7 +203,7 @@ export default function ComparePage() {
                       {filteredProducts.slice(0, 20).map((product) => (
                         <div
                           key={product.id}
-                          className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 cursor-pointer transition-colors"
+                          className="border border-gray-200 rounded-lg p-4 hover:border-secondary cursor-pointer transition-colors"
                           onClick={() => handleAddProduct(product)}
                         >
                           <div className="flex items-center gap-3">
