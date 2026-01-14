@@ -6,8 +6,13 @@ export { FormField, Input, PasswordInput, Textarea, Select, Checkbox, RadioGroup
 // Button component
 export { Button, buttonVariants } from './Button';
 
-// Search component
-export { LiveSearchBar } from './LiveSearchBar';
+// Search components
+export { DogSearchBar } from './DogSearchBar';
+export { BrandSearchBar } from './BrandSearchBar';
+export { LiveSearchBar } from './LiveSearchBar'; // Keep for backward compatibility
+
+// Quiz component
+export { Quiz } from './Quiz';
 
 // Modal and Toast components
 export { Modal, ModalTrigger, ConfirmModal } from './Modal';

@@ -55,7 +55,7 @@ export async function revalidateAll() {
     '/dog-food',
     '/brands',
     '/compare',
-    '/methodology',
+    '/how-we-rate-dog-food',
     '/about',
   ]);
 }

@@ -30,5 +30,14 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "scripts/test-new-algorithm.ts"]
+  "exclude": [
+    "node_modules",
+    "scripts/test-new-algorithm.ts",
+    "scripts/test-enhanced-scoring.ts",
+    "scripts/debug-calculator.ts",
+    "scripts/debug-ingredient-matcher.ts",
+    "scripts/verify-scores.ts",
+    "scripts/check-ingredient-breakdown.ts",
+    "scripts/check-structure.ts"
+  ]
 }

@@ -1,11 +1,17 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Container } from '@/components/layout/Container';
 import { PageSEO } from '@/components/seo';
-import { LiveSearchBar, StatsSection, BestFoodsSection } from '@/components/ui';
+import { DogSearchBar, StatsSection, BestFoodsSection } from '@/components/ui';
+import { Quiz } from '@/components/ui/Quiz';
 
 export default function HomePage() {
+  const [isQuizOpen, setIsQuizOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -18,161 +24,175 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative bg-[var(--color-trust-bg)]">
-          <Container className="relative pt-24 md:pt-32 pb-6 md:pb-8">
-            <div className="max-w-4xl mx-auto text-center">
+        <section className="bg-helper relative bg-[var(--color-trust-bg)]">
+          <Container className="relative pt-24 md:pt-32 pb-0 z-10">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              {/* Left Column - Text Content */}
 
+              <div className="text-left relative z-20">
 
-              <h1 className="text-4xl md:text-6xl font-normal mb-2 leading-tight text-[var(--color-text-primary)]">
-                Choosing a dog food for the <br />first time shouldn't feel stressful...
-              </h1>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-[var(--color-text-primary)]">
+                  Choosing a dog food for the first time shouldn't feel stressful...
+                </h1>
 
-              <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto text-[var(--color-text-secondary)]">
-              We help new dog owners find safe, suitable food - without marketing nonsense or confusing labels.
-              </p>
-
-
-              {/* <div className="max-w-md mx-auto mb-8">
-                <LiveSearchBar
-                  placeholder="Search dog food..."
-
-                  className="w-full"
-                />
-              </div> */}
-
-
-              {/* <StatsSection /> */}
-
-              <div className="flex flex-col gap-2 justify-center items-center">
-                <Link
-                  href="/dog-food"
-                  className="group inline-flex items-center gap-2 px-6 py-2 rounded-[30px] font-regular text-base hover:opacity-90 transition-all bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-medium)]"
-                >
-                  Help me choose safely
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </Link>
-                <p className="italic text-xsmall py-2 text-[var(--color-text-secondary)] opacity-75">
-                  Free, no sign-up / no cc required, takes 30 seconds
+                <p className="text-lg md:text-xl mb-8 text-[var(--color-text-secondary)] leading-relaxed">
+                  We help new dog owners find safe, suitable food without marketing nonsense or confusing labels.
                 </p>
+
+                <div className="flex flex-col gap-3 items-start relative z-30">
+                  <button
+                    onClick={() => {
+                      console.log('Button clicked!');
+                      setIsQuizOpen(true);
+                    }}
+                    className="arrow-button group inline-flex items-center gap-2 px-8 py-4 rounded-[30px] font-bold text-base hover:opacity-90 transition-all bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-medium)] cursor-pointer"
+                  >
+                    Help me choose safely
+                  </button>
+
+                  <p className="text-xsmall text-[var(--color-text-secondary)] italic">
+                    Free • no sign-up required • Takes 30 seconds
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column - Image */}
+              <div className="relative hidden md:block z-10">
+                <div className="relative  overflow-hidden ">
+                  <img
+                    src="/home/hero.png"
+                    alt="Happy dog with quality food"
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
               </div>
             </div>
+
           </Container>
         </section>
 
-        {/* How Only Dog Food Works Section */}
-        <section className="py-20 bg-[var(--color-background-card)]">
+
+     {/* Best Foods Section */}
+        <BestFoodsSection />
+
+        {/* Combined Story + How We Rate Section */}
+        <section className="py-16 bg-[var(--color-background-neutral)]">
           <Container>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-normal mb-4 text-[var(--color-text-primary)]">
-                How Only dog food works
+            {/* Section Title */}
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-normal mb-2 text-[var(--color-text-primary)]">
+                We built this because we needed it
               </h2>
-              <p className="text-lg max-w-2xl mx-auto text-[var(--color-text-secondary)]">
-                Simple, transparent, and designed for new dog owners
-              </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="rounded-lg border p-8 text-center bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 bg-[var(--color-trust-bg)] text-[var(--color-trust)] text-2xl font-bold">
-                  1
+            {/* Two Column Layout */}
+            <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto mb-12">
+              {/* Left Column - Story */}
+              <div className="bg-[var(--color-trust-bg)] border-2 border-[var(--color-trust)]/30 rounded-xl p-6 md:p-8">
+                {/* Badge */}
+             <h3 className="text-xl font-bold mb-4 text-[var(--color-text-primary)] text-center">First-time dog owners, just like you</h3>
+
+                {/* Content with floating image */}
+                <div className="relative">
+                  <img
+                    alt="Dog Owner"
+                    src="/home/personal-image.webp"
+                    className="float-left mr-4 mb-3 rounded-full object-cover shadow-lg"
+                    style={{ width: '95px', height: '95px' }}
+                  />
+
+                  <div className="space-y-3 text-sm text-[var(--color-text-primary)] leading-relaxed">
+                    <p>
+                      When we got our first dog, we spent hours comparing food. Every bag claimed to be "premium" or "natural," but it was hard to know what that actually meant.
+                    </p>
+                    <p>
+                      We're not veterinarians — we're engineers. So instead of guessing, we built a system that does the hard work for us.
+                    </p>
+                    <p className="font-semibold">
+                      Our AI reads every ingredient label, checks each ingredient against nutritional data, and scores dog food based on what really matters for our dogs' health.
+                    </p>
+                    <p className="text-xs italic text-[var(--color-text-secondary)] pt-2 border-t border-[var(--color-trust)]/20 clear-left">
+                      Every food is analyzed the same way we wish we'd had when we started.
+                    </p>
+                     <StatsSection />
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-4 text-[var(--color-text-primary)]">Answer a few questions</h3>
-                <p className="text-base leading-relaxed text-[var(--color-text-secondary)]">
-                  Your dog's age, size, sensitivities and preferences.
-                </p>
               </div>
 
-              <div className="rounded-lg border p-8 text-center bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 bg-[var(--color-trust-bg)] text-[var(--color-trust)] text-2xl font-bold">
-                  2
-                </div>
-                <h3 className="text-xl font-bold mb-4 text-[var(--color-text-primary)]">We analyse ingredient quality</h3>
-                <p className="text-base leading-relaxed text-[var(--color-text-secondary)]">
-                  We check meat content, fillers, additives and nutritional balance.
+              {/* Right Column - How AI Rates */}
+              <div className="bg-[var(--color-background-card)] border-2 border-[var(--color-border)] rounded-xl p-6 md:p-8">
+                <h3 className="text-xl font-bold mb-2 text-[var(--color-text-primary)] text-center">
+                  How our system rates every product
+                </h3>
+                <p className="text-sm text-[var(--color-text-secondary)] text-center mb-6">
+                  100 points split across three key areas
                 </p>
-              </div>
 
-              <div className="rounded-lg border p-8 text-center bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 bg-[var(--color-trust-bg)] text-[var(--color-trust)] text-2xl font-bold">
-                  3
+                <div className="space-y-4">
+                  {/* Ingredients */}
+                  <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-[var(--color-border)]">
+                    <div className="flex-shrink-0 text-3xl">🥩</div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <h6 className="font-bold text-sm text-[var(--color-text-primary)]">Ingredients</h6>
+                        <span className="text-xs font-bold text-[var(--color-trust)]">Max 45 pts</span>
+                      </div>
+                      <p className="text-xs text-[var(--color-text-secondary)]">
+                        Real meat, named sources, no fillers
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Nutrition */}
+                  <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-[var(--color-border)]">
+                    <div className="flex-shrink-0 text-3xl">📊</div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <h6 className="font-bold text-sm text-[var(--color-text-primary)]">Nutrition</h6>
+                        <span className="text-xs font-bold text-[var(--color-trust)]">Max 33 pts</span>
+                      </div>
+                      <p className="text-xs text-[var(--color-text-secondary)]">
+                        Protein, fat, nutrients vs standards
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Value */}
+                  <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-[var(--color-border)]">
+                    <div className="flex-shrink-0 text-3xl">💰</div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <h6 className="font-bold text-sm text-[var(--color-text-primary)]">Value</h6>
+                        <span className="text-xs font-bold text-[var(--color-trust)]">Max 22 pts</span>
+                      </div>
+                      <p className="text-xs text-[var(--color-text-secondary)]">
+                        Fair pricing for quality
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-4 text-[var(--color-text-primary)]">You get safe first choices</h3>
-                <p className="text-base leading-relaxed text-[var(--color-text-secondary)]">
-                  Clear recommendations with prices and explanations.
-                </p>
+                <h6 className="font-bold text-base mt-4 mb-4 text-[var(--color-text-primary)] text-center">What our system checks automatically:</h6>
+              <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-4"><div className="flex gap-2 items-start"><div className="flex-shrink-0 w-5 h-5 rounded-full bg-[var(--color-trust)] flex items-center justify-center text-white text-xs font-bold mt-0.5">✓</div><div><p className="text-xs font-semibold text-[var(--color-text-primary)]">30+ ingredient categories</p></div></div><div className="flex gap-2 items-start"><div className="flex-shrink-0 w-5 h-5 rounded-full bg-[var(--color-trust)] flex items-center justify-center text-white text-xs font-bold mt-0.5">✓</div><div><p className="text-xs font-semibold text-[var(--color-text-primary)]">Named vs generic sources</p></div></div><div className="flex gap-2 items-start"><div className="flex-shrink-0 w-5 h-5 rounded-full bg-[var(--color-trust)] flex items-center justify-center text-white text-xs font-bold mt-0.5">✓</div><div><p className="text-xs font-semibold text-[var(--color-text-primary)]">Red flag ingredients</p></div></div><div className="flex gap-2 items-start"><div className="flex-shrink-0 w-5 h-5 rounded-full bg-[var(--color-trust)] flex items-center justify-center text-white text-xs font-bold mt-0.5">✓</div><div><p className="text-xs font-semibold text-[var(--color-text-primary)]">AAFCO standards</p></div></div></div>
               </div>
             </div>
-          </Container>
-        </section>
 
-        {/* How We Rate Dog Food Section */}
-        <section className="py-20 bg-[var(--color-background-neutral)]">
-          <Container>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-normal mb-4 text-[var(--color-text-primary)]">
-                How we rate dog food
-              </h2>
-              <p className="text-lg max-w-2xl mx-auto text-[var(--color-text-secondary)]">
-                Our transparent scoring system analyzes every aspect of dog food quality
-              </p>
-            </div>
 
-            <div className="grid md:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="w-20 h-20 rounded-lg flex items-center justify-center text-2xl font-normal mx-auto mb-6 bg-[var(--color-trust-bg)] text-[var(--color-text-primary)] shadow-[var(--shadow-small)]">
-                  1
-                </div>
-                <h3 className="text-lg font-bold mb-3 text-[var(--color-text-primary)]">Ingredient analysis</h3>
-                <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                  We examine every ingredient for quality, sourcing, and nutritional value using scientific standards.
-                </p>
-              </div>
 
-              <div className="text-center">
-                <div className="w-20 h-20 rounded-lg flex items-center justify-center text-2xl font-normal mx-auto mb-6 bg-[var(--color-trust-bg)] text-[var(--color-text-primary)] shadow-[var(--shadow-small)]">
-                  2
-                </div>
-                <h3 className="text-lg font-bold mb-3 text-[var(--color-text-primary)]">Nutritional balance</h3>
-                <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                  Complete nutritional profiles are evaluated against AAFCO standards for all life stages.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-20 h-20 rounded-lg flex items-center justify-center text-2xl font-normal mx-auto mb-6 bg-[var(--color-trust-bg)] text-[var(--color-text-primary)] shadow-[var(--shadow-small)]">
-                  3
-                </div>
-                <h3 className="text-lg font-bold mb-3 text-[var(--color-text-primary)]">Value assessment</h3>
-                <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                  Price per kg is compared against quality scores to determine the best value for money.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-20 h-20 rounded-lg flex items-center justify-center text-2xl font-normal mx-auto mb-6 bg-[var(--color-trust-bg)] text-[var(--color-text-primary)] shadow-[var(--shadow-small)]">
-                  4
-                </div>
-                <h3 className="text-lg font-bold mb-3 text-[var(--color-text-primary)]">Final score</h3>
-                <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                  All factors are weighted and combined into a transparent 100-point scoring system.
-                </p>
-              </div>
-            </div>
-
-            <div className="text-center mt-12">
+            {/* Bottom CTA */}
+            <div className="text-center">
               <Link
-                href="/methodology"
+                href="/how-we-rate-dog-food"
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-[30px] font-bold text-base hover:opacity-90 transition-all bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-medium)]"
               >
-                Learn more about our methodology
-                <span>→</span>
+                See the full breakdown
+
               </Link>
+
             </div>
           </Container>
         </section>
 
-        {/* Best Foods Section */}
-        <BestFoodsSection />
+
 
 
 
@@ -191,7 +211,7 @@ export default function HomePage() {
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-[30px] font-bold text-base hover:opacity-90 transition-all bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-medium)]"
                 >
                   Start browsing
-                  <span>→</span>
+
                 </Link>
                 <Link
                   href="/compare"
@@ -206,6 +226,9 @@ export default function HomePage() {
       </main>
 
       <Footer />
+
+      {/* Quiz Modal */}
+      <Quiz isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
     </div>
   );
 }

@@ -75,7 +75,7 @@ export default function ComparePage() {
       />
 
       <main className="flex-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Instructions */}
           <div className="rounded-lg p-6 mb-8 border bg-[var(--color-background-card)] border-[var(--color-border)]">
             <h2 className="text-lg font-semibold mb-2 text-[var(--color-text-primary)]">How to compare products</h2>

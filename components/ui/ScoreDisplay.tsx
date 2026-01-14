@@ -16,7 +16,7 @@ export function ScoreDisplay({
   showGrade = true
 }: ScoreDisplayProps) {
   const scoreInfo = getScoreColor(score);
-  const grade = getScoreGrade(score);
+  const gradeData = getScoreGrade(score);
 
   const sizeClasses = {
     sm: 'w-12 h-12 text-lg',
@@ -41,7 +41,7 @@ export function ScoreDisplay({
         <div className="flex flex-col items-center gap-1">
           {showGrade && (
             <span className={`${textSizeClasses[size]} font-bold ${scoreInfo.color}`}>
-              {grade}
+              {gradeData.grade} {gradeData.emoji}
             </span>
           )}
           {showLabel && (
@@ -64,7 +64,8 @@ interface ScoreBadgeProps {
 }
 
 export function ScoreBadge({ score, grade: providedGrade, size = 'md', sticky = false }: ScoreBadgeProps) {
-  const grade = providedGrade || getScoreGrade(score);
+  const gradeData = providedGrade || getScoreGrade(score);
+  const displayGrade = typeof gradeData === 'string' ? gradeData : `${gradeData.grade} ${gradeData.emoji}`;
 
   // Color scale based on score
   const getColorClasses = (score: number) => {
@@ -95,7 +96,7 @@ export function ScoreBadge({ score, grade: providedGrade, size = 'md', sticky = 
       <span className={scoreSizeClasses[size]}>{Math.round(score)}</span>
       <div className="flex flex-col items-start">
         <span className="text-xs opacity-90">Overall score</span>
-        <span className="text-sm">{grade}</span>
+        <span className="text-sm">{displayGrade}</span>
       </div>
     </div>
   );

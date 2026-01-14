@@ -1,7 +1,10 @@
+'use client';
+
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { PageHero } from '@/components/layout/PageHero';
 import { PageSEO } from '@/components/seo';
+import { BrandSearchBar } from '@/components/ui/BrandSearchBar';
 import { useBrands } from '@/lib/queries/brands';
 import { BrandCard } from '@/components/ui/BrandCard';
 import { Loading } from '@/components/ui/Loading';
@@ -40,10 +43,12 @@ export default function BrandsPage() {
           { label: 'Home', href: '/' },
           { label: 'Brands', href: '/brands' },
         ]}
-      />
+      >
+        <BrandSearchBar />
+      </PageHero>
 
       <main className="flex-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Sort Controls */}
           <div className="rounded-lg border p-4 mb-6 bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)]">
             <div className="flex items-center justify-between">

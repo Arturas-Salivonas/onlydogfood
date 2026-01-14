@@ -17,6 +17,7 @@ export interface SearchSuggestion {
     slug: string;
     overall_score?: number;
     image_url?: string;
+    price_per_kg_gbp?: number | null;
   };
 }
 
@@ -27,6 +28,7 @@ interface SearchResult {
     slug: string;
     overall_score?: number;
     image_url?: string;
+    price_per_kg_gbp?: number | null;
     brand?: {
       id: string;
       name: string;
@@ -118,6 +120,7 @@ export function useSearchSuggestions(searchTerm: string, enabled: boolean = true
             slug: product.slug,
             overall_score: product.overall_score,
             image_url: product.image_url,
+            price_per_kg_gbp: product.price_per_kg_gbp,
           },
         });
       });

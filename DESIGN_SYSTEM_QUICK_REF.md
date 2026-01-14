@@ -1,5 +1,18 @@
 # Design System Quick Reference - Tailwind CSS
 
+## Font System
+
+**Libre Baskerville (serif)** - Used for:
+- All headings (h1, h2, h3, h4, h5, h6)
+- All links and URLs
+- All buttons and CTAs
+- Navigation menu items
+- Footer text
+
+**Source Sans 3 (sans-serif)** - Used for:
+- All body text and paragraphs
+- General content text
+
 ## Using Tailwind with Custom CSS Variables
 
 All design tokens are configured in Tailwind's @theme directive in globals.css. Access CSS variables using Tailwind's arbitrary value syntax like bg-[var(--color-trust)] and text-[var(--color-text-primary)].

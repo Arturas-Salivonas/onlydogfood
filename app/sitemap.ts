@@ -61,10 +61,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
       },
       {
-        url: `${baseUrl}/methodology`,
+        url: `${baseUrl}/how-we-rate-dog-food`,
         lastModified: new Date(),
         changeFrequency: 'monthly',
-        priority: 0.5,
+        priority: 0.7,
       },
       ...productUrls,
       ...brandUrls,

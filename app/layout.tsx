@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Analytics } from '@vercel/analytics/react';
+import { Lexend } from 'next/font/google';
 import "./globals.css";
 import { Providers } from "./providers";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { OrganizationStructuredData, WebSiteStructuredData } from "@/components/seo";
+
+const lexend = Lexend({
+  subsets: ['latin'],
+  weight: ['300', '400', '600', '700'],
+  variable: '--font-lexend',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -35,7 +43,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={lexend.variable}>
       <body className="antialiased">
         <Providers>
           <Suspense fallback={<LoadingSpinner />}>

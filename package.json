@@ -17,7 +17,8 @@
     "seed:admin": "tsx scripts/seed-admin-user.ts",
     "recalculate-scores": "tsx scripts/recalculate-scores.ts",
     "update-stats": "tsx scripts/update-stats-cache.ts",
-    "test:algorithm": "tsx scripts/test-new-algorithm.ts"
+    "test:algorithm": "tsx scripts/test-new-algorithm.ts",
+    "extract-ingredients": "tsx scripts/extract-ingredients.ts"
   },
   "dependencies": {
     "@apollo/client": "^4.0.10",

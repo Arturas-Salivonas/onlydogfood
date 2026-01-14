@@ -14,12 +14,13 @@ interface PageHeroProps {
     label: string;
     value: string | number;
   }>;
+  children?: React.ReactNode;
 }
 
-export function PageHero({ title, description, breadcrumbs, stats }: PageHeroProps) {
+export function PageHero({ title, description, breadcrumbs, stats, children }: PageHeroProps) {
   return (
-    <div className="relative pt-16 bg-[var(--color-trust-bg)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="bg-helper relative pt-36 bg-[var(--color-trust-bg)]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-2 relative z-20">
         {/* Breadcrumbs */}
         {breadcrumbs && breadcrumbs.length > 0 && (
           <div className="flex items-center justify-center gap-2 text-sm mb-6 flex-wrap">
@@ -55,6 +56,11 @@ export function PageHero({ title, description, breadcrumbs, stats }: PageHeroPro
             <p className="text-lg max-w-3xl mx-auto leading-relaxed text-[var(--color-text-secondary)]">
               {description}
             </p>
+          )}
+          {children && (
+            <div className="max-w-2xl mx-auto mt-6">
+              {children}
+            </div>
           )}
         </div>
 

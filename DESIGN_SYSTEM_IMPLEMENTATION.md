@@ -14,10 +14,13 @@ This document outlines the new OnlyDogFood design system implementation complete
 ## Core Changes Implemented
 
 ### 1. Typography
-- **Font Family**: Switched from Geist Sans/Mono to **Inter**
-  - Light (300), Regular (400), Bold (700), Italic
+- **Font Families**:
+  - **Libre Baskerville** (serif) - For all headings (h1-h6), links, buttons, navigation, and footer
+    - Regular (400), Bold (700), Italic
+  - **Source Sans 3** (sans-serif) - For all body text and paragraphs
+    - Light (300), Regular (400), Semi-Bold (600), Bold (700), Italic
   - Google Fonts CDN integration in globals.css
-  - Fallback: Source Sans 3, system-ui, -apple-system, BlinkMacSystemFont
+  - Fallback: system-ui, -apple-system, BlinkMacSystemFont
 
 - **Type Hierarchy**:
   - H1: 36px (2.25rem) / 44px line-height / weight 400 / Calm, sentence case

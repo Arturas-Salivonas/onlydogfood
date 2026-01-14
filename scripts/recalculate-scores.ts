@@ -1,8 +1,14 @@
 #!/usr/bin/env node
 
 /**
- * Recalculate Scores Script
- * Recalculates scores and price_per_kg_gbp for all existing products
+ * Recalculate Scores Script - Algorithm v2.2
+ * Recalculates scores with new v2.2 features:
+ * - Dry matter normalization (fair comparison across food types)
+ * - Energy-based pricing (price per 1000kcal)
+ * - Position-weighted ingredients (fixes "pixie dust")
+ * - Split ingredient detection (gaming prevention)
+ * - Tiered red flag system (nuanced caps)
+ * - All v2.1 features preserved
  *
  * Usage: npm run recalculate-scores
  */
@@ -11,7 +17,7 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 import { getServiceSupabase } from '../lib/supabase';
-import { calculateOverallScore } from '../scoring/calculator';
+import { calculateOverallScore, getScoreGrade } from '../scoring/calculator';
 
 /**
  * Parse ingredients string into an array of individual ingredients
@@ -82,7 +88,7 @@ async function recalculateScores() {
   for (let page = 0; page < totalPages; page++) {
     const { data: pageProducts, error: pageError } = await supabase
       .from('products')
-      .select('*')
+      .select('*, brand:brands(*)')
       .range(page * pageSize, (page + 1) * pageSize - 1);
 
     if (pageError) {
@@ -105,6 +111,71 @@ async function recalculateScores() {
 
   console.log(`\n📊 Total fetched: ${products.length} products. Starting recalculation...\n`);
 
+  // Calculate category average prices for anchored pricing (v2.1)
+  console.log('📊 Calculating category average prices...');
+  const categoryAverages: Record<string, number> = {};
+  const categoryAveragesPer1000kcal: Record<string, number> = {};
+
+  // Group by food_category (or category if food_category not set)
+  const categorizedProducts = products.reduce((acc: any, p: any) => {
+    const cat = p.food_category || p.category || 'unknown';
+    if (!acc[cat]) acc[cat] = [];
+    if (p.price_per_kg_gbp) {
+      acc[cat].push({
+        pricePerKg: p.price_per_kg_gbp,
+        protein: p.protein_percent,
+        fat: p.fat_percent,
+        carbs: p.carbs_percent,
+        calories: p.calories_per_100g,
+      });
+    }
+    return acc;
+  }, {});
+
+  // Calculate averages (per kg and per 1000kcal)
+  for (const [cat, productData] of Object.entries(categorizedProducts)) {
+    const dataArray = productData as any[];
+    if (dataArray.length > 0) {
+      // Average price per kg
+      const avgPerKg = dataArray.reduce((sum, p) => sum + p.pricePerKg, 0) / dataArray.length;
+      categoryAverages[cat] = avgPerKg;
+
+      // Average price per 1000kcal (v2.2)
+      // Compute for products with calorie data or macros
+      const productsWithEnergy = dataArray.filter(p => {
+        return p.calories || (p.protein !== null && p.fat !== null && p.carbs !== null);
+      });
+
+      if (productsWithEnergy.length > 0) {
+        const prices1000kcal = productsWithEnergy.map(p => {
+          let kcalPerKg = p.calories ? p.calories * 10 : null;
+
+          // If no calories, estimate using Modified Atwater
+          if (!kcalPerKg && p.protein !== null && p.fat !== null) {
+            const carbs = p.carbs || 0;
+            const kcalPer100g = 3.5 * p.protein + 8.5 * p.fat + 3.5 * carbs;
+            kcalPerKg = kcalPer100g * 10;
+          }
+
+          if (kcalPerKg && kcalPerKg > 0) {
+            return p.pricePerKg / (kcalPerKg / 1000);
+          }
+          return null;
+        }).filter((p): p is number => p !== null);
+
+        if (prices1000kcal.length > 0) {
+          const avgPer1000kcal = prices1000kcal.reduce((sum, p) => sum + p, 0) / prices1000kcal.length;
+          categoryAveragesPer1000kcal[cat] = avgPer1000kcal;
+          console.log(`  ${cat}: £${avgPerKg.toFixed(2)}/kg | £${avgPer1000kcal.toFixed(2)}/1000kcal (${dataArray.length} products)`);
+        } else {
+          console.log(`  ${cat}: £${avgPerKg.toFixed(2)}/kg (${dataArray.length} products)`);
+        }
+      } else {
+        console.log(`  ${cat}: £${avgPerKg.toFixed(2)}/kg (${dataArray.length} products)`);
+      }
+    }
+  }
+
   let updated = 0;
   let errors = 0;
 
@@ -116,22 +187,31 @@ async function recalculateScores() {
         pricePerKg = product.price_gbp / (product.package_size_g / 1000);
       }
 
+      // Determine food category for pricing anchor
+      const foodCategory = product.food_category || product.category || 'unknown';
+      const categoryAvgPrice = categoryAverages[foodCategory] || 0;
+      const categoryAvgPricePer1000kcal = categoryAveragesPer1000kcal[foodCategory];
+
       // Prepare product data for scoring
       const productForScoring = {
         ...product,
         price_per_kg_gbp: pricePerKg,
       };
 
-      // Calculate scores
-      const scores = calculateOverallScore(productForScoring as any);
+      // Calculate scores with v2.2 algorithm (includes v2.1 features)
+      const scores = calculateOverallScore(
+        productForScoring as any,
+        categoryAvgPrice,
+        categoryAvgPricePer1000kcal
+      );
 
-      // Fix brand_id if missing - extract brand name from product name
+      // Get star rating with red flag consideration
+      const gradeInfo = getScoreGrade(scores.overallScore, scores.redFlagOverride);
+
+      // Fix brand_id if missing
       let brandId = product.brand_id;
       if (!brandId && product.name) {
-        // Extract potential brand name from product name (first word)
         const firstWord = product.name.split(/[\s-]+/)[0];
-
-        // Try to find brand
         const { data: brands } = await supabase
           .from('brands')
           .select('id, name, slug')
@@ -147,22 +227,15 @@ async function recalculateScores() {
       let subCategoryValue = product.sub_category;
       if (typeof subCategoryValue === 'string' && subCategoryValue) {
         try {
-          // Try parsing it - if it's double-encoded, fix it
           const parsed = JSON.parse(subCategoryValue);
-
-          // If it's an array of strings that look like JSON, it's double-encoded
           if (Array.isArray(parsed) && parsed.length > 0 && typeof parsed[0] === 'string' && parsed[0].startsWith('[')) {
-            // It's double-encoded, parse the first element to get the real array
             const realArray = JSON.parse(parsed[0]);
             subCategoryValue = JSON.stringify(realArray);
-            console.log(`🔧 Fixed double-encoded sub_category for "${product.name}"`);
           } else if (typeof parsed === 'string' && parsed.includes(',')) {
-            // It's a comma-separated string that was parsed, convert to array
             const categories = parsed.split(',').map((s: string) => s.trim());
             subCategoryValue = JSON.stringify(categories);
           }
         } catch {
-          // If parsing fails and it contains commas, treat as comma-separated
           if (subCategoryValue.includes(',') && !subCategoryValue.startsWith('[')) {
             const categories = subCategoryValue.split(',').map((s: string) => s.trim());
             subCategoryValue = JSON.stringify(categories);
@@ -174,10 +247,9 @@ async function recalculateScores() {
       let ingredientsList = product.ingredients_list;
       if (!ingredientsList && product.ingredients_raw) {
         ingredientsList = parseIngredients(product.ingredients_raw);
-        console.log(`🥘 Parsed ${ingredientsList.length} ingredients for "${product.name}"`);
       }
 
-      // Update the product
+      // Update the product with v2.1 fields
       const { error: updateError } = await supabase
         .from('products')
         .update({
@@ -188,6 +260,11 @@ async function recalculateScores() {
           nutrition_score: scores.nutritionScore,
           value_score: scores.valueScore,
           scoring_breakdown: scores.breakdown,
+          confidence_score: scores.confidenceScore,
+          confidence_level: scores.confidenceLevel,
+          star_rating: gradeInfo.stars,
+          red_flag_override: scores.redFlagOverride || null,
+          food_category: foodCategory,
           sub_category: subCategoryValue,
           ingredients_list: ingredientsList,
         })
@@ -197,7 +274,12 @@ async function recalculateScores() {
         console.error(`❌ Error updating product ${product.name}:`, updateError);
         errors++;
       } else {
-        console.log(`✅ Updated: ${product.name} (Score: ${scores.overallScore.toFixed(1)})`);
+        const flagWarning = scores.redFlagOverride ? ` ⚠️ ${scores.redFlagOverride.reason}` : '';
+        const versionInfo = scores.algorithmVersion ? ` [v${scores.algorithmVersion}]` : '';
+        console.log(
+          `✅ ${product.name}${versionInfo}\n   Score: ${scores.overallScore.toFixed(1)}/100 | ` +
+          `${gradeInfo.emoji} | Confidence: ${scores.confidenceLevel} (${scores.confidenceScore})${flagWarning}`
+        );
         updated++;
       }
     } catch (error) {
@@ -208,6 +290,8 @@ async function recalculateScores() {
 
   console.log('\n✅ Recalculation completed!');
   console.log(`📊 Results: ${updated} updated, ${errors} errors`);
+  console.log(`🔬 Algorithm: v2.2.0 (Jan 2026)`);
+  console.log(`🎯 Features: DM normalization, Energy pricing, Position weighting, Split detection, Tiered red flags`);
 }
 
 // Run if called directly

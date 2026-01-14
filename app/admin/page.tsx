@@ -79,7 +79,7 @@ export default async function AdminDashboard() {
               href="/admin/products"
               className="text-sm text-primary hover:text-primary-hover font-medium"
             >
-              View all →
+              View all
             </Link>
           </div>
           <div className="divide-y divide-gray-200">
@@ -116,7 +116,7 @@ export default async function AdminDashboard() {
               href="/admin/brands"
               className="text-sm text-primary hover:text-primary-hover font-medium"
             >
-              View all →
+              View all
             </Link>
           </div>
           <div className="divide-y divide-gray-200">
@@ -220,6 +220,3 @@ function StatCard({ title, value, icon: Icon, color, href }: StatCardProps) {
     </div>
   );
 }
-
-
-

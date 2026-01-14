@@ -1,7 +1,7 @@
 'use client';
 
 import { Product } from '@/types';
-import { BarChart3, Info } from 'lucide-react';
+import { BarChart3, Info, Shield, AlertTriangle } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -42,6 +42,20 @@ export function ScoreBreakdownChart({ product }: ScoreBreakdownChartProps) {
     },
   ];
 
+  // Calculate star rating
+  const overallScore = product.overall_score || 0;
+  let stars = 2;
+  if (overallScore >= 80) stars = 5;
+  else if (overallScore >= 60) stars = 4;
+  else if (overallScore >= 40) stars = 3;
+
+  // Apply red flag override if present
+  if (product.star_rating) {
+    stars = product.star_rating;
+  }
+
+  const starEmoji = '⭐'.repeat(stars);
+
   return (
     <div className="bg-white rounded-xl border-2 border-gray-200 overflow-hidden">
       {/* Header */}
@@ -50,7 +64,7 @@ export function ScoreBreakdownChart({ product }: ScoreBreakdownChartProps) {
           <BarChart3 className="w-5 h-5" />
           Score Breakdown
         </h3>
-        <p className="text-sm text-black mt-1">How we calculated the overall score</p>
+        <p className="text-sm text-black mt-1">Algorithm v2.1 · January 2026</p>
       </div>
 
       {/* Overall Score */}
@@ -61,6 +75,7 @@ export function ScoreBreakdownChart({ product }: ScoreBreakdownChartProps) {
             <p className="text-4xl font-bold text-gray-900">
               {Math.round(product.overall_score || 0)}<span className="text-xl text-gray-600">/100</span>
             </p>
+            <p className="text-2xl mt-2">{starEmoji}</p>
           </div>
           <div className="text-right">
             <Link
@@ -72,6 +87,17 @@ export function ScoreBreakdownChart({ product }: ScoreBreakdownChartProps) {
             </Link>
           </div>
         </div>
+
+        {/* Red Flag Warning */}
+        {product.red_flag_override && (
+          <div className="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-lg flex items-start gap-2">
+            <AlertTriangle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-semibold text-orange-900">Rating Capped</p>
+              <p className="text-xs text-orange-700 mt-1">{product.red_flag_override.reason}</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Score Bars */}
@@ -96,7 +122,7 @@ export function ScoreBreakdownChart({ product }: ScoreBreakdownChartProps) {
                   )}
                 </div>
                 <span className="text-lg font-bold text-gray-900">
-                  {item.score}<span className="text-sm text-gray-600">/{item.maxScore}</span>
+                  {item.score.toFixed(1)}<span className="text-sm text-gray-600">/{item.maxScore}</span>
                 </span>
               </div>
 
@@ -123,6 +149,35 @@ export function ScoreBreakdownChart({ product }: ScoreBreakdownChartProps) {
         })}
       </div>
 
+      {/* Confidence Score Badge */}
+      {product.confidence_score !== null && product.confidence_score !== undefined && (
+        <div className="px-6 pb-6">
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-start justify-between">
+              <div className="flex items-start gap-3">
+                <Shield className="w-5 h-5 text-blue-600 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-blue-900">Data Confidence Score</p>
+                  <p className="text-xs text-blue-700 mt-1">
+                    How reliable is the product data we have
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-bold text-blue-900">{product.confidence_score}</p>
+                <p className="text-xs text-blue-700">{product.confidence_level || 'N/A'}</p>
+              </div>
+            </div>
+            <div className="mt-3 h-2 bg-blue-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-blue-600 rounded-full transition-all"
+                style={{ width: `${product.confidence_score}%` }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Detailed Breakdown */}
       {product.scoring_breakdown?.details && (
         <div className="px-6 pb-6">
@@ -142,20 +197,24 @@ export function ScoreBreakdownChart({ product }: ScoreBreakdownChartProps) {
             </summary>
 
             <div className="mt-4 p-4 bg-gray-50 rounded-lg space-y-3">
-              {Object.entries(product.scoring_breakdown.details).map(([key, value]) => (
-                <div key={key} className="flex justify-between items-center text-sm">
-                  <span className="text-gray-700 capitalize">
-                    {key.replace(/([A-Z])/g, ' $1').trim()}
-                  </span>
-                  <span className="font-semibold text-gray-900">+{value} pts</span>
-                </div>
-              ))}
+              {Object.entries(product.scoring_breakdown.details).map(([key, value]) => {
+                const numValue = typeof value === 'number' ? value : 0;
+                const isNegative = numValue < 0;
+                return (
+                  <div key={key} className="flex justify-between items-center text-sm">
+                    <span className={`capitalize ${isNegative ? 'text-red-700' : 'text-gray-700'}`}>
+                      {key.replace(/([A-Z])/g, ' $1').trim()}
+                    </span>
+                    <span className={`font-semibold ${isNegative ? 'text-red-900' : 'text-gray-900'}`}>
+                      {isNegative ? '' : '+'}{numValue.toFixed(1)} pts
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </details>
         </div>
       )}
-
-
     </div>
   );
 }

@@ -42,6 +42,7 @@ export interface Product {
   // Product details
   category: 'dry' | 'wet' | 'snack';
   sub_category: string | null;
+  food_category?: 'dry' | 'wet' | 'cold-pressed' | 'fresh' | 'raw' | 'snack'; // v2.1: For category-anchored pricing
   image_url: string | null;
   package_size_g: number | null;
   price_gbp: number | null;
@@ -61,12 +62,19 @@ export interface Product {
   ingredients_list: string[] | null;
   meat_content_percent: number | null;
 
-  // Scoring
+  // Scoring (v2.1)
   overall_score: number | null;
   ingredient_score: number | null;
   nutrition_score: number | null;
   value_score: number | null;
   scoring_breakdown: ScoringBreakdown | null;
+  confidence_score?: number | null;          // v2.1: Transparency score (0-100)
+  confidence_level?: 'High' | 'Medium' | 'Low' | null; // v2.1: Confidence level
+  star_rating?: number | null;               // v2.1: Final star rating (1-5)
+  red_flag_override?: {                      // v2.1: Red flag override info
+    maxRating: number;
+    reason: string;
+  } | null;
 
   // Metadata
   scrape_source_url: string | null;
@@ -94,15 +102,148 @@ export interface ScoringBreakdown {
   nutritionScore: number;
   valueScore: number;
   details?: {
-    highMeatContent?: number;
-    noFillers?: number;
+    // Ingredient scoring details
+    effectiveMeatContent?: number;
+    freshMeatPenalty?: number;
+    lowValueFillers?: number;
+    highRiskFillerPenalty?: number;
+    lowValueCarbPenalty?: number;
     noArtificialAdditives?: number;
+    artificialAdditivePenalty?: number;
+    redFlagAdditive?: number;
     namedMeatSources?: number;
-    highProtein?: number;
+    processingQuality?: number;
+    processingPenalty?: number;
+
+    // Nutrition scoring details
+    proteinQuality?: number;
+    proteinIntegrityPenalty?: number;
     moderateFat?: number;
     lowCarbs?: number;
+    fiberScore?: number;
+    micronutrientScore?: number;
+
+    // Value scoring details
     valueRating?: number;
+    ingredientValueScore?: number;
+
+    // Legacy fields (for backward compatibility)
+    highMeatContent?: number;
+    noFillers?: number;
+    highProtein?: number;
   };
+}
+
+// v2.2: Dry Matter metrics
+export interface DryMatterMetrics {
+  dmPercent: number;
+  proteinDM: number | null;
+  fatDM: number | null;
+  fiberDM: number | null;
+  carbsDM: number | null;
+  usedDefaults: {
+    moisture: boolean;
+    ash: boolean;
+  };
+}
+
+// v2.2: Nutrition metadata
+export interface NutritionMeta {
+  carbsProvided: boolean;
+  carbsEstimated: boolean;
+  ashProvided: boolean;
+  ashEstimated: boolean;
+  moistureProvided: boolean;
+  moistureEstimated: boolean;
+  usedDryMatterBasis: boolean;
+}
+
+// v2.2: Energy metrics
+export interface EnergyMetrics {
+  kcalPer100g: number | null;
+  kcalPerKg: number | null;
+  pricePer1000kcal: number | null;
+  usedAtwaterEstimate: boolean;
+}
+
+// v2.2: Split ingredient group detection
+export interface SplitIngredientGroup {
+  groupName: string;
+  countInTop10: number;
+  tokensMatched: string[];
+}
+
+export interface SplitIngredientPenalty {
+  penalty: number;
+  groupsTriggered: SplitIngredientGroup[];
+}
+
+// v2.2: Position-weighted ingredient match
+export interface IngredientMatch {
+  ingredient: string;
+  category: string;
+  basePoints: number;
+  positionIndex: number;
+  positionMultiplier: number;
+  weightedPoints: number;
+  description: string;
+}
+
+// v2.2: Ingredient analysis result
+export interface IngredientAnalysis {
+  bonusRaw: number;
+  bonusWeighted: number;
+  bonusApplied: number;
+  matches: IngredientMatch[];
+  breakdown: Record<string, number>;
+  breakdownWeighted: Record<string, number>;
+  splitPenalty: SplitIngredientPenalty;
+}
+
+// v2.2: Red flag detection
+export interface RedFlagDetection {
+  ruleId: string;
+  tier: number;
+  capStars: number;
+  reason: string;
+  matchedTokens: string[];
+}
+
+// v2.2: Confidence breakdown
+export interface ConfidenceBreakdown {
+  ingredientDisclosure: number;
+  nutritionCompleteness: number;
+  energyTransparency: number;
+  carbsTransparency: number;
+  sourcingTransparency: number;
+  manufacturingInfo: number;
+  details: string[];
+}
+
+// v2.2: Complete scoring result
+export interface ScoringResult {
+  algorithmVersion: string;
+  overallScore: number;
+  ingredientScore: number;
+  nutritionScore: number;
+  valueScore: number;
+  breakdown: ScoringBreakdown;
+
+  // v2.2: New metrics
+  dmMetrics?: DryMatterMetrics;
+  nutritionMeta?: NutritionMeta;
+  energyMetrics?: EnergyMetrics;
+  ingredientAnalysis?: IngredientAnalysis;
+
+  // Confidence & red flags
+  confidenceScore: number;
+  confidenceLevel: 'High' | 'Medium' | 'Low';
+  confidenceBreakdown?: ConfidenceBreakdown;
+  redFlagsDetected?: RedFlagDetection[];
+  finalStarCapApplied?: number | null;
+
+  // Warnings
+  warnings?: string[];
 }
 
 export interface Article {

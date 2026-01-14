@@ -58,6 +58,21 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Redirects from old URLs to new unified page
+  async redirects() {
+    return [
+      {
+        source: '/how-we-score',
+        destination: '/how-we-rate-dog-food',
+        permanent: true,
+      },
+      {
+        source: '/methodology',
+        destination: '/how-we-rate-dog-food',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default bundleAnalyzer(nextConfig);

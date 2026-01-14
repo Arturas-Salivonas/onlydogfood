@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+/* Fonts loaded via next/font in layout.tsx */
 @import "tailwindcss";
 
 /**
@@ -9,8 +9,8 @@
 
 @theme {
   /* Font Family */
-  --font-sans: Inter, 'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-
+  --font-sans: var(--font-lexend), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: var(--font-lexend), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   /* Color System - Backgrounds */
   --color-background-neutral: #F6F7F5;
   --color-background-card: #FFFFFF;
@@ -24,6 +24,7 @@
   /* Color System - Trust / Positive (Safe First Choice) */
   --color-trust: #457e61;
   --color-trust-bg: #E8F0EC;
+ --color-trust-light: #d0ecdd;
 
   /* Color System - Caution (Not Safe First Choice) */
   --color-caution: #D6B98C;
@@ -51,38 +52,66 @@ body {
 }
 
 /* Typography Hierarchy - Calm, sentence case */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
 h1 {
-  font-size: 2.8rem; /* 48px */
-  line-height: 3.55rem; /* 52px */
-  font-weight: 400;
+font-size: 3rem;
+    font-weight: 700;
+    line-height: 3.5rem;
   color: var(--color-text-primary);
 }
 
 h2 {
-  font-size: 1.875rem; /* 30px */
-  line-height: 2.375rem; /* 38px */
-  font-weight: 400;
+  font-size: 2rem; /* 30px */
+  line-height: 2rem; /* 38px */
+  font-weight: 700;
   color: var(--color-text-primary);
 }
 
 h3 {
-  font-size: 1.5rem; /* 24px */
-  line-height: 2rem; /* 32px */
-  font-weight: 400;
+  font-size: 1.25rem; /* 24px */
+  line-height: 1.8rem; /* 32px */
+  font-weight: 700;
   color: var(--color-text-primary);
 }
 
 h4 {
-  font-size: 1.25rem; /* 20px */
-  line-height: 1.75rem; /* 28px */
+  font-size: 1.15rem; /* 20px */
+  line-height: 1.55rem; /* 28px */
   font-weight: 700; /* Bold for emphasis */
   color: var(--color-text-primary);
+}
+
+h5 {
+  font-size: 1.0625rem; /* 17px */
+  line-height: 1.5rem; /* 24px */
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+h6 {
+  font-size: 0.9375rem; /* 15px */
+  line-height: 1.375rem; /* 22px */
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+a, button, nav, footer {
+  font-family: var(--font-serif);
 }
 
 p {
   font-size: 1.0625rem; /* 17px */
   line-height: 1.75rem; /* 28px */
   color: var(--color-text-primary);
+}
+p.text-xs{
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.125rem; /* 18px */
 }
 .font-bold {
   font-weight: 700;
@@ -100,11 +129,25 @@ p {
 .italic {
   font-style: italic;
 }
+.center-text {
+  text-align: center;
+}
+.pb-0 {
+  padding-bottom: 0px;
+}
+.capitalize-text {
+  text-transform: capitalize;
+}
+.object-scale-down {
+  object-fit: scale-down;
+}
 small, .text-small {
   font-size: 0.875rem; /* 14px */
   line-height: 1.25rem; /* 20px */
 }
-
+.menu-item{
+  font-size:1.1rem;
+}
 .text-meta {
   font-size: 0.8125rem; /* 13px */
   line-height: 1.125rem; /* 18px */
@@ -114,6 +157,54 @@ small, .text-small {
   top:4px;
   position: relative;
 }
+.best-first-box{
+  position: relative;
+}
+.best-first-box::after{
+    content: "";
+
+        background-image: url("/components/bestfoodssection/corgi.png");
+    background-repeat: no-repeat;
+background-size: contain;
+    width: 75px;
+    height: 100%;
+    position: absolute;
+    top: -6.15rem;
+    left: 3rem;
+  }
+.bg-helper{
+position: relative;
+}
+.bg-helper::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+        opacity: 0.4;
+        background-image: url("/home/background-layer.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+  .arrow-button{
+    position: relative;
+  }
+  .arrow-button::after{
+    content: "";
+    background-image: url("/home/arrow.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: -80%;
+    transform: rotateZ(45deg);
+  }
 /* Focus styles for accessibility (WCAG AA) */
 *:focus-visible {
   outline: 2px solid var(--color-trust);

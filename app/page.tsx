@@ -1,11 +1,6 @@
 import { HomePage } from '@/components/pages';
 
-// Enable SSG for home page
-export const dynamic = 'force-static';
-
+// HomePage is now a client component with Quiz functionality
 export default function Home() {
   return <HomePage />;
 }
-
-
-

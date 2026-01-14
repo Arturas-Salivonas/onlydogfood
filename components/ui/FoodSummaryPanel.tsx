@@ -7,7 +7,7 @@ import { ScoreBadge } from './ScoreDisplay';
 import { PricePerFeed } from './PricePerFeed';
 import { IngredientFlagsGroup } from './IngredientFlag';
 import { ExternalLink, ShoppingCart } from 'lucide-react';
-import { FILLERS, ARTIFICIAL_ADDITIVES } from '@/scoring/config';
+import { HIGH_RISK_FILLERS, LOW_VALUE_CARBS, RED_FLAG_ADDITIVES, ARTIFICIAL_COLORS, ARTIFICIAL_PRESERVATIVES } from '@/scoring/config';
 
 interface FoodSummaryPanelProps {
   product: Product;
@@ -216,8 +216,9 @@ function generateIngredientFlags(product: Product) {
     });
   }
 
-  // No fillers
-  const hasFillers = FILLERS.some(filler => ingredientsText.includes(filler));
+  // No fillers (high-risk + low-value carbs)
+  const allFillers = [...HIGH_RISK_FILLERS, ...LOW_VALUE_CARBS];
+  const hasFillers = allFillers.some(filler => ingredientsText.includes(filler));
   if (hasFillers) {
     flags.push({
       type: 'warning',
@@ -232,8 +233,9 @@ function generateIngredientFlags(product: Product) {
     });
   }
 
-  // Artificial additives
-  const hasAdditives = ARTIFICIAL_ADDITIVES.some(additive => ingredientsText.includes(additive));
+  // Check for artificial additives (red flags + colors + preservatives)
+  const allAdditives = [...RED_FLAG_ADDITIVES, ...ARTIFICIAL_COLORS, ...ARTIFICIAL_PRESERVATIVES];
+  const hasAdditives = allAdditives.some(additive => ingredientsText.includes(additive));
   if (hasAdditives) {
     flags.push({
       type: 'negative',

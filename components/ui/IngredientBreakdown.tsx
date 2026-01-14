@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Product } from '@/types';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { IngredientFlag, IngredientFlagType } from './IngredientFlag';
-import { FILLERS, ARTIFICIAL_ADDITIVES, NAMED_MEAT_SOURCES, UNNAMED_MEAT_SOURCES } from '@/scoring/config';
+import { HIGH_RISK_FILLERS, LOW_VALUE_CARBS, RED_FLAG_ADDITIVES, ARTIFICIAL_COLORS, ARTIFICIAL_PRESERVATIVES, NAMED_MEAT_SOURCES, UNNAMED_MEAT_SOURCES } from '@/scoring/config';
 
 interface IngredientBreakdownProps {
   product: Product;
@@ -257,10 +257,11 @@ function analyzeIngredients(product: Product): {
   const namedMeatCount = NAMED_MEAT_SOURCES.filter(meat => ingredientsText.includes(meat)).length;
   const unnamedMeatCount = UNNAMED_MEAT_SOURCES.filter(meat => ingredientsText.includes(meat)).length;
 
-  // Check for fillers
-  const hasFillers = FILLERS.some(filler => ingredientsText.includes(filler));
+  // Check for fillers (high-risk + low-value carbs)
+  const allFillers = [...HIGH_RISK_FILLERS, ...LOW_VALUE_CARBS];
+  const hasFillers = allFillers.some(filler => ingredientsText.includes(filler));
   if (hasFillers) {
-    const foundFillers = FILLERS.filter(filler => ingredientsText.includes(filler));
+    const foundFillers = allFillers.filter(filler => ingredientsText.includes(filler));
     flags.push({
       type: 'warning',
       label: 'Contains Fillers',
@@ -274,8 +275,9 @@ function analyzeIngredients(product: Product): {
     });
   }
 
-  // Check for artificial additives
-  const hasAdditives = ARTIFICIAL_ADDITIVES.some(additive => ingredientsText.includes(additive));
+  // Check for artificial additives (red flags + colors + preservatives)
+  const allAdditives = [...RED_FLAG_ADDITIVES, ...ARTIFICIAL_COLORS, ...ARTIFICIAL_PRESERVATIVES];
+  const hasAdditives = allAdditives.some(additive => ingredientsText.includes(additive));
   if (hasAdditives) {
     flags.push({
       type: 'negative',
@@ -307,6 +309,3 @@ function analyzeIngredients(product: Product): {
 
   return { namedMeatCount, unnamedMeatCount, flags };
 }
-
-
-

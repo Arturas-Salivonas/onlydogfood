@@ -24,27 +24,27 @@ export function Header() {
             <nav className="hidden md:flex items-center gap-1">
               <Link
                 href="/dog-food"
-                className="px-4 py-2 text-sm font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
+                className="px-4 py-2   text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
               >
                 Browse food
               </Link>
               <Link
                 href="/brands"
-                className="px-4 py-2 text-sm font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
+                className="px-4 py-2   text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
               >
                 Brands
               </Link>
               <Link
                 href="/compare"
-                className="px-4 py-2 text-sm font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
+                className="px-4 py-2 text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
               >
                 Compare
               </Link>
               <Link
-                href="/how-we-score"
-                className="px-4 py-2 text-sm font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
+                href="/how-we-rate-dog-food"
+                className="px-4 py-2  text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
               >
-                How we score
+                How we rate
               </Link>
             </nav>
 
@@ -94,11 +94,11 @@ export function Header() {
                   Compare
                 </Link>
                 <Link
-                  href="/how-we-score"
+                  href="/how-we-rate-dog-food"
                   onClick={() => setIsMenuOpen(false)}
                   className="px-4 py-3 text-base font-bold text-[var(--color-text-primary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all"
                 >
-                  How we score
+                  How we rate
                 </Link>
                 <div className="border-t border-[var(--color-border)] my-2"></div>
                 <Link

@@ -21,7 +21,7 @@ interface BrandOverviewProps {
 
 export function BrandOverview({ brand, bestProduct, priceRange }: BrandOverviewProps) {
   const averageScore = brand.overall_score || 0;
-  const scoreGrade = getScoreGrade(averageScore);
+  const scoreGradeData = getScoreGrade(averageScore);
   const scoreInfo = getScoreColor(averageScore);
 
   // Map getScoreColor properties to class names
@@ -97,7 +97,7 @@ export function BrandOverview({ brand, bestProduct, priceRange }: BrandOverviewP
             </span>
           </div>
           <p className="text-sm font-semibold text-gray-900">Average Score</p>
-          <p className={`text-xs font-bold ${colorClasses.text}`}>{scoreGrade}</p>
+          <p className={`text-xs font-bold ${colorClasses.text}`}>{scoreGradeData.grade} {scoreGradeData.emoji}</p>
         </div>
 
         {/* Total Products */}
@@ -157,6 +157,3 @@ export function BrandOverview({ brand, bestProduct, priceRange }: BrandOverviewP
     </div>
   );
 }
-
-
-

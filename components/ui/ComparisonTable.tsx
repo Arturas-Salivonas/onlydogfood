@@ -78,7 +78,7 @@ export function ComparisonTable({ selectedProducts }: ComparisonTableProps) {
               {selectedProducts.map((product) => {
                 const score = product.overall_score || 0;
                 const isWinner = score === bestScores.overall && score > 0;
-                const grade = getScoreGrade(score);
+                const gradeData = getScoreGrade(score);
                 const colorClasses = getScoreColor(score);
 
                 return (
@@ -89,7 +89,7 @@ export function ComparisonTable({ selectedProducts }: ComparisonTableProps) {
                           {Math.round(score)}
                         </span>
                       </div>
-                      <span className={`text-xs font-bold ${colorClasses.color}`}>{grade}</span>
+                      <span className={`text-xs font-bold ${colorClasses.color}`}>{gradeData.grade} {gradeData.emoji}</span>
                       {isWinner && <Trophy className="w-5 h-5 text-yellow-500" />}
                     </div>
                   </td>
@@ -265,6 +265,3 @@ function ComparisonRow({ label, children, highlight = false, sticky = false }: C
     </tr>
   );
 }
-
-
-

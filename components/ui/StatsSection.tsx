@@ -8,7 +8,7 @@ export function StatsSection() {
   if (isLoading || !stats) {
     // Loading state with skeleton
     return (
-      <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-8">
+      <div className="flex flex-col sm:flex-row gap-2 justify-center items-center">
         {[1, 2, 3].map((i) => (
           <div key={i} className="flex items-center gap-3 bg-[var(--color-background-card)] px-6 py-3 rounded-lg border border-[var(--color-border)] shadow-[var(--shadow-small)] animate-pulse">
             <div className="text-center">
@@ -22,7 +22,7 @@ export function StatsSection() {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-8">
+    <div className="flex flex-col sm:flex-row gap-2 justify-center items-center">
       <div className="flex items-center gap-3 bg-[var(--color-background-card)] px-6 py-3 rounded-lg border border-[var(--color-border)] shadow-[var(--shadow-small)]">
         <div className="text-center">
           <div className="text-xl font-bold text-[var(--color-text-primary)]">{stats.totalProducts}+</div>

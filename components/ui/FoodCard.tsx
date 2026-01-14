@@ -4,11 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Product } from '@/types';
 import { useComparison } from '@/components/context/UIContext';
-import { Check, Plus } from 'lucide-react';
-import { ScoreBadge } from '@/components/ui/ScoreDisplay';
-import { PricePerFeedCompact } from '@/components/ui/PricePerFeed';
-import { IngredientFlagsGroup, IngredientFlagType } from '@/components/ui/IngredientFlag';
-import { FILLERS, ARTIFICIAL_ADDITIVES } from '@/scoring/config';
+import { Check, Plus, CheckCircle } from 'lucide-react';
+import { formatPrice } from '@/lib/utils/format';
 
 interface FoodCardProps {
   product: Product;
@@ -32,11 +29,9 @@ export function FoodCard({
     }
   };
 
-  // Generate ingredient flags
-  const ingredientFlags = generateIngredientFlags(product);
-
-  // Get key tags
-  const keyTags = getKeyTags(product);
+  // Check if product is a safe first choice
+  const isSafeFirstChoice = (product.overall_score || 0) >= 60 &&
+    !product.red_flag_override;
 
   return (
     <div className="block h-full relative group">
@@ -75,162 +70,104 @@ export function FoodCard({
         </button>
       )}
 
-      <Link href={`/dog-food/${product.slug}`} className="block h-full">
-        <div className="group h-full rounded-lg overflow-hidden transition-all flex flex-col bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)] hover:shadow-[var(--shadow-medium)] border">
+      <div className="h-full rounded-lg overflow-hidden transition-all flex flex-col bg-[var(--color-background-card)] border-[var(--color-border)] shadow-[var(--shadow-small)] hover:shadow-[var(--shadow-medium)] border">
 
-          {/* Product Image */}
-          <div className="relative aspect-square overflow-hidden bg-[var(--color-background-neutral)]">
-            {product.image_url ? (
-              <Image
-                src={product.image_url}
-                alt={product.name}
-                fill
-                className="object-contain p-4 group- transition-transform duration-500"
-              />
-            ) : (
-              <div className="flex items-center justify-center h-full text-[var(--color-text-secondary)]">
-                <span className="text-7xl">🐕</span>
-              </div>
-            )}
-          </div>
+        {/* Product Image */}
+        <div className="relative aspect-square overflow-hidden bg-[var(--color-background-neutral)]">
+          {product.image_url ? (
+            <Image
+              src={product.image_url}
+              alt={product.name}
+              fill
+              className="object-contain p-4 transition-transform duration-500"
+            />
+          ) : (
+            <div className="flex items-center justify-center h-full text-[var(--color-text-secondary)]">
+              <span className="text-7xl">🐕</span>
+            </div>
+          )}
+        </div>
 
-          {/* Product Info */}
-          <div className="flex flex-col flex-1 p-4">
-            {/* Brand */}
+        {/* Product Info */}
+        <div className="flex flex-col flex-1 p-4">
+          {/* Brand - Clickable */}
+          {product.brand?.slug ? (
+            <Link
+              href={`/brands/${product.brand.slug}`}
+              className="text-xs font-semibold mb-1 tracking-wide text-[var(--color-trust)] hover:underline w-fit"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {product.brand?.name}
+            </Link>
+          ) : (
             <p className="text-xs font-semibold mb-1 tracking-wide text-[var(--color-trust)]">
               {product.brand?.name}
             </p>
+          )}
 
             {/* Product Name */}
             <h3 className="font-bold mb-3 line-clamp-2 text-base leading-tight text-[var(--color-text-primary)]">
               {product.name}
             </h3>
 
-            {/* Score Badge */}
-            <div className="mb-3">
-              <ScoreBadge
-                score={product.overall_score || 0}
-                size="sm"
-              />
-            </div>
-
-            {/* Key Tags */}
-            {keyTags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                {keyTags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border bg-[var(--color-trust-bg)] text-[var(--color-text-primary)] border-[var(--color-trust)]"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            {/* Ingredient Flags */}
-            {ingredientFlags.length > 0 && (
+            {/* Safe First Choice Badge - Only show if applicable */}
+            {isSafeFirstChoice && (
               <div className="mb-3">
-                <IngredientFlagsGroup flags={ingredientFlags} maxDisplay={3} />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-small)]">
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  Safe First Choice
+                </div>
               </div>
             )}
 
             {/* Spacer */}
             <div className="flex-1" />
 
-            {/* Price Per Feed */}
-            {product.price_per_kg_gbp && (
-              <div className="mt-auto pt-3 border-t border-[var(--color-border)]">
-                <PricePerFeedCompact pricePerKg={product.price_per_kg_gbp} />
+            {/* Price and Score Row */}
+            <div className="flex items-end justify-between gap-3 pt-3 border-t border-[var(--color-border)]">
+              {/* Price Per Meal */}
+              {product.price_per_kg_gbp && (
+                <div className="flex flex-col">
+                  <span className="text-xs text-[var(--color-text-secondary)] mb-0.5">Price</span>
+                  <span className="text-lg font-bold text-[var(--color-text-primary)]">
+                    {formatPrice(product.price_per_kg_gbp * 0.15)} <span className="text-xs font-normal text-[var(--color-text-secondary)]">/ per meal</span>
+                  </span>
+                </div>
+              )}
+
+              {/* ODF Score Badge */}
+              <div className="flex flex-col items-end">
+                <span className="text-xs text-[var(--color-text-secondary)] mb-0.5">ODF Score</span>
+                <div className="relative">
+                  <div
+                    className="px-3 py-1.5 rounded-lg font-bold text-lg shadow-[var(--shadow-medium)] transition-all"
+                    style={{
+                      background: (product.overall_score || 0) >= 80
+                        ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
+                        : (product.overall_score || 0) >= 60
+                        ? 'linear-gradient(135deg, #8FAF9F 0%, #7A9A8A 100%)'
+                        : (product.overall_score || 0) >= 40
+                        ? 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)'
+                        : 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
+                      color: 'white',
+                      border: 'none',
+                    }}
+                  >
+                    {product.overall_score || 0}
+                  </div>
+                </div>
               </div>
-            )}
+            </div>
           </div>
+
+          {/* View Details Link */}
+          <Link
+            href={`/dog-food/${product.slug}`}
+            className="block px-4 py-3 text-center text-sm font-bold text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] transition-colors border-t border-[var(--color-border)]"
+          >
+            See ingredients & details
+          </Link>
         </div>
-      </Link>
     </div>
   );
-}
-
-// Helper function to generate ingredient flags
-function generateIngredientFlags(product: Product): Array<{
-  type: IngredientFlagType;
-  label: string;
-  reason?: string;
-}> {
-  const flags: Array<{ type: IngredientFlagType; label: string; reason?: string }> = [];
-  const ingredientsText = product.ingredients_raw?.toLowerCase() || '';
-
-  // Check for high meat content
-  if (product.meat_content_percent && product.meat_content_percent >= 50) {
-    flags.push({
-      type: 'positive',
-      label: `${product.meat_content_percent}% Meat`,
-      reason: 'High meat content provides quality protein for your dog',
-    });
-  }
-
-  // Check for fillers
-  const hasFillers = FILLERS.some(filler => ingredientsText.includes(filler));
-  if (hasFillers) {
-    flags.push({
-      type: 'warning',
-      label: 'Contains Fillers',
-      reason: 'Contains corn, wheat, or soy which are low-quality fillers',
-    });
-  } else if (ingredientsText.length > 0) {
-    flags.push({
-      type: 'positive',
-      label: 'No Fillers',
-      reason: 'Free from corn, wheat, and soy',
-    });
-  }
-
-  // Check for artificial additives
-  const hasAdditives = ARTIFICIAL_ADDITIVES.some(additive => ingredientsText.includes(additive));
-  if (hasAdditives) {
-    flags.push({
-      type: 'negative',
-      label: 'Artificial Additives',
-      reason: 'Contains artificial colors, flavors, or preservatives',
-    });
-  }
-
-  return flags;
-}
-
-// Helper function to get key tags
-function getKeyTags(product: Product): string[] {
-  const tags: string[] = [];
-
-  // Add tags from product tags
-  if (product.tags) {
-    product.tags.forEach(tag => {
-      if (['Grain-Free', 'Puppy', 'Senior', 'High Protein', 'Natural'].includes(tag.name)) {
-        tags.push(tag.name);
-      }
-    });
-  }
-
-  // Add life stage from sub_category
-  if (product.sub_category) {
-    try {
-      const subCategories = typeof product.sub_category === 'string'
-        ? JSON.parse(product.sub_category)
-        : product.sub_category;
-
-      if (Array.isArray(subCategories)) {
-        subCategories.forEach(cat => {
-          if (['Puppy', 'Adult', 'Senior', 'All Life Stages'].includes(cat)) {
-            if (!tags.includes(cat)) {
-              tags.push(cat);
-            }
-          }
-        });
-      }
-    } catch {
-      // Ignore parsing errors
-    }
-  }
-
-  return tags.slice(0, 3);
 }

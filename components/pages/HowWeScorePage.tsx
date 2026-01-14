@@ -25,7 +25,7 @@ export default function HowWeScorePage() {
       />
 
       <main className="flex-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Algorithm Version Badge */}
           <div className="rounded-lg p-6 mb-8 bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-medium)]">
             <div className="flex items-center justify-between flex-wrap gap-4">
