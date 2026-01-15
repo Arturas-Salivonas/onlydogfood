@@ -2,7 +2,8 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { PageHero } from '@/components/layout/PageHero';
 import { PageSEO, FAQStructuredData, commonDogFoodFAQs, ArticleStructuredData } from '@/components/seo';
-import { CheckCircle, TrendingUp, Award, AlertTriangle } from 'lucide-react';
+import { TrendingUp, Award, AlertTriangle } from 'lucide-react';
+import { ProtectionIcon } from '@/components/ui/ProtectionIcon';
 
 export default function HowWeScorePage() {
   return (
@@ -59,39 +60,39 @@ export default function HowWeScorePage() {
                 </h3>
                 <ul className="space-y-2 text-[var(--color-text-secondary)]">
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <ProtectionIcon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                     <span>Meat content soft cap at 65% (prevents over-reliance on single protein sources)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <ProtectionIcon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                     <span>Partial filler penalties (-2 points each instead of all-or-nothing)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <ProtectionIcon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                     <span>Controversial additive detection (carrageenan, guar gum, etc.)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <ProtectionIcon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                     <span>Processing quality penalties (meal, digest, by-products)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <ProtectionIcon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                     <span>Adjusted protein ranges (22-32% optimal, pro-rated 18-22%)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <ProtectionIcon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                     <span>Fat penalty for obesity risk (&gt;20%)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <ProtectionIcon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                     <span>Vegetable carbohydrate bonus (+1 point)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <ProtectionIcon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                     <span>Fiber & micronutrient scoring (3 points total)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <ProtectionIcon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                     <span>Split value scoring: price per feed + ingredient-adjusted value</span>
                   </li>
                 </ul>

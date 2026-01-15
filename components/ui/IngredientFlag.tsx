@@ -1,6 +1,7 @@
 'use client';
 
-import { AlertCircle, CheckCircle, AlertTriangle } from 'lucide-react';
+import { AlertCircle, AlertTriangle } from 'lucide-react';
+import { ProtectionIcon } from './ProtectionIcon';
 import { useState } from 'react';
 
 export type IngredientFlagType = 'positive' | 'warning' | 'negative';
@@ -25,7 +26,7 @@ export function IngredientFlag({
       bgColor: 'bg-success',
       textColor: 'text-green-800',
       borderColor: 'border-green-300',
-      icon: CheckCircle,
+      icon: ProtectionIcon,
       iconColor: 'text-green-600',
     },
     warning: {
@@ -96,6 +97,3 @@ export function IngredientFlagsGroup({ flags, maxDisplay }: IngredientFlagsGroup
     </div>
   );
 }
-
-
-

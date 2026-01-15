@@ -1,7 +1,8 @@
 'use client';
 
 import { Product } from '@/types';
-import { AlertTriangle, CheckCircle, Info } from 'lucide-react';
+import { AlertTriangle, Info } from 'lucide-react';
+import { ProtectionIcon } from './ProtectionIcon';
 import { OPTIMAL_RANGES } from '@/scoring/config';
 
 interface NutritionTableProps {
@@ -164,7 +165,7 @@ function getNutrientStatus(
 
 function StatusIcon({ status }: { status: 'low' | 'normal' | 'high' }) {
   if (status === 'normal') {
-    return <CheckCircle className="w-4 h-4 text-green-600" />;
+    return <ProtectionIcon className="w-4 h-4" />;
   }
   return <AlertTriangle className="w-4 h-4 text-amber-600" />;
 }
@@ -190,6 +191,3 @@ function getStatusTextColor(status: 'low' | 'normal' | 'high'): string {
       return 'text-green-600';
   }
 }
-
-
-

@@ -14,6 +14,7 @@ import { getScoreColor } from '@/scoring/calculator';
 import { formatPrice } from '@/lib/utils/format';
 import { ChevronRight, Filter, Check } from 'lucide-react';
 import { PageSEO, CollectionPageStructuredData, createCollectionItem } from '@/components/seo';
+import { ProtectionIcon } from '@/components/ui/ProtectionIcon';
 import { CustomSelect } from '@/components/ui/CustomSelect';
 import { LazyLoad } from '@/components/performance/LazyLoad';
 import { ProductGridSkeleton } from '@/components/ui/Skeletons';
@@ -486,7 +487,7 @@ export default function DogFoodPage() {
                                 {/* Safe First Choice Badge */}
                                 {isSafeFirstChoice && (
                                   <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-small)] mb-2">
-                                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-3.5 h-3.5" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+                                   <ProtectionIcon className="w-3.5 h-3.5" />
                                     Safe First Choice
                                   </div>
                                 )}

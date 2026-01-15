@@ -132,6 +132,9 @@ p.text-xs{
 .center-text {
   text-align: center;
 }
+.justify-center{
+  justify-content: center;
+}
 .pb-0 {
   padding-bottom: 0px;
 }
@@ -145,6 +148,32 @@ small, .text-small {
   font-size: 0.875rem; /* 14px */
   line-height: 1.25rem; /* 20px */
 }
+.product-image-helper{
+  position: relative;
+}
+.product-image-helper::after{
+    content: "";
+    background-image: url("/bones.png");
+    background-repeat: no-repeat;
+background-size: contain;
+    width: 100px;
+    height: 100%;
+    position: absolute;
+    top: 1rem;
+    left: -3rem;
+    z-index: 2;
+  }
+  .product-image-helper::before{
+    content: "";
+    background-image: url("/food-bowl.webp");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 60px;
+    height: 100%;
+    position: absolute;
+    bottom: -85%;
+    right: 0rem;
+  }
 .menu-item{
   font-size:1.1rem;
 }
@@ -234,4 +263,13 @@ position: relative;
 
 ::-webkit-scrollbar-thumb:hover {
   background: #7a9a8a;
+}
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

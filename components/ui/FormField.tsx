@@ -1,7 +1,8 @@
 import { forwardRef, ReactNode, useState } from 'react';
 import { cn } from '@/lib/utils/cn';
-import { AlertCircle, CheckCircle, Eye, EyeOff } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { Button } from './Button';
+import { ProtectionIcon } from './ProtectionIcon';
 
 export interface FormFieldProps {
   label?: string;
@@ -60,7 +61,7 @@ export function FormField({
 
       {hasSuccess && (
         <div className="flex items-center space-x-1 text-sm text-success">
-          <CheckCircle className="h-4 w-4 flex-shrink-0" />
+          <ProtectionIcon className="h-4 w-4 flex-shrink-0" />
           <span>{success}</span>
         </div>
       )}

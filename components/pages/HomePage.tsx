@@ -131,7 +131,9 @@ export default function HomePage() {
                 <div className="space-y-4">
                   {/* Ingredients */}
                   <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-[var(--color-border)]">
-                    <div className="flex-shrink-0 text-3xl">🥩</div>
+                    <div className="flex-shrink-0 text-3xl">
+                      <img className="float-left mr-4 mb-3 object-cover " src="/home/pet-food.png" alt="Ingredients Icon" width={50} />
+                    </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
                         <h6 className="font-bold text-sm text-[var(--color-text-primary)]">Ingredients</h6>
@@ -145,7 +147,7 @@ export default function HomePage() {
 
                   {/* Nutrition */}
                   <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-[var(--color-border)]">
-                    <div className="flex-shrink-0 text-3xl">📊</div>
+                    <div className="flex-shrink-0 text-3xl">  <img className="float-left mr-4 mb-3 object-cover " src="/home/dog.png" alt="Ingredients Icon" width={50} /></div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
                         <h6 className="font-bold text-sm text-[var(--color-text-primary)]">Nutrition</h6>
@@ -159,7 +161,7 @@ export default function HomePage() {
 
                   {/* Value */}
                   <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-[var(--color-border)]">
-                    <div className="flex-shrink-0 text-3xl">💰</div>
+                  <div className="flex-shrink-0 text-3xl">  <img className="float-left mr-4 mb-3 object-cover " src="/home/money.png" alt="Ingredients Icon" width={50} /></div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
                         <h6 className="font-bold text-sm text-[var(--color-text-primary)]">Value</h6>

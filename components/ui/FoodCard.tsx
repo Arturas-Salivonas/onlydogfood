@@ -4,7 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Product } from '@/types';
 import { useComparison } from '@/components/context/UIContext';
-import { Check, Plus, CheckCircle } from 'lucide-react';
+import { Check, Plus } from 'lucide-react';
+import { ProtectionIcon } from './ProtectionIcon';
 import { formatPrice } from '@/lib/utils/format';
 
 interface FoodCardProps {
@@ -114,7 +115,7 @@ export function FoodCard({
             {isSafeFirstChoice && (
               <div className="mb-3">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-small)]">
-                  <CheckCircle className="w-3.5 h-3.5" />
+                  <ProtectionIcon className="w-3.5 h-3.5" />
                   Safe First Choice
                 </div>
               </div>

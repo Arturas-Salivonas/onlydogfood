@@ -4,7 +4,8 @@ import { Container } from '@/components/layout/Container';
 import { FoodCard } from '@/components/ui/FoodCard';
 import { Product } from '@/types';
 import { formatPrice } from '@/lib/utils/format';
-import { ExternalLink, AlertTriangle, CheckCircle, ChevronDown, ChevronRight, Shield, Info } from 'lucide-react';
+import { ExternalLink, AlertTriangle, ChevronDown, ChevronRight, Shield, Info } from 'lucide-react';
+import { ProtectionIcon } from '@/components/ui/ProtectionIcon';
 import { getScoreGrade } from '@/scoring/calculator';
 import { HIGH_RISK_FILLERS, LOW_VALUE_CARBS, RED_FLAG_ADDITIVES, ARTIFICIAL_COLORS, ARTIFICIAL_PRESERVATIVES } from '@/scoring/config';
 
@@ -390,69 +391,157 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
     { label: product.name, href: '#' }
   ];
 
+  // Extract first ingredient
+  const firstIngredient = product.ingredients_raw
+    ? product.ingredients_raw.split(/[,;]/)[0].trim()
+    : 'Unknown';
+
+  // Check for grain content (simple check)
+  const hasHighGrainContent = product.ingredients_raw
+    ? /rice|wheat|corn|grain|barley|oat/i.test(product.ingredients_raw.split(/[,;]/).slice(0, 3).join(' '))
+    : false;
+
   return (
     <>
-      {/* Breadcrumbs */}
-      <div className="bg-gray-50 border-b border-gray-200">
-        <Container className="py-3">
-          <div className="flex items-center gap-2 text-sm">
-            {breadcrumbs.map((crumb, index) => (
-              <div key={index} className="flex items-center gap-2">
-                {index > 0 && <ChevronRight size={14} className="text-gray-400" />}
-                {index === breadcrumbs.length - 1 ? (
-                  <span className="text-gray-900 font-medium">{crumb.label}</span>
-                ) : (
-                  <Link href={crumb.href} className="text-gray-600 hover:text-gray-900 transition-colors">
-                    {crumb.label}
+      {/* Hero Section with Integrated Breadcrumbs */}
+      <section className="bg-[var(--color-trust-bg)] bg-helper border-b border-[var(--color-border)] pt-28 md:pt-24">
+        <Container className="py-6 md:py-8">
+          {/* Breadcrumbs */}
+          <nav className="mb-4" aria-label="Breadcrumb">
+            <div className="flex items-center gap-2 text-sm">
+              {breadcrumbs.map((crumb, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  {index > 0 && <ChevronRight size={14} className="text-[var(--color-text-secondary)]" />}
+                  {index === breadcrumbs.length - 1 ? (
+                    <span className="text-[var(--color-text-primary)] font-bold">{crumb.label}</span>
+                  ) : (
+                    <Link href={crumb.href} className="text-[var(--color-text-secondary)] hover:text-[var(--color-trust)] transition-colors">
+                      {crumb.label}
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          </nav>
+
+          {/* Product Title & Badge */}
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+            <div className="flex-1">
+                      {product.brand?.slug ? (
+                  <Link href={`/brands/${product.brand.slug}`} className="hover:text-[var(--color-trust)] transition-colors">
+                    {product.brand.name}
                   </Link>
+                ) : (
+                  <span>{product.brand?.name}</span>
                 )}
+
+              <h1 className="text-4xl md:text-5xl font-normal text-[var(--color-text-primary)] mb-3">{product.name}</h1>
+
+            </div>
+          </div>
+
+                     <div className="bg-[var(--color-background-card)] rounded-lg border-2 border-[var(--color-border)] p-6 shadow-[var(--shadow-small)]">
+
+                <h5 className="text-2xl font-normal text-[var(--color-text-primary)] mb-4">At a glance</h5>
+
+                <div className="grid md:grid-cols-4 gap-4">
+                  {/* First Ingredient */}
+                  <div className="flex items-start gap-3">
+
+                    <div className="flex-1">
+                      <div className="text-sm text-[var(--color-text-secondary)] mb-1">First ingredient</div>
+                      <div className="text-sm  text-[var(--color-text-primary)]\">{firstIngredient}</div>
+                    </div>
+                  </div>
+
+                  {/* Grain Content */}
+                  <div className="flex items-start gap-3">
+
+                    <div className="flex-1">
+                      <div className="text-sm text-[var(--color-text-secondary)] mb-1">Grain content</div>
+                      <div className="text-sm  text-[var(--color-text-primary)]">{hasHighGrainContent ? 'High in grains' : 'Low in grains'}</div>
+                    </div>
+                  </div>
+
+                  {/* Best For */}
+                  <div className="flex items-start gap-3">
+
+                    <div className="flex-1">
+                      <div className="text-sm text-[var(--color-text-secondary)] mb-1">Best for</div>
+                      <div className="text-sm  text-[var(--color-text-primary)]">{product.category === 'wet' ? 'Wet food lovers' : product.category === 'snack' ? 'Treats & snacks' : 'Daily kibble feeding'}</div>
+                    </div>
+                  </div>
+
+                  {/* Processing Type */}
+                  <div className="flex items-start gap-3">
+
+                    <div className="flex-1">
+                      <div className="text-sm text-[var(--color-text-secondary)] mb-1">Processing</div>
+                      <div className="text-sm  text-[var(--color-text-primary)]">{product.category === 'wet' ? 'Wet (canned)' : product.category === 'snack' ? 'Treats/snacks' : 'Dry (kibble)'}</div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
+        </Container>
+      </section>
+
+      {/* Jump To Navigation - Sticky */}
+      <nav className=" top-16 md:top-24 z-40 bg-[var(--color-background-card)] border-b border-[var(--color-border)] shadow-[var(--shadow-small)]">
+        <Container>
+
+          <div className="flex justify-center gap-4 overflow-x-auto py-3 scrollbar-hide">
+            <a href="#score" className="px-4 py-2 text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all whitespace-nowrap">
+              Score
+            </a>
+            <a href="#ingredients" className="px-4 py-2 text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all whitespace-nowrap">
+              Ingredients
+            </a>
+            <a href="#nutrition" className="px-4 py-2 text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all whitespace-nowrap">
+              Nutrition
+            </a>
+            <a href="#analysis" className="px-4 py-2 text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-trust)] hover:bg-[var(--color-trust-bg)] rounded-lg transition-all whitespace-nowrap">
+              Analysis
+            </a>
           </div>
         </Container>
-      </div>
+      </nav>
 
-      <div className="bg-white">
-        <Container className="py-8">
-          {/* Product Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
-
-            {/* Safe First Choice Badge */}
-            <div className="mb-4">
-              {isSafe ? (
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-lg border border-green-300">
-                  <CheckCircle size={20} />
-                  <span className="font-semibold">Safe First Choice</span>
-                </div>
-              ) : (
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 text-orange-800 rounded-lg border border-orange-300">
-                  <AlertTriangle size={20} />
-                  <span className="font-semibold">Not a Safe First Choice</span>
-                </div>
-              )}
-            </div>
-
-            {/* Subtitle */}
-            {/* <p className="text-gray-600">
-              {isSafe
-                ? 'This food meets our standards for first-time owners.'
-                : 'This food does not meet our standards for first-time owners.'}
-            </p> */}
-          </div>
-
+      {/* Main Content */}
+      <div className=" bg-[var(--color-background-neutral)]">
+        <Container className="py-6 md:py-8">
           {/* Main Content Grid */}
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Left Column - Image and Quick Info */}
-            <div className="lg:col-span-1 space-y-6">
+          <div className=" grid lg:grid-cols-3 gap-6 lg:gap-8">
+            {/* Left Column - Sticky Sidebar */}
+            <div className="lg:col-span-1">
+              <div className=" sticky  lg:top-28 space-y-6">
+                             {/* Safe First Choice Badge */}
+                <div className={`mb-4 p-4 rounded-lg border-2 ${isSafe ? 'bg-[var(--color-trust-bg)] border-[var(--color-trust)]' : 'bg-[var(--color-caution-bg)] border-[var(--color-caution)]'}` }>
+                  <div className="flex items-center gap-3">
+
+                    {isSafe ? (
+
+                      <ProtectionIcon className="w-6 h-6" />
+                    ) : (
+                      <AlertTriangle className="w-6 h-6 text-[var(--color-caution)]" />
+                    )}
+                    <div>
+                      <div className="font-bold text-[var(--color-text-primary)] text-lg">
+                        {isSafe ? 'Safe First Choice' : 'Not Recommended'}
+                      </div>
+                      <div className="text-sm text-[var(--color-text-secondary)] mt-0.5">
+                        {isSafe ? 'This food meets our quality standards for daily feeding' : 'Consider higher-rated alternatives for your dog'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               {/* Product Image */}
-              <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 border-gray-200">
+              <div className="product-image-helper relative aspect-square bg-[var(--color-background-neutral)]  ">
                 {product.image_url ? (
                   <Image
                     src={product.image_url}
                     alt={product.name}
                     fill
-                    className="object-contain p-6"
+                    className=" object-contain p-6"
                     priority
                   />
                 ) : (
@@ -467,56 +556,79 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
                 href={product.affiliate_url || 'https://amazon.co.uk'}
                 target="_blank"
                 rel="noopener sponsored"
-                className="flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg py-4 px-6 rounded-lg transition-colors"
+                className="flex items-center justify-center gap-2 w-full bg-[#FF9900] hover:bg-[#F08800] text-[#131921] font-bold text-lg py-4 px-6 rounded-lg transition-all shadow-[var(--shadow-medium)]"
               >
                 Buy on Amazon
                 <ExternalLink size={20} />
               </a>
+              </div>
             </div>
 
             {/* Right Column - Score and Details */}
             <div className="lg:col-span-2 space-y-8">
+              {/* At a Glance Card */}
+
+
               {/* Score Card */}
-              <div className={`rounded-lg p-6 border-2 ${isSafe ? 'bg-green-50 border-green-300' : 'bg-orange-50 border-orange-300'}`}>
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <div className="text-sm font-semibold mb-1 uppercase tracking-wide" style={{ color: isSafe ? '#16a34a' : '#ea580c' }}>
-                      Quality Score
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-5xl font-bold text-gray-900">{Math.round(product.overall_score || 0)}</span>
-                      <span className="text-2xl text-gray-500">/100</span>
-                    </div>
-                    {product.star_rating && (
-                      <div className="mt-2 text-2xl">
-                        {'⭐'.repeat(product.star_rating)}
+              <div id="score" className={`scroll-mt-32 rounded-lg p-6 border-2 ${isSafe ? 'bg-[var(--color-trust-bg)] border-[var(--color-trust)]' : 'bg-[var(--color-caution-bg)] border-[var(--color-caution)]'}`}>
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-4">
+                  {/* Score Circle */}
+                  <div className="flex items-center gap-6">
+                    <div className="relative w-32 h-32 flex-shrink-0">
+                      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        {/* Background circle */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="40"
+                          fill="none"
+                          stroke="var(--color-border)"
+                          strokeWidth="8"
+                        />
+                        {/* Progress arc */}
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="40"
+                          fill="none"
+                          stroke={isSafe ? 'var(--color-trust)' : 'var(--color-caution)'}
+                          strokeWidth="8"
+                          strokeDasharray={`${(product.overall_score || 0) * 2.51} 251`}
+                          strokeLinecap="round"
+                          className="transition-all duration-1000"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-3xl font-bold text-[var(--color-text-primary)]">{Math.round(product.overall_score || 0)}</span>
+                        <span className="text-xs text-[var(--color-text-secondary)]">out of 100</span>
                       </div>
-                    )}
+                    </div>
+
+                    <div>
+                      <div className={`text-sm font-bold mb-1 uppercase tracking-wide ${isSafe ? 'text-[var(--color-trust)]' : 'text-[var(--color-caution)]'}`}>
+                        Quality Score
+                      </div>
+                      {product.star_rating && (
+                        <div className="text-2xl mb-2">
+                          {'⭐'.repeat(product.star_rating)}
+                        </div>
+                      )}
+                      <div className="text-sm text-[var(--color-text-secondary)]">
+                        {scoreData.grade} quality
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Confidence Badge */}
-                  {product.confidence_level && (
-                    <div className="text-right">
-                      <div className="text-xs text-gray-600 mb-1">Confidence</div>
-                      <div className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
-                        product.confidence_level === 'High' ? 'bg-blue-100 text-blue-700' :
-                        product.confidence_level === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-gray-100 text-gray-700'
-                      }`}>
-                        {product.confidence_level}
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* Red Flag Warning */}
                 {product.red_flag_override && (
-                  <div className="mt-4 p-4 bg-white rounded-lg border-2 border-orange-300">
+                  <div className="mt-4 p-4 bg-[var(--color-background-card)] rounded-lg border-2 border-[var(--color-caution)]">
                     <div className="flex items-start gap-3">
-                      <AlertTriangle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                      <AlertTriangle className="w-5 h-5 text-[var(--color-caution)] flex-shrink-0 mt-0.5" />
                       <div>
-                        <div className="font-semibold text-gray-900 mb-1">Rating capped at {product.red_flag_override.maxRating} stars</div>
-                        <div className="text-sm text-gray-700">{product.red_flag_override.reason}</div>
+                        <div className="font-bold text-[var(--color-text-primary)] mb-1">Rating capped at {product.red_flag_override.maxRating} stars</div>
+                        <div className="text-sm text-[var(--color-text-secondary)]">{product.red_flag_override.reason}</div>
                       </div>
                     </div>
                   </div>
@@ -525,30 +637,30 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
                 {/* Score Breakdown */}
                 {scoreBreakdown.length > 0 && (
                   <div className="mt-6">
-                    <details className="group">
-                      <summary className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-gray-900 flex items-center gap-2">
+                    <details className="group" open>
+                      <summary className="cursor-pointer text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-trust)] flex items-center gap-2">
                         <ChevronDown size={16} className="transition-transform group-open:rotate-180" />
                         Complete technical breakdown
                       </summary>
                       <div className="mt-3 space-y-1 pl-6">
                         {scoreBreakdown.map((item, idx) => (
-                          <div key={idx} className={`flex items-center justify-between text-sm ${
-                            item.type === 'section' ? 'mt-3 pt-3 border-t border-gray-200 font-semibold' : ''
+                          <div key={idx} className={`flex items-center gap-3 text-sm ${
+                            item.type === 'section' ? 'mt-3 pt-3 border-t border-[var(--color-border)] font-bold' : ''
                           }`}>
-                            <span className={`${
-                              item.type === 'section' ? 'text-gray-900 font-semibold' :
-                              item.type === 'positive' ? 'text-gray-700' :
-                              item.type === 'negative' ? 'text-gray-700' :
-                              'text-gray-600'
-                            }`}>{item.label}</span>
-                            <span className={`font-semibold ${
-                              item.type === 'section' ? 'text-gray-900' :
-                              item.type === 'positive' ? 'text-green-600' :
-                              item.type === 'negative' ? 'text-red-600' :
-                              'text-gray-600'
+                            <span className={`font-bold min-w-[3rem] ${
+                              item.type === 'section' ? 'text-[var(--color-text-primary)]' :
+                              item.type === 'positive' ? 'text-[var(--color-trust)]' :
+                              item.type === 'negative' ? 'text-[var(--color-caution)]' :
+                              'text-[var(--color-text-secondary)]'
                             }`}>
                               {item.points > 0 && item.type !== 'section' ? '+' : ''}{item.points}
                             </span>
+                            <span className={`flex-1 ${
+                              item.type === 'section' ? 'text-[var(--color-text-primary)] font-bold' :
+                              item.type === 'positive' ? 'text-[var(--color-text-secondary)]' :
+                              item.type === 'negative' ? 'text-[var(--color-text-secondary)]' :
+                              'text-[var(--color-text-secondary)]'
+                            }`}>{item.label}</span>
                           </div>
                         ))}
                       </div>
@@ -559,28 +671,28 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
 
               {/* Top Problems Section - Prominent for poor scoring foods */}
               {scoreAnalysis.topProblems.length > 0 && (
-                <div className="bg-red-50 rounded-lg border-2 border-red-200 p-6">
+                <div className="bg-[var(--color-caution-bg)] rounded-lg border-2 border-[var(--color-caution)] p-6">
                   <div className="flex items-start gap-3 mb-4">
-                    <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <AlertTriangle className="w-5 h-5 text-[var(--color-caution)] flex-shrink-0 mt-0.5" />
                     <div>
-                      <h2 className="text-xl font-bold text-gray-900">Main concerns with this food</h2>
-                      <p className="text-sm text-gray-600 mt-1">These are the biggest issues affecting the quality score</p>
+                      <h2 className="text-xl font-normal text-[var(--color-text-primary)]">Main concerns with this food</h2>
+                      <p className="text-sm text-[var(--color-text-secondary)] mt-1">These are the biggest issues affecting the quality score</p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     {scoreAnalysis.topProblems.map((problem, idx) => (
-                      <div key={idx} className="bg-white rounded-lg p-4 border border-red-200">
+                      <div key={idx} className="bg-[var(--color-background-card)] rounded-lg p-4 border border-[var(--color-caution)]">
                         <div className="flex items-start gap-3">
                           <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                            problem.severity === 'high' ? 'bg-red-600' :
-                            problem.severity === 'medium' ? 'bg-orange-500' :
-                            'bg-yellow-500'
+                            problem.severity === 'high' ? 'bg-[var(--color-caution)]' :
+                            problem.severity === 'medium' ? 'bg-[var(--color-caution)]' :
+                            'bg-[var(--color-trust)]'
                           }`}>
                             {idx + 1}
                           </div>
                           <div className="flex-1">
-                            <div className="font-semibold text-gray-900 mb-1">{problem.title}</div>
-                            <div className="text-sm text-gray-700">{problem.description}</div>
+                            <div className="font-bold text-[var(--color-text-primary)] mb-1">{problem.title}</div>
+                            <div className="text-sm text-[var(--color-text-secondary)]">{problem.description}</div>
                           </div>
                         </div>
                       </div>
@@ -591,25 +703,22 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
 
               {/* Strengths & Weaknesses Section */}
               {(scoreAnalysis.strengths.length > 0 || scoreAnalysis.weaknesses.length > 0) && (
-                <div className="bg-white rounded-lg border-2 border-gray-200 p-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">What affects this score</h2>
+                <div id="analysis" className="scroll-mt-32 bg-[var(--color-background-card)] rounded-lg border-2 border-[var(--color-border)] p-6">
+                  <h3 className="text-xl font-normal text-[var(--color-text-primary)] mb-4">What this food does well</h3>
 
                   {/* Strengths */}
                   {scoreAnalysis.strengths.length > 0 && (
                     <div className="mb-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <CheckCircle className="w-5 h-5 text-green-600" />
-                        <h3 className="font-semibold text-gray-900">What this food does well</h3>
-                      </div>
+
                       <div className="space-y-2">
                         {scoreAnalysis.strengths.map((strength, idx) => (
-                          <div key={idx} className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
-                            <div className="flex-shrink-0 px-2 py-1 bg-green-600 text-white text-xs font-bold rounded">
+                          <div key={idx} className="flex items-start gap-3 p-3 bg-[var(--color-trust-bg)] rounded-lg">
+                            <div className="flex-shrink-0 px-2 py-1 bg-[var(--color-trust)] text-white text-xs font-bold rounded">
                               +{strength.points}
                             </div>
                             <div className="flex-1">
-                              <div className="font-semibold text-gray-900 text-sm">{strength.label}</div>
-                              <div className="text-xs text-gray-600 mt-0.5">{strength.description}</div>
+                              <div className="font-bold text-[var(--color-text-primary)] text-sm">{strength.label}</div>
+                              <div className="text-xs text-[var(--color-text-secondary)] mt-0.5">{strength.description}</div>
                             </div>
                           </div>
                         ))}
@@ -621,18 +730,18 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
                   {scoreAnalysis.weaknesses.length > 0 && (
                     <div>
                       <div className="flex items-center gap-2 mb-3">
-                        <AlertTriangle className="w-5 h-5 text-orange-600" />
-                        <h3 className="font-semibold text-gray-900">What brings the score down</h3>
+                        <AlertTriangle className="w-5 h-5 text-[var(--color-caution)]" />
+                        <h3 className="font-bold text-[var(--color-text-primary)]">What brings the score down</h3>
                       </div>
                       <div className="space-y-2">
                         {scoreAnalysis.weaknesses.map((weakness, idx) => (
-                          <div key={idx} className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
-                            <div className="flex-shrink-0 px-2 py-1 bg-orange-600 text-white text-xs font-bold rounded">
+                          <div key={idx} className="flex items-start gap-3 p-3 bg-[var(--color-caution-bg)] rounded-lg">
+                            <div className="flex-shrink-0 px-2 py-1 bg-[var(--color-caution)] text-white text-xs font-bold rounded">
                               {weakness.points}
                             </div>
                             <div className="flex-1">
-                              <div className="font-semibold text-gray-900 text-sm">{weakness.label}</div>
-                              <div className="text-xs text-gray-600 mt-0.5">{weakness.description}</div>
+                              <div className="font-bold text-[var(--color-text-primary)] text-sm">{weakness.label}</div>
+                              <div className="text-xs text-[var(--color-text-secondary)] mt-0.5">{weakness.description}</div>
                             </div>
                           </div>
                         ))}
@@ -644,25 +753,25 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
 
               {/* Not Safe First Choice - Why Not Section */}
               {!isSafe && (
-                <div className="bg-white rounded-lg border-2 border-gray-200 p-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">Why this isn't a good first choice</h2>
+                <div className="bg-[var(--color-background-card)] rounded-lg border-2 border-[var(--color-border)] p-6">
+                  <h2 className="text-xl font-normal text-[var(--color-text-primary)] mb-4">Why this isn't a good first choice</h2>
                   <ul className="space-y-2">
                     {product.overall_score && product.overall_score < 50 && (
                       <li className="flex items-start gap-2">
-                        <span className="text-gray-400 mt-1">•</span>
-                        <span className="text-gray-700">Quality score falls below our minimum standard for first-time owners</span>
+                        <span className="text-[var(--color-text-secondary)] mt-1">•</span>
+                        <span className="text-[var(--color-text-secondary)]">Quality score falls below our minimum standard for first-time owners</span>
                       </li>
                     )}
                     {ingredientFlags.map((flag, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <span className="text-gray-400 mt-1">•</span>
-                        <span className="text-gray-700">{flag.title}: {flag.items.join(', ')}</span>
+                        <span className="text-[var(--color-text-secondary)] mt-1">•</span>
+                        <span className="text-[var(--color-text-secondary)]">{flag.title}: {flag.items.join(', ')}</span>
                       </li>
                     ))}
                     {product.red_flag_override && (
                       <li className="flex items-start gap-2">
-                        <span className="text-gray-400 mt-1">•</span>
-                        <span className="text-gray-700">{product.red_flag_override.reason}</span>
+                        <span className="text-[var(--color-text-secondary)] mt-1">•</span>
+                        <span className="text-[var(--color-text-secondary)]">{product.red_flag_override.reason}</span>
                       </li>
                     )}
                   </ul>
@@ -671,127 +780,34 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
 
               {/* When This Might Still Be Used */}
               {!isSafe && (
-                <div className="bg-gray-50 rounded-lg border-2 border-gray-200 p-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">When this might still be used</h2>
+                <div className="bg-[var(--color-background-neutral)] rounded-lg border-2 border-[var(--color-border)] p-6">
+                  <h2 className="text-xl font-normal text-[var(--color-text-primary)] mb-4">When this might still be used</h2>
                   <ul className="space-y-2">
                     <li className="flex items-start gap-2">
-                      <span className="text-gray-400 mt-1">•</span>
-                      <span className="text-gray-700">Short-term feeding when budget is extremely limited</span>
+                      <span className="text-[var(--color-text-secondary)] mt-1">•</span>
+                      <span className="text-[var(--color-text-secondary)]">Short-term feeding when budget is extremely limited</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-gray-400 mt-1">•</span>
-                      <span className="text-gray-700">If your dog has already been eating it without issues</span>
+                      <span className="text-[var(--color-text-secondary)] mt-1">•</span>
+                      <span className="text-[var(--color-text-secondary)]">If your dog has already been eating it without issues</span>
                     </li>
                   </ul>
                 </div>
               )}
 
-              {/* Ingredients Section */}
-              <div className="bg-white rounded-lg border-2 border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Ingredients</h2>
 
-                {ingredientFlags.length > 0 && (
-                  <div className="mb-4 space-y-2">
-                    {ingredientFlags.map((flag, idx) => (
-                      <div key={idx} className="flex items-start gap-2 p-3 bg-orange-50 border border-orange-200 rounded-lg">
-                        <AlertTriangle className="w-4 h-4 text-orange-600 flex-shrink-0 mt-0.5" />
-                        <div className="text-sm">
-                          <div className="font-semibold text-orange-900">{flag.title}</div>
-                          <div className="text-orange-700 mt-1">{flag.items.join(', ')}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {product.ingredients_raw ? (
-                  <div className="text-sm text-gray-700 leading-relaxed">
-                    {product.ingredients_raw}
-                  </div>
-                ) : (
-                  <p className="text-sm text-gray-500 italic">No ingredient information available</p>
-                )}
-              </div>
-
-              {/* Nutritional Analysis */}
-              <div className="bg-white rounded-lg border-2 border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Analysis</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {product.protein_percent !== null && (
-                    <div>
-                      <div className="text-sm text-gray-600 mb-1">Crude protein</div>
-                      <div className="text-2xl font-bold text-gray-900">{product.protein_percent}%</div>
-                    </div>
-                  )}
-                  {product.fat_percent !== null && (
-                    <div>
-                      <div className="text-sm text-gray-600 mb-1">Crude fat</div>
-                      <div className="text-2xl font-bold text-gray-900">{product.fat_percent}%</div>
-                    </div>
-                  )}
-                  {product.fiber_percent !== null && (
-                    <div>
-                      <div className="text-sm text-gray-600 mb-1">Crude fiber</div>
-                      <div className="text-2xl font-bold text-gray-900">{product.fiber_percent}%</div>
-                    </div>
-                  )}
-                  {product.carbs_percent !== null && (
-                    <div>
-                      <div className="text-sm text-gray-600 mb-1">Estimated carbs</div>
-                      <div className="text-2xl font-bold text-gray-900">{product.carbs_percent}%</div>
-                    </div>
-                  )}
-                  {product.ash_percent !== null && (
-                    <div>
-                      <div className="text-sm text-gray-600 mb-1">Crude ash</div>
-                      <div className="text-2xl font-bold text-gray-900">{product.ash_percent}%</div>
-                    </div>
-                  )}
-                  {product.meat_content_percent !== null && (
-                    <div>
-                      <div className="text-sm text-gray-600 mb-1">Claimed meat content</div>
-                      <div className="text-2xl font-bold text-gray-900">{product.meat_content_percent}%</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Pricing Info */}
-              {(product.price_gbp || product.price_per_kg_gbp) && (
-                <div className="bg-white rounded-lg border-2 border-gray-200 p-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">Feeding guidelines</h2>
-                  <div className="grid grid-cols-2 gap-4">
-                    {product.price_per_kg_gbp && (
-                      <div>
-                        <div className="text-sm text-gray-600 mb-1">Per day (based on 12kg, basic)</div>
-                        <div className="text-2xl font-bold text-gray-900">
-                          {formatPrice(product.price_per_kg_gbp * 0.15)}
-                        </div>
-                      </div>
-                    )}
-                    {product.package_size_g && (
-                      <div>
-                        <div className="text-sm text-gray-600 mb-1">Package size</div>
-                        <div className="text-2xl font-bold text-gray-900">
-                          {(product.package_size_g / 1000).toFixed(1)}kg
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
 
               {/* Algorithm Transparency */}
-              <div className="bg-blue-50 rounded-lg border-2 border-blue-200 p-6">
+              <div className="bg-[var(--color-trust-light)] rounded-lg border-2 border-[var(--color-trust)] p-6">
                 <div className="flex items-start gap-3">
-                  <Shield className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
+                  <Shield className="w-5 h-5 text-[var(--color-trust)] flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-semibold text-gray-900 mb-2">Our scoring algorithm (v2.1.0)</div>
-                    <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                    <div className="font-bold text-[var(--color-text-primary)] mb-2">Our scoring algorithm (v2.1.0)</div>
+                    <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-3">
                       We score dog food based on ingredient quality (45pts), nutrition (33pts), and value for money (22pts).
                       Penalties apply for poor processing, additives, and misleading protein claims. Red flags may cap ratings.
                     </p>
-                    <Link href="/how-we-rate-dog-food" className="text-sm text-blue-600 hover:text-blue-700 font-semibold">
+                    <Link href="/how-we-rate-dog-food" className="text-sm text-[var(--color-trust)] hover:opacity-80 font-bold">
                       Learn how we rate dog food →
                     </Link>
                   </div>
@@ -804,8 +820,8 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
           {!isSafe && relatedProducts.length > 0 && (
             <div className="mt-12">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Better first choices</h2>
-                <p className="text-gray-600">Consider these higher-rated alternatives instead</p>
+                <h2 className="text-2xl font-normal text-[var(--color-text-primary)] mb-2">Better first choices</h2>
+                <p className="text-[var(--color-text-secondary)]">Consider these higher-rated alternatives instead</p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {relatedProducts.filter(p => isSafeFirstChoice(p)).slice(0, 4).map((relatedProduct) => (
@@ -815,12 +831,191 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
             </div>
           )}
 
+<div className="mt-12">
+                {/* Three-Column Layout: Ingredients, Nutrition, Feeding */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Ingredients Section */}
+                <div id="ingredients" className="scroll-mt-32 bg-[var(--color-background-card)] rounded-lg border-2 border-[var(--color-border)] p-6">
+                  <h3 className="text-xl font-normal text-[var(--color-text-primary)] mb-4">Ingredients</h3>
+
+                {ingredientFlags.length > 0 && (
+                  <div className="mb-4 space-y-2">
+                    {ingredientFlags.map((flag, idx) => (
+                      <div key={idx} className="flex items-start gap-2 p-3 bg-[var(--color-caution-bg)] border border-[var(--color-caution)] rounded-lg">
+                        <AlertTriangle className="w-4 h-4 text-[var(--color-caution)] flex-shrink-0 mt-0.5" />
+                        <div className="text-sm">
+                          <div className="font-bold text-[var(--color-text-primary)]">{flag.title}</div>
+                          <div className="text-[var(--color-text-secondary)] mt-1">{flag.items.join(', ')}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {product.ingredients_raw ? (
+                  <>
+                    {/* Top 5 Ingredients */}
+                    <div className="mb-4">
+                      <h6 className="text-sm font-bold text-[var(--color-text-primary)] mb-2">Top 5 ingredients (most important)</h6>
+                      <div className="flex flex-wrap gap-2">
+                        {product.ingredients_raw.split(/[,;]/).slice(0, 5).map((ing, i) => (
+                          <span key={i} className="px-3 py-1 bg-[var(--color-trust-bg)] text-[var(--color-trust)] rounded-full text-sm font-bold border border-[var(--color-trust)]">
+                            #{i+1} {ing.trim()}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Full Ingredient List - Collapsible */}
+                    <details className="group">
+                      <summary className="cursor-pointer text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-trust)] transition-colors mb-2">
+                        View all ingredients
+                      </summary>
+                      <div className="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed p-3 bg-[var(--color-background-neutral)] rounded-lg">
+                        {product.ingredients_raw}
+                      </div>
+                    </details>
+                  </>
+                  ) : (
+                    <p className="text-sm text-[var(--color-text-secondary)] italic">No ingredient information available</p>
+                  )}
+                </div>
+
+                {/* Nutritional Analysis */}
+                <div id="nutrition" className="scroll-mt-32 bg-[var(--color-background-card)] rounded-lg border-2 border-[var(--color-border)] p-6">
+                  <h3 className="text-xl font-normal text-[var(--color-text-primary)] mb-4">Nutrition analysis</h3>
+                <div className="space-y-4">
+                  {product.protein_percent !== null && (
+                    <div>
+                      <div className="flex justify-between items-baseline mb-2">
+                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Crude protein</span>
+                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.protein_percent}%</span>
+                      </div>
+                      <div className="w-full bg-[var(--color-background-neutral)] rounded-full h-3 overflow-hidden">
+                        <div
+                          className={`h-3 rounded-full transition-all ${product.protein_percent >= 25 && product.protein_percent <= 35 ? 'bg-[var(--color-trust)]' : 'bg-[var(--color-caution)]'}`}
+                          style={{ width: `${Math.min(product.protein_percent * 2, 100)}%` }}
+                        />
+                      </div>
+                      <div className="text-xs text-[var(--color-text-secondary)] mt-1">
+                        Optimal: 25-35% • {product.protein_percent >= 25 && product.protein_percent <= 35 ? 'Good' : product.protein_percent > 35 ? 'High' : 'Low'}
+                      </div>
+                    </div>
+                  )}
+                  {product.fat_percent !== null && (
+                    <div>
+                      <div className="flex justify-between items-baseline mb-2">
+                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Crude fat</span>
+                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.fat_percent}%</span>
+                      </div>
+                      <div className="w-full bg-[var(--color-background-neutral)] rounded-full h-3 overflow-hidden">
+                        <div
+                          className={`h-3 rounded-full transition-all ${product.fat_percent >= 12 && product.fat_percent <= 20 ? 'bg-[var(--color-trust)]' : 'bg-[var(--color-caution)]'}`}
+                          style={{ width: `${Math.min(product.fat_percent * 4, 100)}%` }}
+                        />
+                      </div>
+                      <div className="text-xs text-[var(--color-text-secondary)] mt-1">
+                        Optimal: 12-20% • {product.fat_percent >= 12 && product.fat_percent <= 20 ? 'Good' : product.fat_percent > 20 ? 'High' : 'Low'}
+                      </div>
+                    </div>
+                  )}
+                  {product.fiber_percent !== null && (
+                    <div>
+                      <div className="flex justify-between items-baseline mb-2">
+                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Crude fiber</span>
+                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.fiber_percent}%</span>
+                      </div>
+                      <div className="w-full bg-[var(--color-background-neutral)] rounded-full h-3 overflow-hidden">
+                        <div
+                          className={`h-3 rounded-full transition-all ${product.fiber_percent >= 2 && product.fiber_percent <= 8 ? 'bg-[var(--color-trust)]' : 'bg-[var(--color-caution)]'}`}
+                          style={{ width: `${Math.min(product.fiber_percent * 10, 100)}%` }}
+                        />
+                      </div>
+                      <div className="text-xs text-[var(--color-text-secondary)] mt-1">
+                        Optimal: 2-8% • {product.fiber_percent >= 2 && product.fiber_percent <= 8 ? 'Good' : product.fiber_percent > 8 ? 'High' : 'Low'}
+                      </div>
+                    </div>
+                  )}
+                  {product.carbs_percent !== null && (
+                    <div>
+                      <div className="flex justify-between items-baseline mb-2">
+                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Estimated carbs</span>
+                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.carbs_percent}%</span>
+                      </div>
+                      <div className="w-full bg-[var(--color-background-neutral)] rounded-full h-3 overflow-hidden">
+                        <div
+                          className={`h-3 rounded-full transition-all ${product.carbs_percent <= 30 ? 'bg-[var(--color-trust)]' : 'bg-[var(--color-caution)]'}`}
+                          style={{ width: `${Math.min(product.carbs_percent * 1.5, 100)}%` }}
+                        />
+                      </div>
+                      <div className="text-xs text-[var(--color-text-secondary)] mt-1">
+                        Optimal: &lt;30% • {product.carbs_percent <= 30 ? 'Good' : 'High'}
+                      </div>
+                    </div>
+                  )}
+                  {product.ash_percent !== null && (
+                    <div>
+                      <div className="flex justify-between items-baseline mb-2">
+                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Crude ash</span>
+                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.ash_percent}%</span>
+                      </div>
+                      <div className="text-xs text-[var(--color-text-secondary)]">
+                        Mineral content indicator
+                      </div>
+                    </div>
+                  )}
+                  {product.meat_content_percent !== null && (
+                    <div>
+                      <div className="flex justify-between items-baseline mb-2">
+                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Claimed meat content</span>
+                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.meat_content_percent}%</span>
+                      </div>
+                      <div className="w-full bg-[var(--color-background-neutral)] rounded-full h-3 overflow-hidden">
+                        <div
+                          className={`h-3 rounded-full transition-all ${product.meat_content_percent >= 30 ? 'bg-[var(--color-trust)]' : 'bg-[var(--color-caution)]'}`}
+                          style={{ width: `${Math.min(product.meat_content_percent, 100)}%` }}
+                        />
+                      </div>
+                      <div className="text-xs text-[var(--color-text-secondary)] mt-1">
+                        Good: &ge;30% • {product.meat_content_percent >= 30 ? 'Good' : 'Low'}
+                      </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Feeding Guidelines */}
+                {(product.price_gbp || product.price_per_kg_gbp) && (
+                  <div className="bg-[var(--color-background-card)] rounded-lg border-2 border-[var(--color-border)] p-6">
+                    <h3 className="text-xl font-normal text-[var(--color-text-primary)] mb-4">Feeding guidelines</h3>
+                    <div className="space-y-4">
+                      {product.price_per_kg_gbp && (
+                        <div>
+                          <div className="text-sm text-[var(--color-text-secondary)] mb-1">Per day (based on 12kg, basic)</div>
+                          <div className="text-2xl font-bold text-[var(--color-text-primary)]">
+                            {formatPrice(product.price_per_kg_gbp * 0.15)}
+                          </div>
+                        </div>
+                      )}
+                      {product.package_size_g && (
+                        <div>
+                          <div className="text-sm text-[var(--color-text-secondary)] mb-1">Package size</div>
+                          <div className="text-2xl font-bold text-[var(--color-text-primary)]">
+                            {(product.package_size_g / 1000).toFixed(1)}kg
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+</div>
           {/* You Might Also Like Section */}
           {isSafe && relatedProducts.length > 0 && (
             <div className="mt-12">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">You might also like</h2>
-                <p className="text-gray-600">Similar products in this category</p>
+                <h3 className="text-2xl font-normal text-[var(--color-text-primary)] mb-2">You might also like</h3>
+                <p className="text-[var(--color-text-secondary)]">Similar products in this category</p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {relatedProducts.slice(0, 4).map((relatedProduct) => (

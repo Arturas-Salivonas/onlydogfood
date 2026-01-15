@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from 'lucide-react';
+import { X, AlertCircle, AlertTriangle, Info } from 'lucide-react';
+import { ProtectionIcon } from './ProtectionIcon';
 import { cn } from '@/lib/utils/cn';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
@@ -105,7 +106,7 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
   }, [toast.duration]);
 
   const icons = {
-    success: CheckCircle,
+    success: ProtectionIcon,
     error: AlertCircle,
     warning: AlertTriangle,
     info: Info,
@@ -196,6 +197,3 @@ export function useToasts() {
     info: useToastInfo(),
   };
 }
-
-
-
