@@ -6,12 +6,12 @@ import {
   VALUE_SCORING,
   HIGH_RISK_FILLERS,
   LOW_VALUE_CARBS,
+  BROWN_RICE_CARBS,
   ACCEPTABLE_CARBS,
   RED_FLAG_ADDITIVES,
   ARTIFICIAL_COLORS,
   ARTIFICIAL_PRESERVATIVES,
   CONTROVERSIAL_ADDITIVES,
-  PROCESSED_INGREDIENTS,
   VEGETABLES,
   FRESH_MEAT_SOURCES,
   DEHYDRATED_MEAT_SOURCES,
@@ -27,6 +27,8 @@ import {
   CONFIDENCE_CRITERIA,
   ALGORITHM_VERSION,
   LAST_UPDATED,
+  GRAIN_SEVERITY,
+  PROTEIN_SOURCE_TYPES,
   // v2.2 imports
   FEATURE_FLAGS,
   MOISTURE_DEFAULTS,
@@ -101,6 +103,73 @@ function computeDryMatterMacros(product: Product): DryMatterMetrics {
     fiberDM,
     carbsDM,
     usedDefaults,
+  };
+}
+
+/**
+ * v3.0: Calculate Protein Source Diversity Bonus
+ * Rewards foods with multiple different protein sources (Orijen-style formulas)
+ * Penalizes single-source formulas
+ */
+function calculateProteinDiversity(ingredientsText: string, ingredientsList: string[]): {
+  points: number;
+  details: {
+    uniqueProteinTypes: number;
+    proteinSources: string[];
+    diversity: string;
+  };
+} {
+  const foundProteinTypes = new Set<string>();
+  const foundSources: string[] = [];
+
+  // Check each protein source type
+  for (const [type, sources] of Object.entries(PROTEIN_SOURCE_TYPES)) {
+    for (const source of sources) {
+      if (ingredientsText.includes(source)) {
+        foundProteinTypes.add(type);
+        if (!foundSources.includes(source)) {
+          foundSources.push(source);
+        }
+      }
+    }
+  }
+
+  const uniqueTypes = foundProteinTypes.size;
+  const totalSources = foundSources.length;
+
+  let points = 0;
+  let diversity = 'poor';
+
+  // Scoring based on protein source diversity
+  if (uniqueTypes >= 3 && totalSources >= 6) {
+    // Exceptional diversity: 3+ types, 6+ sources (Orijen-level)
+    points = 5;
+    diversity = 'exceptional';
+  } else if (uniqueTypes >= 3 && totalSources >= 4) {
+    // Excellent diversity: 3+ types, 4-5 sources
+    points = 4;
+    diversity = 'excellent';
+  } else if (uniqueTypes >= 2 && totalSources >= 3) {
+    // Good diversity: 2 types, 3+ sources
+    points = 3;
+    diversity = 'good';
+  } else if (uniqueTypes >= 2 || totalSources >= 2) {
+    // Moderate diversity: 2 types or 2 sources
+    points = 2;
+    diversity = 'moderate';
+  } else if (totalSources === 1) {
+    // Single source: penalty
+    points = 0;
+    diversity = 'single-source';
+  }
+
+  return {
+    points,
+    details: {
+      uniqueProteinTypes: uniqueTypes,
+      proteinSources: foundSources,
+      diversity,
+    },
   };
 }
 
@@ -207,13 +276,13 @@ function computeAtwaterEnergy(product: Product, carbs: number | null): EnergyMet
 }
 
 /**
- * Calculate ingredient quality score (max 45 points) - Algorithm v2.1
+ * Calculate ingredient quality score (max 45 points) - Algorithm v3.0
  *
  * A) Effective Meat Content (15 points)
- * B) Low-Value Fillers & Carbohydrates (10 points)
- * C) Artificial Additives & Preservatives (10 points)
- * D) Named Animal Sources (5 points)
- * E) Processing Quality (5 points)
+ * B) Protein Source Diversity (5 points) - NEW!
+ * C) Low-Value Fillers & Carbohydrates (10 points)
+ * D) Artificial Additives & Preservatives (10 points)
+ * E) Named Animal Sources (5 points)
  */
 export function calculateIngredientScore(product: Product): {
   score: number;
@@ -221,16 +290,20 @@ export function calculateIngredientScore(product: Product): {
   redFlags: string[];
 } {
   let score = 0;
-  const details: Record<string, number | Record<string, number>> = {};
+  const details: Record<string, number | Record<string, number> | any> = {};
   const redFlags: string[] = [];
 
   const ingredientsText = product.ingredients_raw?.toLowerCase() || '';
+  const ingredientsList = product.ingredients_list || [];
 
   // ===========================================
-  // A) EFFECTIVE MEAT CONTENT (15 points)
+  // A) EFFECTIVE MEAT CONTENT (15 points) - v3.0
   // ===========================================
-  if (product.meat_content_percent) {
-    const meatPercent = Math.min(product.meat_content_percent, OPTIMAL_RANGES.MEAT_SOFT_CAP);
+  // Use effective_meat_percent (moisture-adjusted) if available, fallback to meat_content_percent
+  const effectiveMeat = product.effective_meat_percent ?? product.meat_content_percent;
+
+  if (effectiveMeat) {
+    const meatPercent = Math.min(effectiveMeat, OPTIMAL_RANGES.MEAT_SOFT_CAP);
     let meatPoints = 0;
 
     // Enhanced scoring for exceptional meat content
@@ -251,31 +324,83 @@ export function calculateIngredientScore(product: Product): {
       meatPoints = (meatPercent / 20) * 6;
     }
 
-    // Fresh vs Dehydrated Modifier (Anti-Gaming Rule)
-    // ONLY apply if meat content is suspiciously high with mostly fresh meat
-    if (meatPercent >= 60) {
-      const hasFreshMeat = FRESH_MEAT_SOURCES.some(meat => ingredientsText.includes(meat));
-      const hasDehydratedMeat = DEHYDRATED_MEAT_SOURCES.some(meat => ingredientsText.includes(meat));
-
-      // Count occurrences to determine majority
-      const freshCount = FRESH_MEAT_SOURCES.filter(meat => ingredientsText.includes(meat)).length;
-      const dehydratedCount = DEHYDRATED_MEAT_SOURCES.filter(meat => ingredientsText.includes(meat)).length;
-
-      // If majority is fresh (>50% of meat sources) AND very high meat content (60%+), apply small penalty
-      // This prevents gaming but doesn't overly penalize legitimate high-meat foods
-      if (hasFreshMeat && freshCount > dehydratedCount && meatPercent >= 60) {
-        const penalty = meatPoints * 0.05; // Reduced from 0.1 (10%) to 0.05 (5%)
-        meatPoints = meatPoints - penalty;
-        details.freshMeatPenalty = -penalty;
-      }
+    // v3.1: FRESH/RAW MEAT BONUS (+1 point)
+    // Reward manufacturers using fresh or raw meats instead of generic terms
+    let freshMeatBonus = 0;
+    const hasFreshMeat = /\b(fresh|raw|deboned)\s+(chicken|beef|lamb|turkey|duck|salmon|fish|trout|herring|mackerel)/i.test(ingredientsText);
+    if (hasFreshMeat) {
+      freshMeatBonus = 1;
+      details.freshMeatBonus = freshMeatBonus;
     }
+
+    // v3.1: DEHYDRATED/MEAL BONUS (+1 point)
+    // Reward concentrated protein sources (dehydrated meats, meals)
+    let concentratedProteinBonus = 0;
+    const hasConcentratedProtein = /\b(dehydrated|dried)\s+(chicken|beef|lamb|turkey|duck|salmon|fish)/i.test(ingredientsText);
+    if (hasConcentratedProtein && !freshMeatBonus) { // Don't double-bonus
+      concentratedProteinBonus = 1;
+      details.concentratedProteinBonus = concentratedProteinBonus;
+    }
+
+    // v3.1: AMBIGUOUS NOTATION PENALTY (-2 points)
+    // Penalize weird/misleading ingredient names like "Chicken (Chicken Meal)" or "Liver (Heart)"
+    let ambiguousNotationPenalty = 0;
+    const hasAmbiguousNotation = /\b(chicken|beef|lamb|turkey|fish|liver|heart)\s*\(\s*(chicken|beef|lamb|turkey|fish|liver|heart|meal)\s*\)/i.test(ingredientsText);
+    if (hasAmbiguousNotation) {
+      ambiguousNotationPenalty = -2;
+      details.ambiguousNotationPenalty = ambiguousNotationPenalty;
+      redFlags.push('Ambiguous ingredient notation detected (e.g., "Chicken (Chicken Meal)")');
+    }
+
+    meatPoints += freshMeatBonus + concentratedProteinBonus + ambiguousNotationPenalty;
+
+    // v3.0: REMOVED the fresh meat penalty - high-quality fresh meat is excellent!
+    // Meal proteins are concentrated, but fresh proteins are highly digestible
+    // Both have their place in quality formulas
 
     score += meatPoints;
     details.effectiveMeatContent = meatPoints;
   }
 
   // ===========================================
-  // B) LOW-VALUE FILLERS & CARBOHYDRATES (10 points)
+  // B) PROTEIN SOURCE DIVERSITY (5 points) - v3.0 NEW!
+  // ===========================================
+  const diversityBonus = calculateProteinDiversity(ingredientsText, ingredientsList);
+  score += diversityBonus.points;
+  details.proteinDiversity = diversityBonus.points;
+  details.proteinDiversityDetails = diversityBonus.details;
+
+  // ===========================================
+  // v3.0: INGREDIENT SPLITTING PENALTY
+  // ===========================================
+  if (product.has_ingredient_splitting) {
+    const splitPenalty = -5;
+    details.ingredientSplittingPenalty = splitPenalty;
+    score += splitPenalty;
+    redFlags.push('Ingredient splitting detected (same protein source split across multiple entries)');
+  }
+
+  // ===========================================
+  // v3.0: FILLER STUFFING PENALTY
+  // ===========================================
+  if (product.has_filler_stuffing) {
+    const stuffingPenalty = -4;
+    details.fillerStuffingPenalty = stuffingPenalty;
+    score += stuffingPenalty;
+    redFlags.push('Filler stuffing detected (excessive low-quality ingredients)');
+  }
+
+  // ===========================================
+  // v3.0: EXCESSIVE INGREDIENT COUNT PENALTY
+  // ===========================================
+  if (product.total_ingredients_count && product.total_ingredients_count > 60) {
+    const excessivePenalty = -3;
+    details.excessiveIngredientsPenalty = excessivePenalty;
+    score += excessivePenalty;
+    redFlags.push(`Excessive ingredient count (${product.total_ingredients_count} ingredients)`);
+  }
+  // ===========================================
+  // C) LOW-VALUE FILLERS & CARBOHYDRATES (10 points) - v3.0 ENHANCED
   // ===========================================
   let fillerPoints: number = INGREDIENT_SCORING.LOW_VALUE_FILLERS;
 
@@ -290,15 +415,26 @@ export function calculateIngredientScore(product: Product): {
     details.highRiskFillerPenalty = -highRiskPenalty;
   }
 
-  // Low-Value Carbohydrates (-1 each)
+  // Low-Value Carbohydrates (-2 each - INCREASED from -1)
   const lowValueCarbsFound = LOW_VALUE_CARBS.filter(carb =>
     ingredientsText.includes(carb)
   );
-  const lowValueCarbPenalty = lowValueCarbsFound.length * 1;
+  const lowValueCarbPenalty = lowValueCarbsFound.length * 2; // INCREASED
   fillerPoints -= lowValueCarbPenalty;
 
   if (lowValueCarbsFound.length > 0) {
     details.lowValueCarbPenalty = -lowValueCarbPenalty;
+  }
+
+  // Brown Rice penalty (-1 each)
+  const brownRiceFound = BROWN_RICE_CARBS.filter(carb =>
+    ingredientsText.includes(carb)
+  );
+  const brownRicePenalty = brownRiceFound.length * 1;
+  fillerPoints -= brownRicePenalty;
+
+  if (brownRiceFound.length > 0) {
+    details.brownRicePenalty = -brownRicePenalty;
   }
 
   // Ensure minimum score of 0
@@ -307,7 +443,69 @@ export function calculateIngredientScore(product: Product): {
   details.lowValueFillers = fillerPoints;
 
   // ===========================================
-  // C) ARTIFICIAL ADDITIVES & PRESERVATIVES (10 points)
+  // C2) GRAIN-HEAVY PENALTY (v3.0 MUCH STRONGER)
+  // ===========================================
+  // Severely penalize foods with grains as primary ingredients
+  const top5Ingredients = ingredientsList.slice(0, 5).map(i => i.toLowerCase());
+  const top3Ingredients = ingredientsList.slice(0, 3).map(i => i.toLowerCase());
+
+  let grainPenalty = 0;
+
+  // Check for HIGH GLYCEMIC grains (maize, corn, white rice, wheat)
+  const highGIInTop5 = top5Ingredients.filter(ing =>
+    GRAIN_SEVERITY.HIGH_GLYCEMIC.some(grain => ing.includes(grain))
+  );
+
+  const highGIInTop3 = top3Ingredients.filter(ing =>
+    GRAIN_SEVERITY.HIGH_GLYCEMIC.some(grain => ing.includes(grain))
+  );
+
+  // Check for brown rice in top 5
+  const brownRiceInTop5 = top5Ingredients.filter(ing =>
+    GRAIN_SEVERITY.MEDIUM_GLYCEMIC.some(grain => ing.includes(grain))
+  );
+
+  const brownRiceInTop3 = top3Ingredients.filter(ing =>
+    GRAIN_SEVERITY.MEDIUM_GLYCEMIC.some(grain => ing.includes(grain))
+  );
+
+  // HIGH GLYCEMIC grain as #1 ingredient: -8 points (SEVERE)
+  if (highGIInTop3.length > 0 && top3Ingredients[0] && GRAIN_SEVERITY.HIGH_GLYCEMIC.some(g => top3Ingredients[0].includes(g))) {
+    grainPenalty = -8;
+    details.grainFirstPenalty = grainPenalty;
+    redFlags.push(`High-glycemic grain (${top3Ingredients[0]}) as primary ingredient`);
+  }
+  // HIGH GLYCEMIC grains 2+ times in top 5: -7 points
+  else if (highGIInTop5.length >= 2) {
+    grainPenalty = -7;
+    details.grainHeavyPenalty = grainPenalty;
+    redFlags.push(`Multiple high-glycemic grains in top 5 ingredients`);
+  }
+  // HIGH GLYCEMIC grain in top 3 (not #1): -5 points
+  else if (highGIInTop3.length > 0) {
+    grainPenalty = -5;
+    details.grainTop3Penalty = grainPenalty;
+  }
+  // HIGH GLYCEMIC grain in top 5: -3 points
+  else if (highGIInTop5.length > 0) {
+    grainPenalty = -3;
+    details.grainTop5Penalty = grainPenalty;
+  }
+  // BROWN RICE as #1 ingredient: -4 points
+  else if (brownRiceInTop3.length > 0 && top3Ingredients[0] && GRAIN_SEVERITY.MEDIUM_GLYCEMIC.some(g => top3Ingredients[0].includes(g))) {
+    grainPenalty = -4;
+    details.brownRiceFirstPenalty = grainPenalty;
+  }
+  // BROWN RICE in top 3: -2 points
+  else if (brownRiceInTop3.length > 0) {
+    grainPenalty = -2;
+    details.brownRiceTop3Penalty = grainPenalty;
+  }
+
+  score = Math.max(0, score + grainPenalty);
+
+  // ===========================================
+  // D) ARTIFICIAL ADDITIVES & PRESERVATIVES (10 points)
   // ===========================================
   let additivePoints: number = INGREDIENT_SCORING.NO_ARTIFICIAL_ADDITIVES;
 
@@ -356,7 +554,7 @@ export function calculateIngredientScore(product: Product): {
   details.noArtificialAdditives = additivePoints;
 
   // ===========================================
-  // D) NAMED ANIMAL SOURCES (5 points)
+  // E) NAMED ANIMAL SOURCES (5 points)
   // ===========================================
   const hasNamedMeat = NAMED_MEAT_SOURCES.some(meat => ingredientsText.includes(meat));
   const hasUnnamedMeat = UNNAMED_MEAT_SOURCES.some(meat => ingredientsText.includes(meat));
@@ -375,58 +573,15 @@ export function calculateIngredientScore(product: Product): {
   details.namedMeatSources = namedMeatPoints;
 
   // ===========================================
-  // E) PROCESSING QUALITY (5 points)
-  // ===========================================
-  const processedIngredientsFound = PROCESSED_INGREDIENTS.filter(ingredient =>
-    ingredientsText.includes(ingredient)
-  );
-
-  let processingPoints: number = INGREDIENT_SCORING.PROCESSING_QUALITY;
-  if (processedIngredientsFound.length > 0) {
-    // -2 per processed ingredient (max -5)
-    const processingPenalty = Math.min(5, processedIngredientsFound.length * 2);
-    processingPoints = Math.max(0, processingPoints - processingPenalty);
-    details.processingPenalty = -processingPenalty;
-  }
-
-  score += processingPoints;
-  details.processingQuality = processingPoints;
-
-  // ===========================================
-  // E2) GRAIN-HEAVY PENALTY (v2.2 Enhancement)
-  // ===========================================
-  // Penalize foods with grains as primary ingredients (top 3)
-  const grains = ['rice', 'wheat', 'corn', 'barley', 'oats', 'sorghum', 'millet'];
-  const ingredientsList = product.ingredients_list || [];
-  const top3Ingredients = ingredientsList.slice(0, 3).map(i => i.toLowerCase());
-  
-  let grainPenalty = 0;
-  const grainsInTop3 = top3Ingredients.filter(ing => 
-    grains.some(grain => ing.includes(grain))
-  ).length;
-
-  if (grainsInTop3 >= 2) {
-    // 2+ grains in top 3: -4 points
-    grainPenalty = -4;
-    details.grainHeavyPenalty = grainPenalty;
-    score = Math.max(0, score + grainPenalty);
-  } else if (grainsInTop3 === 1 && top3Ingredients[0] && grains.some(g => top3Ingredients[0].includes(g))) {
-    // Single grain as #1 ingredient: -2 points
-    grainPenalty = -2;
-    details.grainFirstPenalty = grainPenalty;
-    score = Math.max(0, score + grainPenalty);
-  }
-
-  // ===========================================
   // F) INGREDIENT-LEVEL BONUS/PENALTY (Enhancement Layer)
   // ===========================================
   // Granular scoring based on specific ingredient presence
   // This enhances the existing scoring with detailed ingredient analysis
   const ingredientAnalysis = calculateIngredientBonusPoints(ingredientsText);
 
-  // Cap bonus/penalty at ±5 points to maintain balance (reduced from ±10)
-  // Prevents over-penalizing high-quality foods with supplemental plant proteins
-  const ingredientBonus = Math.min(5, Math.max(-5, ingredientAnalysis.totalPoints));
+  // Cap bonus/penalty at ±7 points to maintain balance (increased from ±5)
+  // Allows rewarding exceptional ingredient diversity
+  const ingredientBonus = Math.min(7, Math.max(-7, ingredientAnalysis.totalPoints));
 
   // Add to score but respect the 45-point maximum for ingredient scoring
   score = Math.max(0, Math.min(45, score + ingredientBonus));

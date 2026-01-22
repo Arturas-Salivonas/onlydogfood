@@ -18,7 +18,9 @@
     "recalculate-scores": "tsx scripts/recalculate-scores.ts",
     "update-stats": "tsx scripts/update-stats-cache.ts",
     "test:algorithm": "tsx scripts/test-new-algorithm.ts",
-    "extract-ingredients": "tsx scripts/extract-ingredients.ts"
+    "extract-ingredients": "tsx scripts/extract-ingredients.ts",
+    "examine:ingredients": "tsx scripts/examine-ingredient-data.ts",
+    "migrate:ingredients": "tsx scripts/migrate-ingredients.ts"
   },
   "dependencies": {
     "@apollo/client": "^4.0.10",

@@ -570,7 +570,69 @@ export class CachedSupabaseClient {
       .select('*, product_tags(tag:tags(*))')
       .in('id', ids)
       .eq('is_available', true)
-      .filter('brand_id::text', 'not.in', '("undefined","null","NaN","")')
+      .not('brand_id', 'is', null);
+
+    if (error) {
+      throw error;
+    }
+
+    let products = (data as any[]).map(product => ({
+      ...product,
+      tags: product.product_tags?.map((pt: any) => pt.tag) || [],
+      brand: null
+    })) as Product[];
+
+    // Fetch brands separately for products with valid brand_ids
+    const validBrandIds = products
+      .map(p => p.brand_id)
+      .filter(id => id && typeof id === 'string' && isValidUUID(id));
+
+    if (validBrandIds.length > 0) {
+      const { data: brandsData } = await supabase
+        .from('brands')
+        .select('*')
+        .in('id', validBrandIds);
+
+      const brandMap = new Map((brandsData as any)?.map((brand: any) => [brand.id, brand]) || []);
+
+      // Assign brands to products
+      products.forEach(product => {
+        if (product.brand_id && brandMap.has(product.brand_id)) {
+          product.brand = brandMap.get(product.brand_id) as any;
+        }
+      });
+    }
+
+    // Cache the result
+    await this.cache.set(cacheKey, products, cacheTTL.medium);
+
+    return products;
+  }
+
+  async getProductsBySlugs(slugs: string[]): Promise<Product[]> {
+    const cacheKey = cacheKeys.products.byIds(slugs.sort().join(','));
+
+    // Validate UUID helper
+    const isValidUUID = (str: string) => {
+      if (typeof str !== 'string') return false;
+      if (str === 'undefined' || str === 'null' || str === 'NaN' || str === '') return false;
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      return uuidRegex.test(str);
+    };
+
+    // Try cache first
+    const cached = await this.cache.get<Product[]>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    // Fetch from database
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('products')
+      .select('*, product_tags(tag:tags(*))')
+      .in('slug', slugs)
+      .eq('is_available', true)
       .not('brand_id', 'is', null);
 
     if (error) {

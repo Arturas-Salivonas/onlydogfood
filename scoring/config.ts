@@ -1,4 +1,4 @@
-// Scoring Configuration for OnlyDogFood.com - Algorithm v2.1
+// Scoring Configuration for OnlyDogFood.com - Algorithm v3.0
 
 export const SCORING_WEIGHTS = {
   INGREDIENT_QUALITY: 45, // 45 points max
@@ -7,11 +7,11 @@ export const SCORING_WEIGHTS = {
 } as const;
 
 export const INGREDIENT_SCORING = {
-  EFFECTIVE_MEAT_CONTENT: 15,  // ≥50% meat (soft cap at 65%, fresh meat modifier)
+  EFFECTIVE_MEAT_CONTENT: 15,  // ≥50% meat (soft cap at 65%, quality modifier)
+  PROTEIN_DIVERSITY: 5,        // NEW: Bonus for multiple protein sources
   LOW_VALUE_FILLERS: 10,       // Start at 10, -2 per high-risk filler, -1 per low-value carb
   NO_ARTIFICIAL_ADDITIVES: 10, // Immediate 0 for red flags, -3 first, -2 each additional
   NAMED_MEAT_SOURCES: 5,       // All named → 5pts, mix → 2.5pts, generic → 0pts
-  PROCESSING_QUALITY: 5,       // -2 per processed ingredient (max -5)
 } as const;
 
 export const NUTRITION_SCORING = {
@@ -37,22 +37,47 @@ export const HIGH_RISK_FILLERS = [
   'meat by-product',
 ] as const;
 
-// Low-Value Carbohydrates (-1 each)
+// Low-Value Carbohydrates - STRONGER penalties for grain-heavy formulas
 export const LOW_VALUE_CARBS = [
   'white rice',
   'maize',
-  'tapioca',
   'corn',
   'wheat',
+] as const;
+
+// Brown Rice - separate category (better than white rice, but still high GI)
+export const BROWN_RICE_CARBS = [
+  'brown rice',
+  'whole brown rice',
+  'wholegrain brown rice',
 ] as const;
 
 // Neutral/Acceptable Carbs (0 penalty)
 export const ACCEPTABLE_CARBS = [
   'oats',
   'barley',
-  'brown rice',
   'quinoa',
+  'sweet potato',
+  'sweet potatoes',
+  'potato',
+  'potatoes',
 ] as const;
+
+// v3.0: Grain severity levels for position-based penalties
+export const GRAIN_SEVERITY = {
+  HIGH_GLYCEMIC: ['white rice', 'maize', 'corn', 'wheat'],
+  MEDIUM_GLYCEMIC: ['brown rice', 'whole brown rice'],
+  LOW_GLYCEMIC: ['oats', 'barley', 'quinoa'],
+} as const;
+
+// v3.0: Protein source diversity categories
+export const PROTEIN_SOURCE_TYPES = {
+  POULTRY: ['chicken', 'turkey', 'duck', 'goose', 'quail', 'pheasant', 'guinea fowl'],
+  RED_MEAT: ['beef', 'lamb', 'venison', 'bison', 'pork', 'wild boar', 'kangaroo', 'goat', 'rabbit', 'reindeer', 'ostrich'],
+  FISH: ['salmon', 'herring', 'mackerel', 'sardine', 'hake', 'trout', 'whitefish', 'cod', 'haddock', 'pollock', 'anchovies'],
+  EGGS: ['egg', 'eggs'],
+  NOVEL_PROTEINS: ['insect', 'venison', 'kangaroo', 'wild boar', 'rabbit', 'bison'],
+} as const;
 
 // Red Flag Additives (automatic 0 for subsection, caps rating at ⭐⭐⭐)
 export const RED_FLAG_ADDITIVES = [
@@ -116,7 +141,7 @@ export const VEGETABLES = [
   'zucchini',
 ] as const;
 
-// Fresh Meat Sources (for fresh vs dehydrated modifier)
+// Fresh Meat Sources (70% water - lower protein density but high quality)
 export const FRESH_MEAT_SOURCES = [
   'fresh chicken',
   'fresh beef',
@@ -125,6 +150,12 @@ export const FRESH_MEAT_SOURCES = [
   'fresh duck',
   'fresh salmon',
   'fresh fish',
+  'fresh herring',
+  'fresh mackerel',
+  'raw whole herring',
+  'raw turkey',
+  'raw whole hake',
+  'raw whole mackerel',
   'chicken breast',
   'beef meat',
   'lamb meat',
@@ -132,9 +163,12 @@ export const FRESH_MEAT_SOURCES = [
   'deboned beef',
   'deboned lamb',
   'deboned turkey',
+  'fresh eggs',
+  'fresh whole egg',
+  'fresh chicken giblets',
 ] as const;
 
-// Dehydrated/Meal Meat Sources (preferred for protein density)
+// Dehydrated/Meal Meat Sources (concentrated - 300% more protein than fresh)
 export const DEHYDRATED_MEAT_SOURCES = [
   'chicken meal',
   'beef meal',
@@ -143,11 +177,25 @@ export const DEHYDRATED_MEAT_SOURCES = [
   'duck meal',
   'salmon meal',
   'fish meal',
+  'herring meal',
+  'mackerel meal',
+  'sardine meal',
+  'anchovy meal',
   'dehydrated chicken',
   'dehydrated beef',
   'dehydrated lamb',
+  'dehydrated turkey',
+  'dehydrated duck',
+  'dehydrated salmon',
+  'dehydrated fish',
+  'dehydrated herring',
+  'dehydrated mackerel',
+  'dehydrated sardine',
+  'dehydrated whitefish',
   'dried chicken',
   'dried beef',
+  'dried lamb',
+  'dried turkey',
 ] as const;
 
 // Functional Micronutrients (categorized for +1 bonus each, max 3)
@@ -192,10 +240,19 @@ export const NAMED_MEAT_SOURCES = [
   'turkey',
   'duck',
   'salmon',
-  'fish',
+  'herring',
+  'mackerel',
+  'sardine',
+  'hake',
+  'trout',
+  'whitefish',
   'venison',
   'bison',
   'pork',
+  'rabbit',
+  'kangaroo',
+  'wild boar',
+  'goat',
 ] as const;
 
 // Unnamed meat sources (poor quality)
@@ -250,8 +307,8 @@ export const CONFIDENCE_CRITERIA = {
 } as const;
 
 // Algorithm version for transparency
-export const ALGORITHM_VERSION = '2.2.0';
-export const LAST_UPDATED = '2026-01-10';
+export const ALGORITHM_VERSION = '3.1.0'; // Updated with Fresh/Raw bonuses and improved categorization
+export const LAST_UPDATED = '2026-01-16';
 
 // v2.2: Feature Flags for gradual rollout
 // IMPORTANT: Start with all flags FALSE for safe deployment

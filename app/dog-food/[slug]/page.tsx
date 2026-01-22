@@ -65,6 +65,20 @@ export default async function ProductPage({ params }: Props) {
     notFound();
   }
 
+  // Fetch structured ingredients (v3.0)
+  const { data: structuredIngredients } = await supabase
+    .from('product_ingredients')
+    .select('*')
+    .eq('product_id', typedProduct.id)
+    .order('position', { ascending: true });
+
+  // Fetch ingredient groups (for split detection)
+  const { data: ingredientGroups } = await supabase
+    .from('product_ingredient_groups')
+    .select('*')
+    .eq('product_id', typedProduct.id)
+    .eq('is_split_suspected', true);
+
   // Fetch related products
   const { data: relatedProductsData } = await supabase
     .from('products')
@@ -127,7 +141,12 @@ export default async function ProductPage({ params }: Props) {
             },
           ]}
         />
-        <ProductDetail product={typedProduct} relatedProducts={relatedProducts || []} />
+        <ProductDetail
+          product={typedProduct}
+          relatedProducts={relatedProducts || []}
+          structuredIngredients={structuredIngredients || []}
+          ingredientGroups={ingredientGroups || []}
+        />
       </main>
       <Footer />
     </div>

@@ -6,6 +6,7 @@ import { Brand, Product } from '@/types';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { IngredientEditor } from '@/components/admin/IngredientEditor';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -403,6 +404,14 @@ export default function EditProductPage({ params }: Props) {
             </div>
           </div>
         </div>
+
+        {/* Ingredient Analysis (v3.0) */}
+        {productId && formData.ingredients_raw && (
+          <IngredientEditor
+            productId={productId}
+            ingredientsRaw={formData.ingredients_raw}
+          />
+        )}
 
         {/* Submit Button */}
         <div className="flex gap-4 justify-end">

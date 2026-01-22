@@ -14,9 +14,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (productIds.length > 4) {
+    if (productIds.length > 3) {
       return NextResponse.json(
-        { error: 'Maximum 4 products can be compared' },
+        { error: 'Maximum 3 products can be compared' },
         { status: 400 }
       );
     }
@@ -31,9 +31,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(sortedProducts);
   } catch (error) {
-    console.error('API error:', error);
+    console.error('Compare API - Error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

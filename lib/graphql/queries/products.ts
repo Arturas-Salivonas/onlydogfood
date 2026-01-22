@@ -15,11 +15,39 @@ export const GET_HOME_PRODUCTS = gql`
         package_size_g
         price_gbp
         price_per_kg_gbp
+
+        # Nutritional data (needed for comparison)
+        protein_percent
+        fat_percent
+        fiber_percent
+        ash_percent
+        moisture_percent
+        carbs_percent
+        calories_per_100g
+
+        # Ingredients (needed for comparison)
+        ingredients_raw
+        ingredients_list
+        meat_content_percent
+
+        # Scoring (needed for comparison)
         overall_score
+        ingredient_score
+        nutrition_score
+        value_score
+        scoring_breakdown {
+          ingredient_score
+          nutrition_score
+          value_score
+          details
+        }
+
+        # Marketing
         is_sponsored
         sponsored_priority
         discount_code
         discount_description
+
         brand {
           id
           name

@@ -2,16 +2,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/layout/Container';
 import { FoodCard } from '@/components/ui/FoodCard';
-import { Product } from '@/types';
+import { Product, ProductIngredient, ProductIngredientGroup } from '@/types';
 import { formatPrice } from '@/lib/utils/format';
 import { ExternalLink, AlertTriangle, ChevronDown, ChevronRight, Shield, Info } from 'lucide-react';
 import { ProtectionIcon } from '@/components/ui/ProtectionIcon';
 import { getScoreGrade } from '@/scoring/calculator';
 import { HIGH_RISK_FILLERS, LOW_VALUE_CARBS, RED_FLAG_ADDITIVES, ARTIFICIAL_COLORS, ARTIFICIAL_PRESERVATIVES } from '@/scoring/config';
+import { ScoringDebugPanel } from '@/components/features/ScoringDebugPanel';
 
 interface ProductDetailProps {
   product: Product;
   relatedProducts: Product[];
+  structuredIngredients?: ProductIngredient[];
+  ingredientGroups?: ProductIngredientGroup[];
 }
 
 // Helper function to determine if product is safe first choice
@@ -377,12 +380,15 @@ function analyzeIngredients(product: Product) {
   return flags;
 }
 
-export function ProductDetail({ product, relatedProducts }: ProductDetailProps) {
+export function ProductDetail({ product, relatedProducts, structuredIngredients = [], ingredientGroups = [] }: ProductDetailProps) {
   const isSafe = isSafeFirstChoice(product);
   const scoreData = getScoreGrade(product.overall_score || 0);
   const scoreBreakdown = getScoreBreakdown(product);
   const ingredientFlags = analyzeIngredients(product);
   const scoreAnalysis = getScoreAnalysis(product);
+
+  // Use structured ingredients if available, otherwise fallback to raw text
+  const hasStructuredIngredients = structuredIngredients.length > 0;
 
   // Prepare breadcrumbs
   const breadcrumbs = [
@@ -802,7 +808,7 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
                 <div className="flex items-start gap-3">
                   <Shield className="w-5 h-5 text-[var(--color-trust)] flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-bold text-[var(--color-text-primary)] mb-2">Our scoring algorithm (v2.1.0)</div>
+                    <div className="font-bold text-[var(--color-text-primary)] mb-2">Our scoring algorithm (v3.0.0)</div>
                     <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-3">
                       We score dog food based on ingredient quality (45pts), nutrition (33pts), and value for money (22pts).
                       Penalties apply for poor processing, additives, and misleading protein claims. Red flags may cap ratings.
@@ -812,6 +818,11 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
                     </Link>
                   </div>
                 </div>
+              </div>
+
+              {/* Scoring Debug Panel */}
+              <div className="mt-6">
+                <ScoringDebugPanel product={product} />
               </div>
             </div>
           </div>
@@ -852,28 +863,123 @@ export function ProductDetail({ product, relatedProducts }: ProductDetailProps) 
                   </div>
                 )}
 
-                {product.ingredients_raw ? (
+                {product.ingredients_raw || hasStructuredIngredients ? (
                   <>
+                    {/* Ingredient Splitting Warning */}
+                    {product.has_ingredient_splitting && ingredientGroups.length > 0 && (
+                      <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div className="flex items-start gap-2">
+                          <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <h6 className="text-sm font-bold text-yellow-900 mb-1">Ingredient Splitting Detected</h6>
+                            <p className="text-xs text-yellow-800">
+                              This product splits ingredients to make them appear lower on the list.
+                              {ingredientGroups.map((group, idx) => (
+                                <span key={idx}> {group.group_type.replace(/-/g, ' ')} appears {group.ingredient_count}× separately.</span>
+                              ))}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Filler Stuffing Warning */}
+                    {product.has_filler_stuffing && (
+                      <div className="mb-4 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                        <div className="flex items-start gap-2">
+                          <AlertTriangle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <h6 className="text-sm font-bold text-orange-900 mb-1">Filler Stuffing Detected</h6>
+                            <p className="text-xs text-orange-800">
+                              This product contains an excessive number of low-quality filler ingredients at very small percentages.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Top 5 Ingredients */}
                     <div className="mb-4">
                       <h6 className="text-sm font-bold text-[var(--color-text-primary)] mb-2">Top 5 ingredients (most important)</h6>
                       <div className="flex flex-wrap gap-2">
-                        {product.ingredients_raw.split(/[,;]/).slice(0, 5).map((ing, i) => (
-                          <span key={i} className="px-3 py-1 bg-[var(--color-trust-bg)] text-[var(--color-trust)] rounded-full text-sm font-bold border border-[var(--color-trust)]">
-                            #{i+1} {ing.trim()}
-                          </span>
-                        ))}
+                        {hasStructuredIngredients ? (
+                          structuredIngredients.slice(0, 5).map((ing) => {
+                            const percentage = ing.percentage_declared ?? ing.percentage_estimated;
+                            const bgColor = ing.quality_tier === 'premium' ? 'bg-green-50 border-green-500 text-green-700' :
+                                          ing.quality_tier === 'filler' ? 'bg-red-50 border-red-500 text-red-700' :
+                                          ing.quality_tier === 'low-quality' ? 'bg-orange-50 border-orange-500 text-orange-700' :
+                                          'bg-[var(--color-trust-bg)] border-[var(--color-trust)] text-[var(--color-trust)]';
+
+                            return (
+                              <span key={ing.id} className={`px-3 py-1 rounded-full text-sm font-bold border ${bgColor}`}>
+                                #{ing.position} {ing.ingredient_name}
+                                {percentage && ` (${percentage.toFixed(1)}%)`}
+                              </span>
+                            );
+                          })
+                        ) : (
+                          product.ingredients_raw!.split(/[,;]/).slice(0, 5).map((ing, i) => (
+                            <span key={i} className="px-3 py-1 bg-[var(--color-trust-bg)] text-[var(--color-trust)] rounded-full text-sm font-bold border border-[var(--color-trust)]">
+                              #{i+1} {ing.trim()}
+                            </span>
+                          ))
+                        )}
                       </div>
                     </div>
 
                     {/* Full Ingredient List - Collapsible */}
                     <details className="group">
                       <summary className="cursor-pointer text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-trust)] transition-colors mb-2">
-                        View all ingredients
+                        View all ingredients {hasStructuredIngredients && `(${structuredIngredients.length} total)`}
                       </summary>
-                      <div className="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed p-3 bg-[var(--color-background-neutral)] rounded-lg">
-                        {product.ingredients_raw}
-                      </div>
+                      {hasStructuredIngredients ? (
+                        <div className="mt-2 space-y-1">
+                          <table className="w-full text-sm">
+                            <thead className="text-xs text-[var(--color-text-secondary)] border-b">
+                              <tr>
+                                <th className="text-left py-1">#</th>
+                                <th className="text-left py-1">Ingredient</th>
+                                <th className="text-right py-1">%</th>
+                                <th className="text-left py-1 pl-2">Type</th>
+                              </tr>
+                            </thead>
+                            <tbody className="text-[var(--color-text-secondary)]">
+                              {structuredIngredients.map((ing) => {
+                                const percentage = ing.percentage_declared ?? ing.percentage_estimated;
+                                const rowColor = ing.is_meat_source ? 'bg-green-50' :
+                                               ing.is_filler ? 'bg-red-50' :
+                                               ing.is_artificial ? 'bg-orange-50' : '';
+
+                                return (
+                                  <tr key={ing.id} className={rowColor}>
+                                    <td className="py-1 text-xs">{ing.position}</td>
+                                    <td className="py-1">
+                                      {ing.ingredient_name}
+                                      {ing.is_meat_source && ' 🥩'}
+                                      {ing.is_artificial && ' ⚠️'}
+                                    </td>
+                                    <td className="text-right py-1">
+                                      {percentage ? `${percentage.toFixed(1)}%` : '—'}
+                                      {ing.percentage_confidence === 'declared' && ' ✓'}
+                                    </td>
+                                    <td className="py-1 pl-2 text-xs">{ing.category}</td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                          {product.effective_meat_percent && (
+                            <div className="mt-3 p-2 bg-green-50 rounded text-xs">
+                              <strong>Effective meat content:</strong> {product.effective_meat_percent.toFixed(1)}%
+                              (moisture-adjusted for fresh ingredients)
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed p-3 bg-[var(--color-background-neutral)] rounded-lg">
+                          {product.ingredients_raw}
+                        </div>
+                      )}
                     </details>
                   </>
                   ) : (

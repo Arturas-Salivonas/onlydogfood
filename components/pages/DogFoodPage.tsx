@@ -60,7 +60,7 @@ export default function DogFoodPage() {
 
   // Initialize filters from URL parameters on mount
   useEffect(() => {
-    const urlCategory = searchParams.get('category');
+    const urlCategory = searchParams.get('category') as 'dry' | 'wet' | 'snack' | 'all' | null;
     const urlLifeStage = searchParams.get('lifeStage');
     const urlBreedSize = searchParams.get('breedSize');
     const urlPriceRange = searchParams.get('priceRange');

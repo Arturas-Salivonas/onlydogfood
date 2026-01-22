@@ -6,6 +6,20 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
 
+    // Check if fetching by slugs
+    const slugsParam = searchParams.get('slugs');
+    if (slugsParam) {
+      const slugs = slugsParam.split(',').filter(Boolean);
+      const cachedClient = getCachedSupabaseClient();
+      const products = await cachedClient.getProductsBySlugs(slugs);
+
+      return NextResponse.json({ data: products, total: products.length }, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        },
+      });
+    }
+
     // Parse query parameters
     const category = searchParams.get('category') || undefined;
     const brandId = searchParams.get('brandId') || undefined;

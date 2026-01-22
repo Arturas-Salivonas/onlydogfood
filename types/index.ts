@@ -62,6 +62,19 @@ export interface Product {
   ingredients_list: string[] | null;
   meat_content_percent: number | null;
 
+  // v3.0: Structured ingredient tracking
+  total_ingredients_count?: number | null;
+  ingredients_analyzed?: boolean | null;
+  declared_percentages_count?: number | null;
+  has_ingredient_splitting?: boolean | null;
+  has_filler_stuffing?: boolean | null;
+  effective_meat_percent?: number | null;
+  total_filler_percent?: number | null;
+
+  // v3.0: Related data (populated when needed)
+  structured_ingredients?: ProductIngredient[];
+  ingredient_groups?: ProductIngredientGroup[];
+
   // Scoring (v2.1)
   overall_score: number | null;
   ingredient_score: number | null;
@@ -101,6 +114,7 @@ export interface ScoringBreakdown {
   ingredientScore: number;
   nutritionScore: number;
   valueScore: number;
+  redFlags?: string[];
   details?: {
     // Ingredient scoring details
     effectiveMeatContent?: number;
@@ -108,18 +122,43 @@ export interface ScoringBreakdown {
     lowValueFillers?: number;
     highRiskFillerPenalty?: number;
     lowValueCarbPenalty?: number;
+    brownRicePenalty?: number;
+    grainFirstPenalty?: number;
+    grainHeavyPenalty?: number;
+    grainTop3Penalty?: number;
+    grainTop5Penalty?: number;
+    brownRiceFirstPenalty?: number;
+    brownRiceTop3Penalty?: number;
     noArtificialAdditives?: number;
     artificialAdditivePenalty?: number;
     redFlagAdditive?: number;
+    artificialColorPenalty?: number;
+    preservativePenalty?: number;
+    controversialAdditivePenalty?: number;
     namedMeatSources?: number;
     processingQuality?: number;
     processingPenalty?: number;
+    ingredientLevelBonus?: number;
+    ingredientBonusRaw?: number;
+    ingredientSplittingPenalty?: number;
+    fillerStuffingPenalty?: number;
+    excessiveIngredientsPenalty?: number;
 
     // Nutrition scoring details
     proteinQuality?: number;
     proteinIntegrityPenalty?: number;
+    proteinDiversity?: number;
+    proteinDiversityDetails?: {
+      diversity: string;
+      uniqueProteinTypes: number;
+      proteinSources?: string[];
+    };
+    plantProteinPenalty?: number;
     moderateFat?: number;
+    highFatPenalty?: number;
     lowCarbs?: number;
+    vegetableCarbsBonus?: number;
+    appropriateFiber?: number;
     fiberScore?: number;
     micronutrientScore?: number;
 
@@ -207,6 +246,160 @@ export interface RedFlagDetection {
   capStars: number;
   reason: string;
   matchedTokens: string[];
+}
+
+// ==============================================
+// v3.0: Structured Ingredient System
+// ==============================================
+
+export interface ProductIngredient {
+  id: string;
+  product_id: string;
+
+  // Position & Identification
+  position: number;
+  ingredient_name: string;
+  ingredient_normalized: string;
+
+  // Percentage Data
+  percentage_declared: number | null;
+  percentage_estimated: number | null;
+  percentage_confidence: 'declared' | 'estimated-high' | 'estimated-medium' | 'estimated-low' | 'unknown';
+
+  // Classification
+  category: 'meat' | 'meal' | 'grain' | 'vegetable' | 'fruit' | 'fat' | 'additive' | 'supplement' | 'other' | null;
+  subcategory: string | null;
+  quality_tier: 'premium' | 'standard' | 'low-quality' | 'filler' | 'unknown' | null;
+
+  // Flags
+  is_meat_source: boolean;
+  is_protein_source: boolean;
+  is_filler: boolean;
+  is_artificial: boolean;
+  is_controversial: boolean;
+
+  // Additional metadata
+  notes: string | null;
+  manually_verified: boolean;
+
+  // Timestamps
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IngredientGroupMember {
+  id: string;
+  name: string;
+  percentage: number | null;
+  position: number;
+}
+
+export interface ProductIngredientGroup {
+  id: string;
+  product_id: string;
+
+  // Group identification
+  group_type: string;
+  group_category: string;
+
+  // Aggregated data
+  total_percentage: number | null;
+  ingredient_count: number;
+  highest_position: number;
+  average_position: number | null;
+
+  // Individual members
+  member_ingredients: IngredientGroupMember[];
+
+  // Split detection flags
+  is_split_suspected: boolean;
+  split_severity: 'none' | 'mild' | 'moderate' | 'severe' | null;
+
+  // Timestamps
+  created_at: string;
+  updated_at: string;
+}
+
+// v3.0: Enhanced meat content analysis
+export interface MeatContentAnalysisV3 {
+  totalDeclaredMeat: number;
+  totalEstimatedMeat: number;
+
+  // Fresh meat moisture adjustment
+  freshMeatRaw: number;
+  freshMeatAdjusted: number;
+
+  // Meal/dehydrated (concentrated)
+  mealMeatRaw: number;
+  mealMeatAdjusted: number;
+
+  // Combined true meat content
+  effectiveMeatProtein: number;
+
+  // Split detection
+  meatSourceCount: number;
+  meatSources: ProductIngredient[];
+  isSplitSuspected: boolean;
+  splitPenalty: number;
+}
+
+// v3.0: Enhanced filler analysis
+export interface FillerAnalysisV3 {
+  totalFillerCount: number;
+  highRiskFillerCount: number;
+  lowValueCarbCount: number;
+
+  // Percentage Analysis
+  totalFillerPercentage: number;
+  fillerStuffingDetected: boolean;
+
+  // Position Analysis
+  fillersInTop5: number;
+  fillersInTop10: number;
+  fillersAfter10: number;
+
+  // Cumulative Impact
+  fillerDensity: number;
+
+  // Details
+  fillerIngredients: ProductIngredient[];
+}
+
+// v3.0: Protein source analysis
+export interface ProteinSourceAnalysisV3 {
+  totalProtein: number;
+
+  // Source breakdown
+  proteinFromMeat: number;
+  proteinFromPlantProtein: number;
+  proteinFromGluten: number;
+  proteinFromOther: number;
+
+  // Quality metrics
+  animalProteinRatio: number;
+  meatQualityScore: number;
+
+  // Integrity check
+  hasProteinSpiking: boolean;
+}
+
+// v3.0: Absolute quantities per package
+export interface AbsoluteQuantitiesV3 {
+  packageSize: number;
+
+  // Per package
+  totalMeatGrams: number;
+  totalProteinGrams: number;
+  totalFillerGrams: number;
+
+  // Per serving (400g for medium dog)
+  meatPerServing: number;
+  proteinPerServing: number;
+
+  // Comparisons
+  daysOfFood: number;
+  totalServings: number;
+  valuePerServing: number;
 }
 
 // v2.2: Confidence breakdown

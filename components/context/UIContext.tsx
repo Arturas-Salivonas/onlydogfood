@@ -56,7 +56,7 @@ function uiReducer(state: UIState, action: UIAction): UIState {
         filters: initialState.filters,
       };
     case 'ADD_TO_COMPARISON':
-      if (state.comparisonItems.length >= 4) return state; // Max 4 items
+      if (state.comparisonItems.length >= 3) return state; // Max 3 items
       if (state.comparisonItems.includes(action.payload)) return state;
       return {
         ...state,
@@ -183,6 +183,3 @@ export function useComparison() {
     canAddMore: state.comparisonItems.length < 4,
   };
 }
-
-
-

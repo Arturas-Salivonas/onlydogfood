@@ -1,0 +1,1978 @@
+================================================================================
+        ONLYDOGFOOD.COM - COMPLETE SCORING SYSTEM DOCUMENTATION
+                    OFFICIAL AUDIT DOCUMENT v3.1.0
+                        Updated: January 19, 2026
+================================================================================
+
+TABLE OF CONTENTS
+-----------------
+1. EXECUTIVE SUMMARY
+2. OVERALL SCORE CALCULATION (100 POINTS)
+3. INGREDIENT QUALITY SECTION (45 POINTS)
+4. NUTRITIONAL VALUE SECTION (33 POINTS)
+5. VALUE FOR MONEY SECTION (22 POINTS)
+6. COMPLETE INGREDIENT DATABASE
+7. INGREDIENT COMPARISON EXAMPLES
+8. PENALTY SYSTEM BREAKDOWN
+9. BONUS SYSTEM BREAKDOWN
+10. RED FLAG DETECTION
+11. CALCULATION EXAMPLES
+
+
+================================================================================
+1. EXECUTIVE SUMMARY
+================================================================================
+
+Algorithm Version: 3.1.0
+Last Updated: January 19, 2026
+Total Possible Score: 100 points
+
+PURPOSE:
+This algorithm provides an objective, research-based scoring system for dog
+food products based on ingredient quality, nutritional value, and price
+competitiveness.
+
+CORE PRINCIPLES:
+- Prioritize named, whole meat sources over generic proteins
+- Reward protein diversity (multiple animal sources)
+- Penalize grain-heavy formulas (high glycemic index)
+- Reward fresh/raw and dehydrated meats (transparency & quality)
+- Penalize artificial additives and controversial ingredients
+- Account for price-to-quality ratio
+
+
+================================================================================
+2. OVERALL SCORE CALCULATION (100 POINTS)
+================================================================================
+
+SCORE COMPONENTS:
+
+Component                    | Max Points | Weight  | Description
+-----------------------------|-----------|---------|---------------------------
+Ingredient Quality           | 45        | 45%     | Meat content, diversity,
+                            |           |         | fillers, additives
+Nutritional Value            | 33        | 33%     | Protein, fat, carbs, fiber
+Value for Money              | 22        | 22%     | Price competitiveness
+-----------------------------|-----------|---------|---------------------------
+TOTAL                        | 100       | 100%    |
+
+
+RATING SCALE:
+
+Score Range  | Rating              | Interpretation
+-------------|---------------------|----------------------------------------
+90-100       | ★★★★★ Exceptional  | Premium quality, worth the investment
+80-89        | ★★★★ Excellent     | High quality, excellent choice
+70-79        | ★★★ Good           | Good quality, solid option
+60-69        | ★★ Fair            | Acceptable but room for improvement
+50-59        | ★ Poor             | Low quality, consider alternatives
+0-49         | ☆ Very Poor        | Not recommended
+
+
+================================================================================
+3. INGREDIENT QUALITY SECTION (45 POINTS)
+================================================================================
+
+SUBSECTION BREAKDOWN:
+
+A) Effective Meat Content               : 15 points maximum
+B) Protein Source Diversity             : 5 points maximum
+C) Low-Value Fillers & Carbohydrates    : 10 points maximum
+D) Artificial Additives & Preservatives : 10 points maximum
+E) Named Animal Sources                 : 5 points maximum
+F) Ingredient-Level Bonus/Penalty       : ±7 points (capped)
+
+Additional Quality Adjustments:
+- Ingredient Splitting Penalty          : -5 points
+- Filler Stuffing Penalty               : -4 points
+- Excessive Ingredients Penalty         : -3 points
+
+
+---[ A) EFFECTIVE MEAT CONTENT (15 POINTS) ]---
+
+SCORING METHODOLOGY:
+Uses effective_meat_percent (moisture-adjusted) or meat_content_percent
+
+Meat Content %    | Base Points | Description
+------------------|-------------|------------------------------------------
+≥ 50%             | 15.0        | Excellent - premium meat content
+40-49%            | 13.0-14.9   | Very Good - substantial meat
+30-39%            | 10.0-12.9   | Good - adequate meat content
+20-29%            | 6.0-9.9     | Fair - minimal acceptable
+< 20%             | 0.0-5.9     | Poor - insufficient meat
+
+
+FRESH/RAW MEAT BONUS: +1 point
+Awarded when ingredient list contains:
+- "Fresh [Animal]" (e.g., Fresh Chicken, Fresh Beef, Fresh Salmon)
+- "Raw [Animal]" (e.g., Raw Turkey, Raw Whole Herring)
+- "Deboned [Animal]" (e.g., Deboned Chicken, Deboned Lamb)
+
+WHY: Indicates manufacturer transparency and commitment to whole food
+ingredients rather than generic terms
+
+
+CONCENTRATED PROTEIN BONUS: +1 point
+Awarded when ingredient list contains:
+- "Dehydrated [Animal]" (e.g., Dehydrated Chicken, Dehydrated Turkey)
+- "Dried [Animal]" (e.g., Dried Salmon, Dried Beef)
+
+WHY: Dehydrated meats contain 300% more protein than fresh meats (water
+removed), providing superior protein density
+
+NOTE: Cannot receive both bonuses - whichever applies first
+
+
+AMBIGUOUS NOTATION PENALTY: -2 points
+Penalizes confusing ingredient names such as:
+- "Chicken (Chicken Meal)" - unclear which one it is
+- "Liver (Heart)" - two ingredients or one?
+- "Fish (Salmon)" - why parentheses?
+
+WHY: Red flag for manufacturer attempting to manipulate ingredient order
+
+
+---[ B) PROTEIN SOURCE DIVERSITY (5 POINTS) ]---
+
+SCORING BASED ON VARIETY:
+
+Diversity Level    | Requirements                | Points | Description
+-------------------|----------------------------|--------|------------------
+Exceptional        | 3+ types, 6+ sources       | 5      | Orijen-level
+Excellent          | 3+ types, 4-5 sources      | 4      | Very diverse
+Good               | 2 types, 3+ sources        | 3      | Good variety
+Moderate           | 2 types OR 2 sources       | 2      | Some variety
+Single-Source      | 1 source only              | 0      | No diversity
+
+
+PROTEIN TYPE CATEGORIES:
+
+Type          | Examples
+--------------|--------------------------------------------------------
+Poultry       | Chicken, Turkey, Duck, Goose, Quail, Pheasant
+Red Meat      | Beef, Lamb, Venison, Bison, Pork, Wild Boar, Kangaroo
+Fish          | Salmon, Herring, Mackerel, Sardine, Trout, Hake, Cod
+Eggs          | Whole Eggs, Egg Powder, Dried Egg
+Novel         | Insect, Rabbit, Ostrich
+
+
+EXAMPLE CALCULATION:
+
+Product with: Fresh Chicken, Turkey Meal, Salmon, Herring, Eggs
+- Protein Types: 3 (Poultry, Fish, Eggs)
+- Total Sources: 5 (chicken, turkey, salmon, herring, egg)
+- Result: EXCELLENT = 4 points
+
+
+---[ C) LOW-VALUE FILLERS & CARBOHYDRATES (10 POINTS) ]---
+
+STARTING SCORE: 10 points (deductions applied)
+
+
+HIGH-RISK FILLERS: -2 points each
+- Corn Gluten Meal
+- Wheat Gluten
+- Soy Protein Isolate
+- By-Product (any type)
+- Poultry By-Product
+- Meat By-Product
+
+WHY: These artificially inflate protein percentages without providing
+quality animal protein
+
+
+LOW-VALUE CARBS: -2 points each (INCREASED from -1 in v3.0)
+- White Rice
+- Maize / Corn
+- Wheat
+- Ground Corn/Maize
+
+WHY: High glycemic index, minimal nutritional value, cheap fillers
+
+
+BROWN RICE: -1 point each occurrence
+- Brown Rice
+- Whole Brown Rice
+- Wholegrain Brown Rice
+
+WHY: Whole grain but still high glycemic index, acceptable in moderation
+
+
+GRAIN POSITION PENALTIES (SEVERE):
+These stack with the above penalties:
+
+Position                           | Penalty  | Example
+----------------------------------|----------|---------------------------
+HIGH-GI grain as #1 ingredient    | -8 pts   | "Maize, Chicken Meal..."
+Multiple HIGH-GI grains in top 5  | -7 pts   | "Chicken, Rice, Corn..."
+HIGH-GI grain in position 2-3     | -5 pts   | "Chicken, Maize, Rice..."
+HIGH-GI grain in position 4-5     | -3 pts   | "Chicken, Beef, Rice..."
+Brown rice as #1 ingredient       | -4 pts   | "Brown Rice, Chicken..."
+Brown rice in position 2-3        | -2 pts   | "Chicken, Brown Rice..."
+
+
+EXAMPLE CALCULATION:
+
+Ingredients: "Chicken Meal, Brown Rice, Maize, Beet Pulp..."
+- Base Score: 10 points
+- Low-value carb penalty (maize): -2 points
+- Brown rice penalty: -1 point
+- Multiple grains in top 5: -7 points
+- FINAL SCORE: 0 points (minimum floor applied)
+
+
+---[ D) ARTIFICIAL ADDITIVES & PRESERVATIVES (10 POINTS) ]---
+
+STARTING SCORE: 10 points (deductions applied)
+
+
+RED FLAG ADDITIVES: Automatic 0 points for entire subsection
+- Ethoxyquin (banned in some countries)
+- Propylene Glycol (antifreeze component)
+
+WHY: Linked to serious health concerns, unacceptable in any dog food
+
+
+ARTIFICIAL COLORS: Automatic 0 points for entire subsection
+- Red 40, Yellow 5, Yellow 6, Blue 2
+- Artificial Color/Colour
+- Caramel Color
+- Ferrous Oxide (coloring)
+
+WHY: No nutritional value, potential allergens, purely cosmetic
+
+
+ARTIFICIAL PRESERVATIVES: Graduated penalties
+First preservative: -3 points
+Each additional: -2 points
+≥3 preservatives: Automatic 0 points
+
+Preservatives in this category:
+- BHA (Butylated Hydroxyanisole)
+- BHT (Butylated Hydroxytoluene)
+- TBHQ (Tertiary Butylhydroquinone)
+- Propyl Gallate
+
+WHY: Controversial safety profile, natural alternatives exist
+
+
+CONTROVERSIAL ADDITIVES: -3 points each
+- Carrageenan (digestive issues)
+- Guar Gum (can cause bloating)
+- Xanthan Gum
+- Sodium Selenite (toxic in high doses)
+- Menadione (synthetic Vitamin K)
+
+WHY: Legal but linked to digestive problems in sensitive dogs
+
+
+---[ E) NAMED ANIMAL SOURCES (5 POINTS) ]---
+
+SCORING:
+
+Ingredient Profile                      | Points | Example
+----------------------------------------|--------|------------------------
+All named sources, no generic           | 5.0    | "Chicken Meal, Salmon"
+Mix of named + generic                  | 2.5    | "Chicken, Meat Meal"
+Only generic/unnamed sources            | 0.0    | "Meat Meal, Poultry"
+
+
+NAMED SOURCES (GOOD):
+- Chicken, Beef, Lamb, Turkey, Duck, Salmon, Herring, etc.
+- Specific animal clearly identified
+
+
+UNNAMED SOURCES (BAD):
+- "Meat Meal" - what animal?
+- "Poultry Meal" - chicken? turkey? both?
+- "Animal Protein" - completely generic
+- "Fish Meal" - what type of fish?
+- "Game" - what species?
+
+WHY: Named sources ensure traceability and quality control
+
+
+---[ F) INGREDIENT-LEVEL BONUS/PENALTY (±7 POINTS MAX) ]---
+
+Detailed analysis of each ingredient based on ingredient-scoring.json
+Raw score calculated, then CAPPED to ±7 points to prevent extreme swings
+
+
+POSITIVE INGREDIENTS (examples):
+
+Category                    | Points | Examples
+----------------------------|--------|--------------------------------
+Concentrated Meat Meals     | +4     | Chicken Meal, Salmon Meal
+Premium Fish Proteins       | +4     | Whole Herring, Mackerel
+Premium Fresh Meats         | +3     | Fresh Chicken, Raw Turkey
+Organ Meats                 | +3     | Chicken Liver, Beef Heart
+Whole Eggs                  | +3     | Whole Eggs, Dried Egg
+Omega Fatty Acids           | +2     | Salmon Oil, Fish Oil
+Joint Support               | +2     | Glucosamine, Chondroitin
+Probiotics/Prebiotics       | +2     | FOS, MOS, Lactobacillus
+Superfoods                  | +2     | Blueberries, Turmeric
+Premium Vegetables          | +1     | Sweet Potato, Pumpkin
+Natural Preservatives       | +1     | Tocopherols, Rosemary Extract
+Amino Acids                 | +1     | Taurine, L-Carnitine
+Beneficial Herbs            | +1     | Milk Thistle, Yucca
+Seaweed/Kelp                | +1     | Kelp, Ascophyllum Nodosum
+Beneficial Oils/Fats        | +1     | Coconut Oil, Olive Oil
+Named Animal Fats           | +1     | Chicken Fat, Salmon Fat
+Fruits                      | +1     | Apples, Cranberries
+Yeast Products              | +1     | Brewers Yeast
+
+
+NEGATIVE INGREDIENTS (examples):
+
+Category                    | Points | Examples
+----------------------------|--------|--------------------------------
+Artificial Colors           | -7     | Red 40, Yellow 5, Caramel Color
+Red Flag Preservatives      | -7     | BHA, BHT, Ethoxyquin
+High-Risk Fillers           | -5     | Corn Gluten, By-Products
+Sugar/Sweeteners            | -5     | Sugar, Corn Syrup, Molasses
+Unnamed Proteins            | -4     | Meat Meal, Poultry Meal
+Low-Value Grains            | -3     | White Rice, Maize, Corn
+Controversial Additives     | -3     | Carrageenan, Guar Gum
+Blood Meal/Plasma           | -3     | Blood Meal, Plasma Powder
+Fiber Fillers               | -2     | Beet Pulp, Cellulose
+Unnamed Fats                | -2     | Animal Fat, Poultry Fat
+Digest/Hydrolysates         | -2     | Animal Digest, Hydrolysate
+Quality Grains              | -0.5   | Oats, Barley (not bad but neutral)
+Brown Rice                  | -1     | Brown Rice
+Legumes/Beans               | 0      | Chickpeas, Lentils (neutral)
+Neutral Starches            | 0      | Potato, Tapioca
+Minerals/Supplements        | 0      | Vitamins, Minerals
+
+
+EXAMPLE CALCULATION:
+
+Ingredients found:
++4 Chicken Meal
++3 Fresh Chicken
++2 Salmon Oil
++2 Glucosamine
++1 Sweet Potato
++1 Blueberries
+-1 Brown Rice
+-3 Beet Pulp
+---
+= +9 points (raw)
+
+CAPPED TO: +7 points (maximum allowed)
+
+
+================================================================================
+4. NUTRITIONAL VALUE SECTION (33 POINTS)
+================================================================================
+
+SUBSECTION BREAKDOWN:
+
+A) Protein Quality    : 15 points maximum
+B) Fat Content        : 8 points maximum
+C) Carbohydrate Load  : 7 points maximum
+D) Fiber & Micros     : 3 points maximum
+
+
+---[ A) PROTEIN QUALITY (15 POINTS) ]---
+
+OPTIMAL RANGE: 22-32% protein (as-fed basis)
+
+Protein %       | Base Points | Description
+----------------|-------------|------------------------------------
+28-32%          | 15.0        | Optimal - ideal for most dogs
+25-27%          | 13.5-14.9   | Very Good
+22-24%          | 12.0-13.4   | Good
+32-35%          | 12.0-14.0   | Good (slightly high)
+38-40%          | 10.0-12.0   | Acceptable (very high)
+20-21%          | 10.0-11.9   | Minimum acceptable
+> 40%           | 8.0-10.0    | Too high for average dog
+< 20%           | 5.0-8.0     | Insufficient
+
+
+PLANT PROTEIN PENALTY:
+If product contains significant plant protein (pea protein, soy, etc.)
+AND has low meat content (< 30%):
+
+Penalty = (Plant Protein % ÷ 10) × -1
+Maximum penalty: -3 points
+
+Example: 15% pea protein = -1.5 point penalty
+
+WHY: Plant proteins are incomplete, lack essential amino acids
+
+
+---[ B) FAT CONTENT (8 POINTS) ]---
+
+OPTIMAL RANGE: 10-15% fat
+
+Fat %           | Points | Description
+----------------|--------|---------------------------------------
+10-15%          | 8.0    | Optimal range
+8-9%            | 6.5    | Slightly low
+16-18%          | 6.0    | Slightly high
+6-7%            | 5.0    | Low
+19-20%          | 4.0    | High
+> 20%           | 2.0    | Very high (obesity risk)
+< 6%            | 3.0    | Too low
+
+
+---[ C) CARBOHYDRATE LOAD (7 POINTS) ]---
+
+OPTIMAL: < 30% carbohydrates (calculated or declared)
+
+Carbs %         | Points | Description
+----------------|--------|---------------------------------------
+< 20%           | 7.0    | Excellent - low carb
+20-25%          | 6.0    | Very Good
+26-30%          | 5.0    | Good
+31-35%          | 4.0    | Moderate
+36-40%          | 3.0    | High
+41-50%          | 2.0    | Very High
+> 50%           | 1.0    | Excessive
+
+
+VEGETABLE CARBS BONUS: +1 point
+If primary carb sources are vegetables (sweet potato, pumpkin, peas)
+rather than grains
+
+WHY: Vegetable carbs provide fiber, vitamins, minerals vs empty calories
+
+
+---[ D) FIBER & MICRONUTRIENTS (3 POINTS) ]---
+
+FIBER SCORING (2 points max):
+
+Fiber %         | Points | Description
+----------------|--------|---------------------------------------
+3-5%            | 2.0    | Optimal range
+2-2.9%          | 1.5    | Acceptable
+5.1-6%          | 1.5    | Slightly high but OK
+< 2%            | 1.0    | Low
+> 6%            | 1.0    | High
+
+
+MICRONUTRIENT BONUS (1 point max):
+Based on presence of beneficial functional ingredients:
+- Omega-3 sources (fish oil, salmon oil)
+- Joint support (glucosamine, chondroitin)
+- Probiotics/Prebiotics (FOS, MOS, probiotics)
+- Antioxidants (vitamin E, selenium)
+
+
+================================================================================
+5. VALUE FOR MONEY SECTION (22 POINTS)
+================================================================================
+
+SUBSECTION BREAKDOWN:
+
+A) Price Competitiveness : 15 points maximum
+B) Ingredient Value      : 7 points maximum
+
+
+---[ A) PRICE COMPETITIVENESS (15 POINTS) ]---
+
+Compares product's price per kg against category average
+
+Price vs Category Avg  | Points | Description
+-----------------------|--------|----------------------------------
+≤ 60% of average       | 15.0   | Exceptional value
+61-80% of average      | 13.0   | Excellent value
+81-95% of average      | 11.0   | Good value
+96-110% of average     | 9.0    | Fair value
+111-130% of average    | 7.0    | Slightly expensive
+131-150% of average    | 5.0    | Expensive
+> 150% of average      | 3.0    | Very expensive
+
+
+---[ B) INGREDIENT VALUE (7 POINTS) ]---
+
+Quality-adjusted value score
+Considers ingredient quality relative to price
+
+High quality + low price    = 7 points
+High quality + fair price   = 5-6 points
+Medium quality + low price  = 4-5 points
+Medium quality + fair price = 3-4 points
+Low quality + any price     = 1-2 points
+
+
+================================================================================
+6. COMPLETE INGREDIENT DATABASE
+================================================================================
+
+The following database contains ALL ingredients recognized by the system
+with their point values and categorizations.
+
+Format: [CATEGORY NAME] (Point Value) - Description
+        - ingredient name (point value if different from category)
+
+
+---[ PREMIUM PROTEIN SOURCES ]---
+
+[CONCENTRATED_MEAT_MEALS] (+4 points)
+Description: Dehydrated/meal proteins - 300% more protein than fresh meats
+Ingredients:
+  - chicken meal (+4)
+  - beef meal (+4)
+  - lamb meal (+4)
+  - turkey meal (+4)
+  - duck meal (+4)
+  - salmon meal (+4)
+  - herring meal (+4)
+  - anchovy meal (+4)
+  - mackerel meal (+4)
+  - trout meal (+4)
+  - venison meal (+4)
+  - bison meal (+4)
+  - pork meal (+4)
+  - dehydrated chicken (+4)
+  - dehydrated beef (+4)
+  - dehydrated lamb (+4)
+  - dehydrated turkey (+4)
+  - dehydrated duck (+4)
+  - dehydrated salmon (+4)
+  - dehydrated fish (+4)
+  - dehydrated herring (+4)
+  - dehydrated pork (+4)
+  - dehydrated mackerel (+4)
+  - dehydrated sardine (+4)
+  - dehydrated whitefish (+4)
+  - dried chicken (+4)
+  - dried beef (+4)
+  - dried lamb (+4)
+  - dried turkey (+4)
+  - dried duck (+4)
+  - dried salmon (+4)
+  - dried fish (+4)
+  - dried herring (+4)
+  - dried rabbit (+4)
+  - dried insect protein (+4)
+
+
+[PREMIUM_FRESH_MEATS] (+3 points)
+Description: Fresh whole meats - 70% moisture, excellent quality
+Ingredients:
+  - fresh chicken (+3)
+  - fresh beef (+3)
+  - fresh lamb (+3)
+  - fresh turkey (+3)
+  - fresh duck (+3)
+  - fresh salmon (+3)
+  - fresh trout (+3)
+  - fresh venison (+3)
+  - fresh bison (+3)
+  - fresh rabbit (+3)
+  - fresh kangaroo (+3)
+  - fresh wild boar (+3)
+  - fresh ostrich (+3)
+  - fresh goat (+3)
+  - fresh pork (+3)
+  - fresh reindeer (+3)
+  - fresh quail (+3)
+  - fresh pheasant (+3)
+  - fresh goose (+3)
+  - fresh guinea fowl (+3)
+  - deboned chicken (+3)
+  - deboned beef (+3)
+  - deboned lamb (+3)
+  - deboned turkey (+3)
+  - deboned salmon (+3)
+  - deboned white fish (+3)
+  - chicken breast (+3)
+  - chicken meat (+3)
+  - beef muscle meat (+3)
+  - lamb meat (+3)
+  - turkey meat (+3)
+  - duck meat (+3)
+  - freshly prepared chicken (+3)
+  - freshly prepared beef (+3)
+  - freshly prepared lamb (+3)
+  - freshly prepared turkey (+3)
+  - freshly prepared salmon (+3)
+  - freshly prepared duck (+3)
+  - freshly prepared venison (+3)
+  - freshly prepared wild boar (+3)
+  - freshly prepared rabbit (+3)
+  - freshly prepared kangaroo (+3)
+  - freshly prepared goat (+3)
+  - raw whole herring (+3)
+  - raw turkey (+3)
+  - raw whole hake (+3)
+  - raw whole mackerel (+3)
+  - raw turkey liver (+3)
+
+
+[PREMIUM_FISH_PROTEINS] (+4 points)
+Description: Whole fish sources - rich in omega-3s
+Ingredients:
+  - whole herring (+4)
+  - whole mackerel (+4)
+  - whole sardine (+4)
+  - whole hake (+4)
+  - whole anchovies (+4)
+  - salmon (+4)
+  - trout (+4)
+  - whitefish (+4)
+  - cod (+4)
+  - haddock (+4)
+  - pollock (+4)
+
+
+[ORGAN_MEATS] (+3 points)
+Description: Nutrient-dense organs - nature's multivitamin
+Ingredients:
+  - chicken liver (+3)
+  - beef liver (+3)
+  - lamb liver (+3)
+  - turkey liver (+3)
+  - duck liver (+3)
+  - pork liver (+3)
+  - chicken heart (+3)
+  - beef heart (+3)
+  - lamb heart (+3)
+  - turkey heart (+3)
+  - duck heart (+3)
+  - chicken kidney (+3)
+  - beef kidney (+3)
+  - lamb kidney (+3)
+  - beef spleen (+3)
+  - lamb spleen (+3)
+  - chicken gizzard (+3)
+  - turkey gizzard (+3)
+  - duck gizzard (+3)
+  - beef lung (+3)
+  - lamb lung (+3)
+  - chicken lung (+3)
+  - beef tripe (+3)
+  - lamb tripe (+3)
+  - green tripe (+3)
+  - liver (+3)
+  - heart (+3)
+  - kidney (+3)
+  - spleen (+3)
+  - lung (+3)
+  - tripe (+3)
+  - offal (+3)
+  - organ meat (+3)
+  - chicken giblets (+3)
+  - giblets (+3)
+
+
+[WHOLE_EGGS] (+3 points)
+Description: Complete protein, all essential amino acids, 94% digestible
+Ingredients:
+  - whole egg (+3)
+  - whole eggs (+3)
+  - fresh whole egg (+3)
+  - fresh eggs (+3)
+  - dried whole egg (+3)
+  - dehydrated whole egg (+3)
+  - egg (+3)
+  - eggs (+3)
+  - free range egg (+3)
+  - organic egg (+3)
+  - egg powder (+3)
+
+
+---[ BENEFICIAL SUPPLEMENTS ]---
+
+[OMEGA_FATTY_ACIDS] (+2 points)
+Description: Essential omega-3 and omega-6 for skin, coat, brain, joints
+Ingredients:
+  - salmon oil (+2)
+  - fish oil (+2)
+  - cod liver oil (+2)
+  - herring oil (+2)
+  - anchovy oil (+2)
+  - krill oil (+2)
+  - pollock oil (+2)
+  - flaxseed oil (+2)
+  - flax seed oil (+2)
+  - linseed oil (+2)
+  - hemp seed oil (+2)
+  - hemp oil (+2)
+  - algal oil (+2)
+  - dha (+2)
+  - dha dried algae (+2)
+  - epa (+2)
+  - omega 3 oil (+2)
+  - omega-3 extract (+2)
+  - cold pressed salmon oil (+2)
+  - cold pressed fish oil (+2)
+  - norwegian salmon oil (+2)
+  - scottish salmon oil (+2)
+  - atlantic salmon oil (+2)
+  - wild salmon oil (+2)
+  - algae omega 3 powder (+2)
+  - algae oil (+2)
+
+
+[JOINT_SUPPORT] (+2 points)
+Description: Glucosamine, chondroitin, natural joint support
+Ingredients:
+  - glucosamine (+2)
+  - glucosamine hcl (+2)
+  - glucosamine hydrochloride (+2)
+  - glucosamine sulfate (+2)
+  - d-glucosamine hydrochloride (+2)
+  - glucosamine-hci (+2)
+  - glucosamine-hcl (+2)
+  - chondroitin (+2)
+  - chondroitin sulfate (+2)
+  - chondroitin sulfate and collagen (+2)
+  - green lipped mussel (+2)
+  - green-lipped mussel (+2)
+  - new zealand green lipped mussel (+2)
+  - green lipped mussel extract (+2)
+  - green lipped mussel powder (+2)
+  - dried green lipped mussels (+2)
+  - mussel meat extract from perna canaliculus (+2)
+  - msm (+2)
+  - methylsulfonylmethane (+2)
+  - methyl sulphonyl methane (+2)
+  - collagen (+2)
+  - collagen hydrolysate (+2)
+  - cartilage (+2)
+  - cartilage hydrolysate (+2)
+  - chicken cartilage (+2)
+  - beef cartilage (+2)
+
+
+[PROBIOTICS_PREBIOTICS] (+2 points)
+Description: Gut health support - beneficial bacteria and prebiotic fibers
+Ingredients:
+  - probiotic (+2)
+  - lactobacillus (+2)
+  - lactobacillus acidophilus (+2)
+  - lactobacillus helveticus (+2)
+  - bifidobacterium (+2)
+  - enterococcus faecium (+2)
+  - e faecium (+2)
+  - bacillus velezensis (+2)
+  - prebiotic (+2)
+  - chicory root (+2)
+  - chicory root extract (+2)
+  - chicory inulin (+2)
+  - inulin (+2)
+  - inulin from chicory (+2)
+  - fructooligosaccharides (+2)
+  - fructo-oligosaccharides (+2)
+  - fos (+2)
+  - mannanoligosaccharides (+2)
+  - mannan-oligosaccharides (+2)
+  - mos (+2)
+  - fermented whey (+2)
+  - yeast cell walls (+2)
+  - dried yeast extract (+2)
+  - beta glucans (+2)
+  - beta-glucans (+2)
+  - pre-biotic fructo-oligosaccharide (+2)
+  - pre-biotic mannan oligosaccharides (+2)
+
+
+[SUPERFOODS_ANTIOXIDANTS] (+2 points)
+Description: Antioxidant and anti-inflammatory properties
+Ingredients:
+  - blueberries (+2)
+  - blueberry (+2)
+  - cranberries (+2)
+  - cranberry (+2)
+  - blackberries (+2)
+  - blackberry (+2)
+  - raspberries (+2)
+  - raspberry (+2)
+  - strawberries (+2)
+  - strawberry (+2)
+  - bilberries (+2)
+  - bilberry (+2)
+  - acai (+2)
+  - acai berry (+2)
+  - goji berries (+2)
+  - goji berry (+2)
+  - aronia (+2)
+  - aronia berries (+2)
+  - pomegranate (+2)
+  - pomegranate extract (+2)
+  - acerola (+2)
+  - acerola cherry (+2)
+  - kale (+2)
+  - spinach (+2)
+  - broccoli (+2)
+  - chard (+2)
+  - watercress (+2)
+  - spirulina (+2)
+  - turmeric (+2)
+  - curcumin (+2)
+  - green tea (+2)
+  - green tea extract (+2)
+  - ashwagandha (+2)
+  - ginger (+2)
+  - cinnamon (+2)
+  - rosemary extract (+2)
+  - cranberry extract (+2)
+  - saskatoon berries (+2)
+  - whole cranberries (+2)
+  - whole blueberries (+2)
+  - whole saskatoon berries (+2)
+
+
+---[ VEGETABLES, FRUITS, BENEFICIAL INGREDIENTS ]---
+
+[PREMIUM_VEGETABLES] (+1 point)
+Description: Fiber, vitamins, minerals, antioxidants
+Ingredients:
+  - sweet potato (+1)
+  - sweet potatoes (+1)
+  - butternut squash (+1)
+  - pumpkin (+1)
+  - whole pumpkin (+1)
+  - asparagus (+1)
+  - brussels sprouts (+1)
+  - carrots (+1)
+  - carrot (+1)
+  - whole carrots (+1)
+  - parsnips (+1)
+  - parsnip (+1)
+  - beets (+1)
+  - beetroot (+1)
+  - beet greens (+1)
+  - peas (+1)
+  - green pea (+1)
+  - garden pea (+1)
+  - whole peas (+1)
+  - lentil (+1)
+  - red lentil (+1)
+  - green lentil (+1)
+  - whole red lentils (+1)
+  - whole green lentils (+1)
+  - zucchini (+1)
+  - whole zucchini (+1)
+  - courgette (+1)
+  - cucumber (+1)
+  - celery (+1)
+  - fresh kale (+1)
+  - fresh spinach (+1)
+  - fresh beet greens (+1)
+  - fresh turnip greens (+1)
+
+
+[FRUITS] (+1 point)
+Description: Natural vitamins, antioxidants, fiber
+Ingredients:
+  - apple (+1)
+  - apples (+1)
+  - whole apples (+1)
+  - fresh whole apples (+1)
+  - pear (+1)
+  - pears (+1)
+  - fresh whole pears (+1)
+  - banana (+1)
+  - bananas (+1)
+  - mango (+1)
+  - papaya (+1)
+  - pineapple (+1)
+  - orange (+1)
+  - citrus (+1)
+  - grapefruit (+1)
+  - mandarin (+1)
+  - tomato (+1)
+  - tomatoes (+1)
+
+
+[NATURAL_PRESERVATIVES] (+1 point)
+Description: Natural, safe preservation
+Ingredients:
+  - tocopherols (+1)
+  - mixed tocopherols (+1)
+  - vitamin e (+1)
+  - rosemary extract (+1)
+  - rosemary oil (+1)
+  - rosemary oil extract (+1)
+  - ascorbic acid (+1)
+  - vitamin c (+1)
+
+
+[AMINO_ACIDS] (+1 point)
+Description: Essential amino acid supplementation
+Ingredients:
+  - taurine (+1)
+  - l-carnitine (+1)
+  - l carnitine (+1)
+  - carnitine (+1)
+  - lysine (+1)
+  - lysine hcl (+1)
+  - methionine (+1)
+  - dl-methionine (+1)
+  - threonine (+1)
+  - tryptophan (+1)
+  - l-tryptophan (+1)
+  - glutamine (+1)
+  - amino acid (+1)
+
+
+[BENEFICIAL_HERBS] (+1 point)
+Description: Anti-inflammatory and digestive benefits
+Ingredients:
+  - milk thistle (+1)
+  - dandelion (+1)
+  - dandelion root (+1)
+  - nettle (+1)
+  - nettle leaves (+1)
+  - stinging nettle (+1)
+  - chamomile (+1)
+  - peppermint (+1)
+  - spearmint (+1)
+  - parsley (+1)
+  - basil (+1)
+  - oregano (+1)
+  - thyme (+1)
+  - rosemary (+1)
+  - yucca (+1)
+  - yucca schidigera (+1)
+  - yucca extract (+1)
+  - aloe vera (+1)
+  - aloe vera without aloin (+1)
+  - echinacea (+1)
+  - ginseng (+1)
+  - fennel (+1)
+  - fenugreek (+1)
+  - aniseed (+1)
+  - burdock root (+1)
+  - lavender (+1)
+  - marshmallow root (+1)
+  - rosehips (+1)
+
+
+[SEAWEED_KELP] (+1 point)
+Description: Natural iodine, minerals, trace elements
+Ingredients:
+  - kelp (+1)
+  - seaweed (+1)
+  - sea kelp (+1)
+  - kelp powder (+1)
+  - dried kelp (+1)
+  - ascophyllum nodosum (+1)
+  - scottish kelp (+1)
+  - irish kelp (+1)
+  - marine algae (+1)
+  - sea algae (+1)
+  - algae (+1)
+  - chlorella (+1)
+
+
+[BENEFICIAL_OILS_FATS] (+1 point)
+Description: Healthy fat sources
+Ingredients:
+  - coconut oil (+1)
+  - olive oil (+1)
+  - extra virgin olive oil (+1)
+  - sunflower oil (+1)
+  - cold pressed sunflower oil (+1)
+  - rapeseed oil (+1)
+  - canola oil (+1)
+  - flaxseed (+1)
+  - flax seed (+1)
+  - linseed (+1)
+  - chia seeds (+1)
+  - hemp seeds (+1)
+  - pumpkin seeds (+1)
+
+
+[NAMED_ANIMAL_FATS] (+1 point)
+Description: Specific animal fats - palatability and essential fatty acids
+Ingredients:
+  - chicken fat (+1)
+  - beef fat (+1)
+  - lamb fat (+1)
+  - turkey fat (+1)
+  - duck fat (+1)
+  - salmon fat (+1)
+  - chicken gravy (+1)
+
+
+[YEAST_PRODUCTS] (+1 point)
+Description: B vitamins from nutritional yeast
+Ingredients:
+  - brewers yeast (+1)
+  - brewer yeast (+1)
+  - nutritional yeast (+1)
+  - yeast extract (+1)
+  - dried yeast (+1)
+  - yeast (+1)
+  - saccharomyces cerevisiae (+1)
+
+
+---[ NEUTRAL INGREDIENTS ]---
+
+[LEGUMES_BEANS] (0 points - NEUTRAL)
+Description: Grain-free carb sources, plant protein
+Ingredients:
+  - chickpeas (0)
+  - chickpea (0)
+  - whole chickpeas (0)
+  - garbanzo beans (0)
+  - pinto beans (0)
+  - whole pinto beans (0)
+  - navy beans (0)
+  - whole navy beans (0)
+  - lentils (0)
+  - lentil fibre (0)
+  - pea starch (0)
+
+
+[NEUTRAL_STARCHES] (0 points - NEUTRAL)
+Description: Not harmful but not nutritionally dense
+Ingredients:
+  - potato (0)
+  - potatoes (0)
+  - white potato (0)
+  - potato starch (0)
+  - tapioca (0)
+  - tapioca starch (0)
+  - cassava (0)
+  - rice flour (0)
+  - rice starch (0)
+
+
+[MINERALS_SUPPLEMENTS] (0 points - NEUTRAL)
+Description: Essential vitamin and mineral supplementation
+Ingredients:
+  - minerals (0)
+  - vitamins (0)
+  - mineral supplement (0)
+  - vitamin supplement (0)
+  - calcium (0)
+  - phosphorus (0)
+  - zinc (0)
+  - iron (0)
+  - copper (0)
+  - manganese (0)
+  - selenium (0)
+  - iodine (0)
+  - salt (0)
+  - sodium chloride (0)
+
+
+---[ NEGATIVE INGREDIENTS (PENALTIES) ]---
+
+[QUALITY_GRAINS] (-0.5 points)
+Description: Whole grains - better than refined but not ideal as primary carb
+Ingredients:
+  - oats (-0.5)
+  - oatmeal (-0.5)
+  - whole oats (-0.5)
+  - steel-cut oats (-0.5)
+  - barley (-0.5)
+  - whole barley (-0.5)
+  - pearled barley (-0.5)
+  - quinoa (-0.5)
+  - buckwheat (-0.5)
+  - amaranth (-0.5)
+  - millet (-0.5)
+  - whole grain oats (-0.5)
+  - spelt (-0.5)
+
+
+[BROWN_RICE] (-1 point)
+Description: Whole grain but high glycemic index
+Ingredients:
+  - brown rice (-1)
+  - whole brown rice (-1)
+  - wholegrain brown rice (-1)
+
+
+[FIBER_FILLERS] (-2 points)
+Description: Low-cost fiber, minimal nutrition
+Ingredients:
+  - beet pulp (-2)
+  - dried beet pulp (-2)
+  - sugar beet pulp (-2)
+  - cellulose (-2)
+  - cellulose powder (-2)
+  - cellulose fibre (-2)
+  - pea fibre (-2)
+  - oat fibre (-2)
+  - wheat bran (-2)
+  - rice bran (-2)
+  - soya hulls (-2)
+  - peanut hulls (-2)
+
+
+[UNNAMED_FATS] (-2 points)
+Description: Generic rendered fats - quality unknown
+Ingredients:
+  - animal fat (-2)
+  - poultry fat (-2)
+  - lard (-2)
+  - rendered fat (-2)
+  - greaves (-2)
+  - greaves meal (-2)
+
+
+[DIGEST_HYDROLYSATES] (-2 points)
+Description: Chemically processed proteins for palatability
+Ingredients:
+  - digest (-2)
+  - animal digest (-2)
+  - poultry digest (-2)
+  - beef digest (-2)
+  - lamb digest (-2)
+  - turkey digest (-2)
+  - hydrolysate (-2)
+  - protein hydrolysate (-2)
+  - liver hydrolysate (-2)
+  - hydrolyzed animal protein (-2)
+  - hydrolysed animal protein (-2)
+
+
+[LOW_VALUE_GRAINS] (-3 points)
+Description: Refined grains, high-glycemic, minimal nutrition
+Ingredients:
+  - white rice (-3)
+  - cooked white rice (-3)
+  - rice (-3)
+  - corn (-3)
+  - maize (-3)
+  - ground maize (-3)
+  - flaked maize (-3)
+  - maize flour (-3)
+  - maize meal (-3)
+  - wheat (-3)
+  - wheat flour (-3)
+  - wheat meal (-3)
+  - ground wheat (-3)
+  - sorghum (-3)
+  - milo (-3)
+
+
+[CONTROVERSIAL_ADDITIVES] (-3 points)
+Description: Legal but linked to digestive issues
+Ingredients:
+  - carrageenan (-3)
+  - guar gum (-3)
+  - xanthan gum (-3)
+  - cassia gum (-3)
+  - sodium selenite (-3)
+  - menadione (-3)
+
+
+[BLOOD_MEAL_PLASMA] (-3 points)
+Description: Blood products - cheap protein, controversial
+Ingredients:
+  - blood meal (-3)
+  - plasma powder (-3)
+  - plasma protein (-3)
+  - dried plasma (-3)
+  - hemoglobin powder (-3)
+  - haemoglobin powder (-3)
+
+
+[UNNAMED_PROTEINS] (-4 points)
+Description: Generic meat sources - unknown origin
+Ingredients:
+  - meat meal (-4)
+  - meat and bone meal (-4)
+  - poultry (-4)
+  - poultry meal (-4)
+  - poultry protein (-4)
+  - animal protein (-4)
+  - animal meal (-4)
+  - meat & animal derivative (-4)
+  - meat and animal derivative (-4)
+  - fish (-4)
+  - fish meal (-4)
+  - white fish (-4)
+  - game (-4)
+  - game meat (-4)
+
+
+[HIGH_RISK_FILLERS] (-5 points)
+Description: Protein boosters, by-products - inflate protein artificially
+Ingredients:
+  - corn gluten meal (-5)
+  - corn gluten (-5)
+  - maize gluten meal (-5)
+  - maize gluten (-5)
+  - wheat gluten (-5)
+  - wheat gluten meal (-5)
+  - soy protein isolate (-5)
+  - soya protein isolate (-5)
+  - by product (-5)
+  - by-product (-5)
+  - meat by-product (-5)
+  - poultry by-product (-5)
+  - animal by-product (-5)
+  - meat & meat by product (-5)
+
+
+[SUGAR_SWEETENERS] (-5 points)
+Description: Added sugars - no benefit, promotes obesity
+Ingredients:
+  - sugar (-5)
+  - cane sugar (-5)
+  - beet molasses (-5)
+  - cane molasses (-5)
+  - glucose syrup (-5)
+  - corn syrup (-5)
+  - wheat glucose syrup (-5)
+  - dextrose (-5)
+  - fructose (-5)
+  - sucrose (-5)
+  - honey (-5)
+  - manuka honey (-5)
+  - syrup (-5)
+
+
+[ARTIFICIAL_COLORS] (-7 points)
+Description: NO nutritional value, potential allergens
+Ingredients:
+  - artificial color (-7)
+  - artificial colour (-7)
+  - red 40 (-7)
+  - yellow 5 (-7)
+  - yellow 6 (-7)
+  - blue 2 (-7)
+  - caramel color (-7)
+  - caramel colour (-7)
+  - coloured with ferrous oxide (-7)
+  - coloured with iron oxide (-7)
+
+
+[RED_FLAG_PRESERVATIVES] (-7 points)
+Description: Controversial preservatives - health concerns
+Ingredients:
+  - ethoxyquin (-7)
+  - propylene glycol (-7)
+  - bha (-7)
+  - bht (-7)
+  - tbhq (-7)
+  - propyl gallate (-7)
+
+
+================================================================================
+7. INGREDIENT COMPARISON EXAMPLES
+================================================================================
+
+This section provides direct comparisons to demonstrate how different
+ingredient forms score differently.
+
+
+---[ EXAMPLE 1: CHICKEN IN DIFFERENT FORMS ]---
+
+Ingredient                        | Category              | Points | Moisture
+----------------------------------|----------------------|--------|----------
+Dehydrated Chicken                | Concentrated Meal    | +4     | ~10%
+Chicken Meal                      | Concentrated Meal    | +4     | ~10%
+Fresh Chicken                     | Premium Fresh Meat   | +3     | ~70%
+Raw Chicken                       | Premium Fresh Meat   | +3     | ~70%
+Deboned Chicken                   | Premium Fresh Meat   | +3     | ~70%
+Chicken (generic)                 | Named Meat           | 0      | varies
+Poultry (generic)                 | Unnamed Protein      | -4     | varies
+Poultry Meal (generic)            | Unnamed Protein      | -4     | ~10%
+
+EXPLANATION:
+
+Dehydrated/Meal Chicken (+4):
+- Water removed through dehydration
+- ~300% more protein per gram than fresh
+- Concentrated nutrient density
+- Named source (chicken specifically identified)
+- Gets CONCENTRATED PROTEIN BONUS in calculator
+
+Fresh/Raw Chicken (+3):
+- 70% moisture content
+- Lower protein density per gram
+- High quality, whole food ingredient
+- Named source
+- Gets FRESH/RAW MEAT BONUS in calculator
+
+Generic Chicken (0):
+- Just "chicken" without qualifier
+- Unknown processing method
+- Named but no transparency bonus
+
+Poultry/Poultry Meal (-4):
+- UNNAMED source - could be chicken, turkey, duck, or mix
+- Unknown quality, unknown origin
+- Red flag for lack of transparency
+
+
+WHY THE DIFFERENCE?
+
+Fresh Chicken:
+- 100g fresh chicken = ~18g protein (70% water)
+- Excellent quality but lower density
+
+Dehydrated Chicken:
+- 100g dehydrated = ~65g protein (10% water)
+- 3.6x more protein per gram!
+- Higher score reflects superior nutrient density
+
+Fresh gets +1 bonus for transparency/quality signal
+Dehydrated gets +1 bonus for concentration
+Both are NAMED sources (good)
+Generic "Poultry" is UNNAMED (bad) = -4 penalty
+
+
+---[ EXAMPLE 2: FISH PROTEINS ]---
+
+Ingredient                        | Category              | Points | Notes
+----------------------------------|----------------------|--------|--------
+Raw Whole Herring                 | Premium Fish/Fresh   | +4     | Whole fish
+Salmon Meal                       | Concentrated Meal    | +4     | Dehydrated
+Fresh Salmon                      | Premium Fresh Meat   | +3     | 70% water
+Dehydrated Salmon                 | Concentrated Meal    | +4     | Concentrated
+Fish Meal (generic)               | Unnamed Protein      | -4     | Unknown fish
+White Fish (generic)              | Unnamed Protein      | -4     | Vague
+
+EXPLANATION:
+
+"Raw Whole Herring" scores +4 because:
+- Specific fish species named (herring)
+- WHOLE fish = includes organs, bones (calcium)
+- RAW = fresh, unprocessed
+- Premium quality indicator
+
+"Salmon Meal" scores +4 because:
+- Named species (salmon)
+- Concentrated protein
+- Excellent omega-3 source
+
+"Fish Meal" scores -4 because:
+- What type of fish?
+- Could be low-value fish waste
+- No transparency
+
+
+---[ EXAMPLE 3: CARBOHYDRATE SOURCES ]---
+
+Ingredient                  | Category           | Base Points | Position Penalty
+----------------------------|--------------------|-----------|-----------------
+Sweet Potato                | Premium Vegetable  | +1        | None
+Oats                        | Quality Grain      | -0.5      | None
+Brown Rice                  | Brown Rice         | -1        | -2 to -4
+White Rice                  | Low-Value Grain    | -3        | -3 to -8
+Maize/Corn                  | Low-Value Grain    | -3        | -3 to -8
+Potato                      | Neutral Starch     | 0         | None
+
+EXAMPLE CALCULATION FOR GRAIN POSITION:
+
+Product A: "Chicken Meal, Sweet Potato, Brown Rice, Peas"
+- Sweet Potato: +1
+- Brown Rice (position 3): -1 (base) + -2 (position penalty) = -3
+- TOTAL CARB IMPACT: -2
+
+Product B: "Brown Rice, Chicken Meal, Maize, Beef Meal"
+- Brown Rice (position 1): -1 (base) + -4 (first position) = -5
+- Maize (position 3): -3 (base)
+- Multiple grains in top 5: -7
+- TOTAL CARB IMPACT: -15 (catastrophic)
+
+Product C: "Chicken Meal, Turkey Meal, Salmon, Sweet Potato"
+- Sweet Potato: +1
+- No grains = No penalties
+- TOTAL CARB IMPACT: +1
+
+
+---[ EXAMPLE 4: ADDITIVES COMPARISON ]---
+
+Ingredient                  | Category                 | Points | Impact
+----------------------------|-------------------------|--------|----------
+Rosemary Extract            | Natural Preservative    | +1     | Safe
+Mixed Tocopherols           | Natural Preservative    | +1     | Vitamin E
+BHA                         | Red Flag Preservative   | -7     | Controversial
+BHT                         | Red Flag Preservative   | -7     | Controversial
+Carrageenan                 | Controversial Additive  | -3     | Digestive issues
+Red 40                      | Artificial Color        | -7     | Automatic 0 for subsection
+
+EXPLANATION:
+
+Natural Preservatives (+1):
+- Safe, effective
+- Often provide additional benefits (vitamin E)
+- No health concerns
+
+BHA/BHT (-7):
+- Linked to health concerns
+- Banned in some countries for human food
+- Natural alternatives exist
+
+Artificial Colors (-7):
+- AUTOMATIC 0 for entire "Additives" subsection (10 points lost)
+- No nutritional value
+- Purely cosmetic
+- Potential allergens
+
+
+================================================================================
+8. PENALTY SYSTEM BREAKDOWN
+================================================================================
+
+POSITION-BASED GRAIN PENALTIES (Applied in Section C):
+
+Scenario                                    | Penalty | Example
+--------------------------------------------|---------|----------------------
+High-GI grain as #1 ingredient              | -8      | "Maize, Chicken..."
+Multiple high-GI grains in top 5            | -7      | Multiple rice/corn
+High-GI grain in positions 2-3              | -5      | "Chicken, Maize..."
+High-GI grain in positions 4-5              | -3      | "C, B, L, Rice..."
+Brown rice as #1 ingredient                 | -4      | "Brown Rice, C..."
+Brown rice in positions 2-3                 | -2      | "Chicken, Brown Rice"
+
+
+QUALITY ISSUE PENALTIES (Applied to overall Ingredient Quality):
+
+Issue                                       | Penalty | Description
+--------------------------------------------|---------|----------------------
+Ingredient Splitting                        | -5      | Same protein split 3+ times
+Filler Stuffing                             | -4      | 20+ ingredients at <1%
+Excessive Ingredient Count                  | -3      | 60+ total ingredients
+Ambiguous Notation                          | -2      | "Chicken (Chicken Meal)"
+
+
+INGREDIENT-LEVEL PENALTIES (Applied in Section F):
+
+Per Ingredient:
+- Artificial Colors: -7 each (also triggers subsection 0)
+- Red Flag Preservatives: -7 each (also triggers subsection 0)
+- High-Risk Fillers: -5 each
+- Sugar/Sweeteners: -5 each
+- Unnamed Proteins: -4 each
+- Low-Value Grains: -3 each
+- Controversial Additives: -3 each
+- Blood Meal/Plasma: -3 each
+- Fiber Fillers: -2 each
+- Unnamed Fats: -2 each
+- Digest/Hydrolysates: -2 each
+- Brown Rice: -1 each
+- Quality Grains: -0.5 each
+
+
+================================================================================
+9. BONUS SYSTEM BREAKDOWN
+================================================================================
+
+CALCULATION-LEVEL BONUSES:
+
+Bonus Type                    | Points | Trigger Condition
+------------------------------|--------|----------------------------------
+Fresh/Raw Meat Bonus          | +1     | Contains "Fresh/Raw/Deboned [Animal]"
+Concentrated Protein Bonus    | +1     | Contains "Dehydrated/Dried [Animal]"
+Vegetable Carbs Bonus         | +1     | Primary carbs from vegetables
+
+
+PROTEIN DIVERSITY BONUSES:
+
+Diversity Level     | Points | Requirements
+--------------------|--------|----------------------------------------
+Exceptional         | +5     | 3+ protein types, 6+ sources
+Excellent           | +4     | 3+ protein types, 4-5 sources
+Good                | +3     | 2 types, 3+ sources
+Moderate            | +2     | 2 types OR 2 sources
+Single-Source       | 0      | Only 1 protein source
+
+
+INGREDIENT-LEVEL BONUSES:
+
+Per Ingredient:
+- Concentrated Meat Meals: +4 each
+- Premium Fish Proteins: +4 each
+- Premium Fresh Meats: +3 each
+- Organ Meats: +3 each
+- Whole Eggs: +3 each
+- Omega Fatty Acids: +2 each
+- Joint Support: +2 each
+- Probiotics/Prebiotics: +2 each
+- Superfoods/Antioxidants: +2 each
+- Premium Vegetables: +1 each
+- Natural Preservatives: +1 each
+- Amino Acids: +1 each
+- Beneficial Herbs: +1 each
+- Seaweed/Kelp: +1 each
+- Beneficial Oils/Fats: +1 each
+- Named Animal Fats: +1 each
+- Fruits: +1 each
+- Yeast Products: +1 each
+
+
+================================================================================
+10. RED FLAG DETECTION
+================================================================================
+
+RED FLAGS that cap overall rating or trigger automatic penalties:
+
+
+CRITICAL RED FLAGS (Cap rating at 3 stars maximum):
+
+1. Ethoxyquin (preservative)
+   - Linked to serious health issues
+   - Banned in human food in many countries
+
+2. Propylene Glycol (preservative)
+   - Component of antifreeze
+   - Toxic in high doses
+
+
+MAJOR RED FLAGS (Automatic 0 for Additives subsection - 10 points lost):
+
+3. ANY Artificial Color
+   - Red 40, Yellow 5, Yellow 6, Blue 2
+   - Caramel Color
+   - No nutritional benefit, purely cosmetic
+
+4. Multiple Artificial Preservatives (≥3)
+   - BHA, BHT, TBHQ, Propyl Gallate
+   - Natural alternatives exist
+
+
+SIGNIFICANT RED FLAGS (Reported to users):
+
+5. Ingredient Splitting
+   - Same protein appears 3+ times in different forms
+   - Example: "Chicken, Chicken Meal, Dried Chicken, Chicken Fat"
+   - Manipulates ingredient order
+
+6. High-GI Grain as Primary Ingredient (#1)
+   - Maize, Corn, White Rice, Wheat as first ingredient
+   - Indicates grain-based food, not meat-based
+
+7. Multiple High-GI Grains in Top 5
+   - More grains than meat sources
+   - Poor quality formula
+
+8. By-Products
+   - Meat By-Product, Poultry By-Product
+   - Undefined waste products
+
+9. Generic Proteins
+   - "Meat Meal", "Poultry Meal", "Animal Protein"
+   - Unknown source and quality
+
+10. Added Sugar
+    - Sugar, Corn Syrup, Molasses
+    - Promotes obesity, no benefit
+
+
+================================================================================
+11. CALCULATION EXAMPLES
+================================================================================
+
+---[ EXAMPLE 1: PREMIUM GRAIN-FREE FOOD (ORIJEN-STYLE) ]---
+
+PRODUCT: "Premium Multi-Protein Grain-Free"
+
+INGREDIENTS (TOP 15):
+1. Fresh Chicken (15%)
+2. Raw Turkey (10%)
+3. Dehydrated Chicken (10%)
+4. Dehydrated Turkey (8%)
+5. Fresh Whole Herring (8%)
+6. Dehydrated Herring (6%)
+7. Chicken Liver (5%)
+8. Turkey Liver (4%)
+9. Whole Eggs (4%)
+10. Chicken Fat (3%)
+11. Salmon Oil (2%)
+12. Sweet Potato (3%)
+13. Pumpkin (2%)
+14. Glucosamine (0.1%)
+15. Chondroitin (0.1%)
+
+GUARANTEED ANALYSIS:
+- Protein: 38%
+- Fat: 18%
+- Fiber: 4%
+- Carbs: 23% (calculated)
+
+PRICE: £8.50/kg (category average: £5.00/kg)
+
+
+SCORING BREAKDOWN:
+
+---[ INGREDIENT QUALITY: 45 points ]---
+
+A) Effective Meat Content (15 pts):
+   - Effective Meat: 70% (estimated from ingredients)
+   - Base Score: 15.0 (≥50%)
+   - Fresh Meat Bonus: +1.0 (Fresh Chicken, Raw Turkey)
+   - SUBTOTAL: 16.0 → CAPPED at 15.0
+
+B) Protein Diversity (5 pts):
+   - Protein Types: 3 (Poultry, Fish, Eggs)
+   - Total Sources: 6 (chicken, turkey, herring, egg, salmon in oil, liver)
+   - Level: EXCEPTIONAL
+   - SCORE: 5.0
+
+C) Low-Value Fillers (10 pts):
+   - Base: 10.0
+   - No fillers, no grains
+   - SCORE: 10.0
+
+D) Artificial Additives (10 pts):
+   - Base: 10.0
+   - No artificial ingredients
+   - SCORE: 10.0
+
+E) Named Meat Sources (5 pts):
+   - All meats are named (chicken, turkey, herring)
+   - SCORE: 5.0
+
+F) Ingredient-Level Analysis:
+   Fresh Chicken: +3
+   Raw Turkey: +3
+   Dehydrated Chicken: +4
+   Dehydrated Turkey: +4
+   Fresh Whole Herring: +4
+   Dehydrated Herring: +4
+   Chicken Liver: +3
+   Turkey Liver: +3
+   Whole Eggs: +3
+   Chicken Fat: +1
+   Salmon Oil: +2
+   Sweet Potato: +1
+   Pumpkin: +1
+   Glucosamine: +2
+   Chondroitin: +2
+   ---
+   RAW TOTAL: +40
+   CAPPED: +7.0
+
+INGREDIENT QUALITY TOTAL: 15.0 + 5.0 + 10.0 + 10.0 + 5.0 + 7.0 = 52.0
+ACTUAL (max 45): 45.0 (hits ceiling)
+
+---[ NUTRITIONAL VALUE: 33 points ]---
+
+A) Protein Quality (15 pts):
+   - Protein: 38%
+   - Slightly above optimal (32%)
+   - SCORE: 12.0
+
+B) Fat Content (8 pts):
+   - Fat: 18%
+   - Slightly above optimal (10-15%)
+   - SCORE: 6.0
+
+C) Carbohydrate Load (7 pts):
+   - Carbs: 23%
+   - Excellent (< 25%)
+   - Vegetable Carbs Bonus: +1.0
+   - SCORE: 6.0 + 1.0 = 7.0
+
+D) Fiber & Micros (3 pts):
+   - Fiber: 4% (optimal 3-5%)
+   - Contains omega-3, joint support
+   - SCORE: 2.0 + 1.0 = 3.0
+
+NUTRITIONAL VALUE TOTAL: 12.0 + 6.0 + 7.0 + 3.0 = 28.0
+
+---[ VALUE FOR MONEY: 22 points ]---
+
+A) Price Competitiveness (15 pts):
+   - Price: £8.50/kg
+   - Category Average: £5.00/kg
+   - Ratio: 170% of average (expensive)
+   - SCORE: 3.0
+
+B) Ingredient Value (7 pts):
+   - Exceptional quality but high price
+   - SCORE: 5.0
+
+VALUE FOR MONEY TOTAL: 3.0 + 5.0 = 8.0
+
+---[ FINAL SCORE ]---
+
+Ingredient Quality:  45.0 / 45
+Nutritional Value:   28.0 / 33
+Value for Money:      8.0 / 22
+---------------------------
+TOTAL:               81.0 / 100
+
+RATING: ★★★★ EXCELLENT
+
+SUMMARY: Exceptional ingredient quality with diverse, named protein sources
+and zero fillers. Loses points on value due to premium pricing.
+
+
+---[ EXAMPLE 2: GRAIN-HEAVY BUDGET FOOD ]---
+
+PRODUCT: "Economy Dog Complete"
+
+INGREDIENTS (TOP 15):
+1. Maize (25%)
+2. Chicken Meal (20%)
+3. Brown Rice (18%)
+4. Wheat (10%)
+5. Chicken Fat (6%)
+6. Beet Pulp (5%)
+7. Poultry Digest (3%)
+8. Animal Fat (2%)
+9. Salt (1%)
+10. Vitamins (1%)
+11. Minerals (1%)
+
+GUARANTEED ANALYSIS:
+- Protein: 21%
+- Fat: 10%
+- Fiber: 3%
+- Carbs: 52% (calculated)
+
+PRICE: £1.80/kg (category average: £5.00/kg)
+
+
+SCORING BREAKDOWN:
+
+---[ INGREDIENT QUALITY: 45 points ]---
+
+A) Effective Meat Content (15 pts):
+   - Effective Meat: 20% (only chicken meal)
+   - Base Score: 6.0 (20-29% range)
+   - No Fresh/Raw/Dehydrated Bonus
+   - SUBTOTAL: 6.0
+
+B) Protein Diversity (5 pts):
+   - Protein Types: 1 (Poultry)
+   - Total Sources: 1 (chicken)
+   - Level: SINGLE-SOURCE
+   - SCORE: 0.0
+
+C) Low-Value Fillers (10 pts):
+   - Base: 10.0
+   - Low-value carbs: Maize (-2), Wheat (-2) = -4
+   - Brown rice: -1
+   - Fiber filler: Beet Pulp (-2)
+   - HIGH-GI GRAIN AS #1: -8
+   - SUBTOTAL: 10 - 4 - 1 - 2 - 8 = -5
+   - FLOOR: 0.0
+
+D) Artificial Additives (10 pts):
+   - Base: 10.0
+   - Poultry Digest: -2
+   - SCORE: 8.0
+
+E) Named Meat Sources (5 pts):
+   - Mix: Chicken Meal (named) + Poultry Digest (unnamed)
+   - SCORE: 2.5
+
+F) Ingredient-Level Analysis:
+   Chicken Meal: +4
+   Maize: -3
+   Brown Rice: -1
+   Wheat: -3
+   Chicken Fat: +1
+   Beet Pulp: -2
+   Poultry Digest: -2
+   Animal Fat: -2
+   ---
+   RAW TOTAL: -8
+   CAPPED: -7.0
+
+RED FLAGS:
+   - High-GI grain as #1: "Maize"
+   - Multiple high-GI grains in top 5
+
+INGREDIENT QUALITY TOTAL: 6.0 + 0.0 + 0.0 + 8.0 + 2.5 - 7.0 = 9.5
+
+---[ NUTRITIONAL VALUE: 33 points ]---
+
+A) Protein Quality (15 pts):
+   - Protein: 21%
+   - Below optimal (22-32%)
+   - Likely boosted by grain protein (maize, wheat)
+   - Plant protein penalty: -2.0
+   - SCORE: 10.0 - 2.0 = 8.0
+
+B) Fat Content (8 pts):
+   - Fat: 10%
+   - At lower end of optimal
+   - SCORE: 8.0
+
+C) Carbohydrate Load (7 pts):
+   - Carbs: 52%
+   - Excessive (> 50%)
+   - No vegetable bonus (grain-based)
+   - SCORE: 1.0
+
+D) Fiber & Micros (3 pts):
+   - Fiber: 3% (low end of optimal)
+   - Minimal functional ingredients
+   - SCORE: 1.5
+
+NUTRITIONAL VALUE TOTAL: 8.0 + 8.0 + 1.0 + 1.5 = 18.5
+
+---[ VALUE FOR MONEY: 22 points ]---
+
+A) Price Competitiveness (15 pts):
+   - Price: £1.80/kg
+   - Category Average: £5.00/kg
+   - Ratio: 36% of average (exceptional value)
+   - SCORE: 15.0
+
+B) Ingredient Value (7 pts):
+   - Low quality + low price
+   - SCORE: 3.0
+
+VALUE FOR MONEY TOTAL: 15.0 + 3.0 = 18.0
+
+---[ FINAL SCORE ]---
+
+Ingredient Quality:   9.5 / 45
+Nutritional Value:   18.5 / 33
+Value for Money:     18.0 / 22
+---------------------------
+TOTAL:               46.0 / 100
+
+RATING: ☆ VERY POOR
+
+SUMMARY: Grain-heavy budget food with minimal meat content. Good value
+for money but poor nutritional quality. Not recommended.
+
+
+---[ EXAMPLE 3: MID-RANGE BALANCED FOOD ]---
+
+PRODUCT: "Complete Adult Chicken & Rice"
+
+INGREDIENTS (TOP 15):
+1. Chicken Meal (28%)
+2. Brown Rice (20%)
+3. Oats (12%)
+4. Chicken Fat (8%)
+5. Beet Pulp (6%)
+6. Dried Egg (4%)
+7. Fish Oil (3%)
+8. Sweet Potato (3%)
+9. Flaxseed (2%)
+10. Glucosamine (0.2%)
+11. Chondroitin (0.15%)
+12. Yucca Extract (0.1%)
+13. Mixed Tocopherols (0.05%)
+
+GUARANTEED ANALYSIS:
+- Protein: 26%
+- Fat: 14%
+- Fiber: 3.5%
+- Carbs: 38% (calculated)
+
+PRICE: £3.50/kg (category average: £5.00/kg)
+
+
+SCORING BREAKDOWN:
+
+---[ INGREDIENT QUALITY: 45 points ]---
+
+A) Effective Meat Content (15 pts):
+   - Effective Meat: 32% (chicken meal, egg)
+   - Base Score: 11.0 (30-39% range)
+   - Concentrated Protein Bonus: +1.0 (Chicken Meal)
+   - SUBTOTAL: 12.0
+
+B) Protein Diversity (5 pts):
+   - Protein Types: 2 (Poultry, Egg)
+   - Total Sources: 2 (chicken, egg)
+   - Level: MODERATE
+   - SCORE: 2.0
+
+C) Low-Value Fillers (10 pts):
+   - Base: 10.0
+   - Brown rice: -1
+   - Brown rice position 2: -2
+   - Fiber filler (Beet Pulp): -2
+   - Quality grain (Oats): -0.5
+   - SCORE: 10 - 1 - 2 - 2 - 0.5 = 4.5
+
+D) Artificial Additives (10 pts):
+   - Base: 10.0
+   - Natural preservative (tocopherols): +1
+   - SCORE: 10.0
+
+E) Named Meat Sources (5 pts):
+   - All named (chicken, egg)
+   - SCORE: 5.0
+
+F) Ingredient-Level Analysis:
+   Chicken Meal: +4
+   Brown Rice: -1
+   Oats: -0.5
+   Chicken Fat: +1
+   Beet Pulp: -2
+   Dried Egg: +3
+   Fish Oil: +2
+   Sweet Potato: +1
+   Flaxseed: +1
+   Glucosamine: +2
+   Chondroitin: +2
+   Yucca: +1
+   Tocopherols: +1
+   ---
+   RAW TOTAL: +13.5
+   CAPPED: +7.0
+
+INGREDIENT QUALITY TOTAL: 12.0 + 2.0 + 4.5 + 10.0 + 5.0 + 7.0 = 40.5
+
+---[ NUTRITIONAL VALUE: 33 points ]---
+
+A) Protein Quality (15 pts):
+   - Protein: 26%
+   - In optimal range (22-32%)
+   - SCORE: 14.0
+
+B) Fat Content (8 pts):
+   - Fat: 14%
+   - In optimal range (10-15%)
+   - SCORE: 8.0
+
+C) Carbohydrate Load (7 pts):
+   - Carbs: 38%
+   - Moderate (36-40%)
+   - Mix of grain + vegetable
+   - SCORE: 3.0
+
+D) Fiber & Micros (3 pts):
+   - Fiber: 3.5% (optimal)
+   - Omega-3 (fish oil), joint support
+   - SCORE: 2.0 + 1.0 = 3.0
+
+NUTRITIONAL VALUE TOTAL: 14.0 + 8.0 + 3.0 + 3.0 = 28.0
+
+---[ VALUE FOR MONEY: 22 points ]---
+
+A) Price Competitiveness (15 pts):
+   - Price: £3.50/kg
+   - Category Average: £5.00/kg
+   - Ratio: 70% of average (excellent value)
+   - SCORE: 13.0
+
+B) Ingredient Value (7 pts):
+   - Good quality + good price
+   - SCORE: 6.0
+
+VALUE FOR MONEY TOTAL: 13.0 + 6.0 = 19.0
+
+---[ FINAL SCORE ]---
+
+Ingredient Quality:  40.5 / 45
+Nutritional Value:   28.0 / 33
+Value for Money:     19.0 / 22
+---------------------------
+TOTAL:               87.5 / 100
+
+RATING: ★★★★★ EXCEPTIONAL (rounded to 88)
+
+SUMMARY: Well-balanced mid-range food with good meat content, optimal
+nutrition, and excellent value for money. Good choice for most dogs.
+
+
+================================================================================
+END OF AUDIT DOCUMENT
+================================================================================
+
+Document Version: 3.1.0
+Generated: January 19, 2026
+Contact: support@onlydogfood.com
+
+This document represents the complete, authoritative specification of the
+OnlyDogFood.com scoring algorithm. All calculations are performed exactly
+as specified herein.
+
+For questions or clarifications, please contact the technical team.
+
+================================================================================

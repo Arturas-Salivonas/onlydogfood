@@ -35,9 +35,9 @@ export const typeDefs = gql`
   }
 
   type ScoringBreakdown {
-    ingredient_score: Float!
-    nutrition_score: Float!
-    value_score: Float!
+    ingredient_score: Float
+    nutrition_score: Float
+    value_score: Float
     details: JSON
   }
 

@@ -1,4 +1,4 @@
-import { HowWeScorePage } from '@/components/pages';
+import { HowWeRatePage } from '@/components/pages';
 
 export const metadata = {
   title: 'How We Score Dog Food - Scoring Methodology v2.0',
@@ -6,8 +6,5 @@ export const metadata = {
 };
 
 export default function HowWeScorePageRoute() {
-  return <HowWeScorePage />;
+  return <HowWeRatePage />;
 }
-
-
-
