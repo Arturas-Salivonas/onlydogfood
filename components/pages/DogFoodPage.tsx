@@ -10,7 +10,7 @@ import { useProducts } from '@/lib/queries/products';
 import { FilterOptions } from '@/types';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getScoreColor } from '@/scoring/calculator';
+import { getScoreColor } from '@/lib/utils/scoring';
 import { formatPrice } from '@/lib/utils/format';
 import { ChevronRight, Filter, Check } from 'lucide-react';
 import { PageSEO, CollectionPageStructuredData, createCollectionItem } from '@/components/seo';
@@ -18,6 +18,7 @@ import { ProtectionIcon } from '@/components/ui/ProtectionIcon';
 import { CustomSelect } from '@/components/ui/CustomSelect';
 import { LazyLoad } from '@/components/performance/LazyLoad';
 import { ProductGridSkeleton } from '@/components/ui/Skeletons';
+import logger from '@/lib/utils/logger';
 
 // Country to flag SVG mapping
 const flags: Record<string, string> = {
@@ -80,10 +81,10 @@ export default function DogFoodPage() {
   const { data, isLoading, error } = useProducts(filters);
 
   // Debug logging
-  console.log('DogFoodPage - filters:', JSON.stringify(filters, null, 2));
-  console.log('DogFoodPage - data:', data ? { total: data.total, dataLength: data.data?.length } : null);
-  console.log('DogFoodPage - isLoading:', isLoading);
-  console.log('DogFoodPage - error:', error);
+  logger.debug('DogFoodPage - filters:', JSON.stringify(filters, null, 2));
+  logger.debug('DogFoodPage - data:', data ? { total: data.total, dataLength: data.data?.length } : null);
+  logger.debug('DogFoodPage - isLoading:', isLoading);
+  logger.debug('DogFoodPage - error:', error);
 
   const handleCategoryChange = (category: string) => {
     setFilters({ ...filters, category: category as any, page: 1 });
@@ -544,7 +545,8 @@ export default function DogFoodPage() {
                                     border: 'none',
                                   }}
                                 >
-                                  {product.overall_score || 0}
+                                  <span className="font-bold">{Math.round(product.overall_score || 0)}</span>
+                                  <span className="text-xs opacity-80">/100</span>
                                 </div>
                                 <p className="text-xs text-center mt-1 font-medium text-[var(--color-text-secondary)]">ODF Score</p>
                               </div>

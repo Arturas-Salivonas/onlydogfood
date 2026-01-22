@@ -1,24 +1,21 @@
 'use client';
 
 import React from 'react';
-import Head from 'next/head';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { PageHero } from '@/components/layout/PageHero';
-import { PageSEO } from '@/components/seo';
 import { useState, Suspense, useEffect } from 'react';
 import { useProducts } from '@/lib/queries/products';
 import { Product } from '@/types';
-import Link from 'next/link';
 import Image from 'next/image';
 import { getScoreColor } from '@/lib/utils/scoring';
 import { formatPrice } from '@/lib/utils/format';
-import { X, Plus, Search, Check, RotateCcw, Share2, Copy } from 'lucide-react';
+import { X, Plus, Search, Check, RotateCcw, Copy } from 'lucide-react';
 import { Loading } from '@/components/ui/Loading';
 import { useComparison } from '@/components/context/UIContext';
 import { useSearchParams, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { logger } from '@/lib/utils/logger';
+import logger from '@/lib/utils/logger';
 
 // Dynamically import heavy comparison table
 const ComparisonTable = dynamic(() => import('@/components/ui/ComparisonTable').then(mod => ({ default: mod.ComparisonTable })), {
@@ -26,13 +23,17 @@ const ComparisonTable = dynamic(() => import('@/components/ui/ComparisonTable').
   ssr: false // Disable SSR for this component as it uses client-side state
 });
 
-export default function ComparePage() {
+interface ComparePageClientProps {
+  initialProducts?: Product[];
+}
+
+export function ComparePageClient({ initialProducts = [] }: ComparePageClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [showProductSelector, setShowProductSelector] = useState(false);
   const [swapSlotIndex, setSwapSlotIndex] = useState<number | null>(null);
-  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<Product[]>(initialProducts);
   const [loadingSelected, setLoadingSelected] = useState(false);
   const [urlParsed, setUrlParsed] = useState(false);
   const [showCopyToast, setShowCopyToast] = useState(false);
@@ -44,6 +45,15 @@ export default function ComparePage() {
     search: searchQuery,
     limit: 50,
   });
+
+  // Initialize selected products from initialProducts on mount
+  useEffect(() => {
+    if (initialProducts.length > 0 && selectedProductIds.length === 0) {
+      initialProducts.forEach(product => {
+        addItem(product.id);
+      });
+    }
+  }, []); // Run only once on mount
 
   // Fetch selected products by their IDs whenever the selected IDs change
   React.useEffect(() => {
@@ -75,9 +85,9 @@ export default function ComparePage() {
     fetchSelectedProducts();
   }, [selectedProductIds]);
 
-  // Parse URL params on initial load
+  // Parse URL params on initial load (only if no initial products)
   useEffect(() => {
-    if (urlParsed) return;
+    if (urlParsed || initialProducts.length > 0) return;
 
     const productsParam = searchParams.get('products');
     if (productsParam) {
@@ -100,11 +110,11 @@ export default function ComparePage() {
       }
     }
     setUrlParsed(true);
-  }, [searchParams, urlParsed, addItem, clearItems]);
+  }, [searchParams, urlParsed, addItem, clearItems, initialProducts.length]);
 
   // Update URL when products change
   useEffect(() => {
-    if (!urlParsed) return; // Don't update URL during initial parse
+    if (!urlParsed && initialProducts.length === 0) return; // Don't update URL during initial parse
 
     if (selectedProducts.length > 0) {
       const slugs = selectedProducts.map(p => p.slug).join(',');
@@ -112,7 +122,7 @@ export default function ComparePage() {
     } else {
       router.push('/compare', { scroll: false });
     }
-  }, [selectedProducts, router, urlParsed]);
+  }, [selectedProducts, router, urlParsed, initialProducts.length]);
 
   const handleAddProduct = (product: Product) => {
     if (swapSlotIndex !== null) {
@@ -163,51 +173,6 @@ export default function ComparePage() {
     !selectedProductIds.includes(product.id)
   ) || [];
 
-  // Generate dynamic SEO meta tags
-  const generateMetaTags = () => {
-    if (selectedProducts.length === 0) {
-      return {
-        title: 'Compare Dog Foods - Side-by-Side Analysis',
-        description: 'Compare up to 3 dog food products side-by-side with detailed nutritional analysis, pricing, and ratings.',
-      };
-    }
-
-    const productNames = selectedProducts.map(p => p.name).join(' vs ');
-    const winner = selectedProducts.reduce((best, current) =>
-      (current.overall_score || 0) > (best.overall_score || 0) ? current : best
-    );
-
-    return {
-      title: `Compare: ${productNames} | Dog Food Comparison 2026`,
-      description: `${productNames} comparison: ${winner.name} leads with ${Math.round(winner.overall_score || 0)}/100 score. See detailed nutritional analysis, ingredients, and pricing.`,
-    };
-  };
-
-  const metaTags = generateMetaTags();
-
-  // Update document title dynamically
-  useEffect(() => {
-    document.title = metaTags.title;
-
-    // Update meta description
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', metaTags.description);
-    }
-
-    // Update og:title
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) {
-      ogTitle.setAttribute('content', metaTags.title);
-    }
-
-    // Update og:description
-    const ogDescription = document.querySelector('meta[property="og:description"]');
-    if (ogDescription) {
-      ogDescription.setAttribute('content', metaTags.description);
-    }
-  }, [metaTags.title, metaTags.description]);
-
   // Generate structured data for products
   const generateStructuredData = () => {
     if (selectedProducts.length === 0) return null;
@@ -216,7 +181,7 @@ export default function ComparePage() {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
       name: 'Dog Food Product Comparison',
-      description: metaTags.description,
+      description: `Compare ${selectedProducts.length} dog food products`,
       numberOfItems: selectedProducts.length,
       itemListElement: selectedProducts.map((product, index) => ({
         '@type': 'ListItem',
@@ -253,22 +218,14 @@ export default function ComparePage() {
     <>
       {/* Structured Data */}
       {structuredData && (
-        <Head>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-          />
-        </Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       )}
 
       <div className="flex min-h-screen flex-col bg-[var(--color-background-neutral)]">
         <Header />
-
-        <PageSEO
-          title={metaTags.title}
-          description={metaTags.description}
-          canonicalUrl="/compare"
-        />
 
         <PageHero
           title="Compare dog foods"
@@ -407,7 +364,7 @@ export default function ComparePage() {
                           <Plus className="w-8 h-8 text-[var(--color-trust)]" />
                         </div>
                         <p className="text-[var(--color-text-secondary)] text-sm font-bold">Click to add product</p>
-                        <p className="text-xs text-[var(--color-text-secondary)] mt-1">Slot {index + 1} of 4</p>
+                        <p className="text-xs text-[var(--color-text-secondary)] mt-1">Slot {index + 1} of 3</p>
                       </>
                     )}
                   </div>

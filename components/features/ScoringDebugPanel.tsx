@@ -103,7 +103,8 @@ export function ScoringDebugPanel({ product }: ScoringDebugPanelProps) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-gray-900">{product.overall_score}/100</span>
+          <span className="text-2xl font-bold text-gray-900">{Math.round(product.overall_score || 0)}</span>
+          <span className="text-base text-gray-500">/100</span>
         </div>
       </button>
 

@@ -7,6 +7,8 @@ import { ProductDetail } from '@/components/features/ProductDetail';
 import { getSupabase } from '@/lib/supabase';
 import { Product } from '@/types';
 import { PageSEO, ProductStructuredData } from '@/components/seo';
+import { productQueries } from '@/lib/db/queries';
+import { createProductMetadata } from '@/lib/seo/metadata';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -14,32 +16,15 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const supabase = getSupabase();
+  const product = await productQueries.bySlug(slug);
 
-  const { data: product } = await supabase
-    .from('products')
-    .select('*, brand:brands(*), tags:product_tags(tag:tags(*))')
-    .eq('slug', slug)
-    .single();
-
-  const typedProduct = product ? {
-    ...(product as any),
-    tags: (product as any).tags?.map((pt: any) => pt.tag) || []
-  } as Product : null;
-
-  if (!typedProduct) {
+  if (!product) {
     return {
       title: 'Product Not Found',
     };
   }
 
-  return {
-    title: `${typedProduct.name} by ${typedProduct.brand?.name} - Review & Rating`,
-    description: typedProduct.meta_description || `Detailed review, nutritional analysis, and rating for ${typedProduct.name}. Score: ${typedProduct.overall_score}/100. Compare prices and read ingredient breakdown.`,
-    openGraph: {
-      images: typedProduct.image_url ? [typedProduct.image_url] : [],
-    },
-  };
+  return createProductMetadata(product);
 }
 
 // Enable ISR with 1 hour revalidation
@@ -47,23 +32,13 @@ export const revalidate = 3600;
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const supabase = getSupabase();
-
-  const { data: product } = await supabase
-    .from('products')
-    .select('*, brand:brands(*), tags:product_tags(tag:tags(*))')
-    .eq('slug', slug)
-    .eq('is_available', true)
-    .single();
-
-  const typedProduct = product ? {
-    ...(product as any),
-    tags: (product as any).tags?.map((pt: any) => pt.tag) || []
-  } as Product : null;
+  const typedProduct = await productQueries.bySlug(slug);
 
   if (!typedProduct) {
     notFound();
   }
+
+  const supabase = getSupabase();
 
   // Fetch structured ingredients (v3.0)
   const { data: structuredIngredients } = await supabase

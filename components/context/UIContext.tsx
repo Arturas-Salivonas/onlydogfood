@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
+import logger from '@/lib/utils/logger';
 
 interface UIState {
   theme: 'light' | 'dark' | 'system';
@@ -97,7 +98,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
           });
         }
       } catch (error) {
-        console.warn('Failed to parse saved UI state:', error);
+        logger.warn('Failed to parse saved UI state:', error);
       }
     }
 
@@ -110,7 +111,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
           dispatch({ type: 'ADD_TO_COMPARISON', payload: id });
         });
       } catch (error) {
-        console.warn('Failed to parse comparison items:', error);
+        logger.warn('Failed to parse comparison items:', error);
       }
     }
   }, []);

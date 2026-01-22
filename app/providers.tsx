@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ApolloProvider } from '@apollo/client/react';
 import { useState, type ReactNode } from 'react';
 import { ToastProvider } from '@/components/ui/Toast';
-import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
 import { UIProvider } from '@/components/context/UIContext';
 import { ErrorBoundary } from '@/components/error/ErrorBoundary';
 import { apolloClient } from '@/lib/apollo-client';
@@ -45,7 +44,6 @@ export function Providers({ children }: { children: ReactNode }) {
         <QueryClientProvider client={queryClient}>
           <UIProvider>
             <ToastProvider>
-              <PerformanceMonitor />
               {children}
             </ToastProvider>
           </UIProvider>
@@ -54,6 +52,3 @@ export function Providers({ children }: { children: ReactNode }) {
     </ErrorBoundary>
   );
 }
-
-
-

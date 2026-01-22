@@ -93,7 +93,7 @@ export default async function AdminDashboard() {
                     </div>
                     <div className="text-right">
                       <div className="font-semibold text-gray-900">
-                        {Math.round(product.overall_score || 0)}
+                        {Math.round(product.overall_score || 0)}<span className="text-sm text-gray-500">/100</span>
                       </div>
                       <div className="text-xs text-gray-500">Score</div>
                     </div>
@@ -137,7 +137,7 @@ export default async function AdminDashboard() {
                     </div>
                     <div className="text-right">
                       <div className="font-semibold text-gray-900">
-                        {Math.round(brand.overall_score || 0)}
+                        {Math.round(brand.overall_score || 0)}<span className="text-sm text-gray-500">/100</span>
                       </div>
                       <div className="text-xs text-gray-500">Score</div>
                     </div>

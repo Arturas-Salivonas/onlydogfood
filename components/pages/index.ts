@@ -7,7 +7,8 @@ const HomePage = dynamic(() => import('@/components/pages/HomePage'));
 const DogFoodPage = dynamic(() => import('@/components/pages/DogFoodPage'));
 const BrandsPage = dynamic(() => import('@/components/pages/BrandsPage'));
 const ComparePage = dynamic(() => import('@/components/pages/ComparePage'));
+const ComparePageClient = dynamic(() => import('@/components/pages/ComparePageClient').then(mod => ({ default: mod.ComparePageClient })));
 const HowWeRatePage = dynamic(() => import('@/components/pages/HowWeRatePage'));
 
 // Export the components directly (Next.js dynamic handles loading)
-export { HomePage, DogFoodPage, BrandsPage, ComparePage, HowWeRatePage };
+export { HomePage, DogFoodPage, BrandsPage, ComparePage, ComparePageClient, HowWeRatePage };

@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Brand } from '@/types';
-import { getScoreColor } from '@/scoring/calculator';
+import { getScoreColor } from '@/lib/utils/scoring';
 
 interface BrandCardProps {
   brand: Brand;
 }
 
 export function BrandCard({ brand }: BrandCardProps) {
-  const scoreInfo = brand.overall_score ? getScoreColor(brand.overall_score) : null;
+  const scoreColor = brand.overall_score ? getScoreColor(brand.overall_score) : null;
 
   return (
     <Link href={`/brands/${brand.slug}`} className="block h-full">
@@ -62,12 +62,13 @@ export function BrandCard({ brand }: BrandCardProps) {
         {/* Stats */}
         <div className="flex items-center justify-around pt-4 border-t border-[var(--color-border)]">
           {/* Score */}
-          {scoreInfo && brand.overall_score && (
+          {scoreColor && brand.overall_score && (
             <div className="text-center">
-              <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${scoreInfo.bgColor} mb-2 border shadow-[var(--shadow-small)] border-[var(--color-border)]`}>
-                <span className={`font-bold text-lg ${scoreInfo.color}`}>
+              <div className={`inline-flex flex-col items-center justify-center w-12 h-12 rounded-lg ${scoreColor} mb-2 border shadow-[var(--shadow-small)] border-[var(--color-border)]`}>
+                <span className="font-bold text-base text-white leading-none">
                   {Math.round(brand.overall_score)}
                 </span>
+                <span className="text-[10px] text-white opacity-75 leading-none">/100</span>
               </div>
               <p className="text-xs font-semibold text-[var(--color-text-secondary)]">Score</p>
             </div>

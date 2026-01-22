@@ -11,7 +11,9 @@ const lexend = Lexend({
   subsets: ['latin'],
   weight: ['300', '400', '600', '700'],
   variable: '--font-lexend',
-  display: 'swap',
+  display: 'optional', // Better performance than 'swap'
+  preload: true,
+  fallback: ['system-ui', 'arial', 'sans-serif'],
 });
 
 export const metadata: Metadata = {

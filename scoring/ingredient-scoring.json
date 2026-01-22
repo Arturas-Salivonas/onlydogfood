@@ -1,448 +1,290 @@
 {
-  "version": "3.0.0",
-  "lastUpdated": "2026-01-16",
-  "description": "Research-based ingredient scoring for OnlyDogFood.com Algorithm v3.0 - Prioritizes meat diversity, quality proteins, and penalizes grain-heavy formulas",
+  "version": "4.0",
+  "lastUpdated": "2026-01-22",
+  "notes": [
+    "v4.0 JSON supports dog-first scoring logic",
+    "Structural caps, scaling, and position logic handled in algorithm layer",
+    "No duplicate categories",
+    "Superfoods carry zero intrinsic points (signal-only)"
+  ],
 
-  "categories": {
-    "PREMIUM_FRESH_MEATS": {
-      "description": "Fresh whole meats (70% moisture) - excellent quality but lower protein density. Best when paired with meals",
-      "pointValue": 3,
+  "POSITIVE_INGREDIENTS": {
+    "NAMED_CONCENTRATED_MEAT_MEALS": {
+      "description": "Named dehydrated or meal-based animal proteins",
+      "defaultPoints": 2,
       "ingredients": [
-        "fresh chicken", "fresh beef", "fresh lamb", "fresh turkey", "fresh duck", "fresh salmon", "fresh trout",
-        "fresh venison", "fresh bison", "fresh rabbit", "fresh kangaroo", "fresh wild boar", "fresh ostrich",
-        "fresh goat", "fresh pork", "fresh reindeer", "fresh quail", "fresh pheasant", "fresh goose", "fresh guinea fowl",
-        "deboned chicken", "deboned beef", "deboned lamb", "deboned turkey", "deboned salmon", "deboned white fish",
-        "chicken breast", "chicken meat", "beef muscle meat", "lamb meat", "turkey meat", "duck meat",
-        "freshly prepared chicken", "freshly prepared beef", "freshly prepared lamb", "freshly prepared turkey",
-        "freshly prepared salmon", "freshly prepared duck", "freshly prepared venison", "freshly prepared wild boar",
-        "freshly prepared rabbit", "freshly prepared kangaroo", "freshly prepared goat",
-        "raw whole herring", "raw turkey", "raw whole hake", "raw whole mackerel", "raw turkey liver"
+        "chicken meal",
+        "turkey meal",
+        "duck meal",
+        "beef meal",
+        "lamb meal",
+        "venison meal",
+        "salmon meal",
+        "herring meal",
+        "fish meal (named species)",
+        "dehydrated chicken",
+        "dehydrated turkey",
+        "dehydrated beef",
+        "dehydrated lamb",
+        "dehydrated duck",
+        "dehydrated fish (named)",
+        "dried chicken",
+        "dried turkey",
+        "dried beef",
+        "dried lamb",
+        "dried duck"
       ]
     },
 
-    "CONCENTRATED_MEAT_MEALS": {
-      "description": "Dehydrated/meal proteins (300% more protein than fresh) - excellent protein density when from named sources",
-      "pointValue": 4,
+    "FRESH_AND_RAW_MEATS": {
+      "description": "Fresh, raw, or minimally processed named meats",
+      "defaultPoints": 3,
       "ingredients": [
-        "chicken meal", "beef meal", "lamb meal", "turkey meal", "duck meal", "salmon meal", "herring meal",
-        "anchovy meal", "mackerel meal", "trout meal", "venison meal", "bison meal", "pork meal",
-        "dehydrated chicken", "dehydrated beef", "dehydrated lamb", "dehydrated turkey", "dehydrated duck",
-        "dehydrated salmon", "dehydrated fish", "dehydrated herring", "dehydrated pork", "dehydrated mackerel",
-        "dehydrated sardine", "dehydrated whitefish",
-        "dried chicken", "dried beef", "dried lamb", "dried turkey", "dried duck", "dried salmon",
-        "dried fish", "dried herring", "dried rabbit", "dried insect protein"
+        "fresh chicken",
+        "fresh turkey",
+        "fresh beef",
+        "fresh lamb",
+        "fresh duck",
+        "raw chicken",
+        "raw turkey",
+        "raw beef",
+        "raw lamb",
+        "raw duck",
+        "deboned chicken",
+        "deboned turkey",
+        "deboned beef",
+        "deboned lamb",
+        "freshly prepared chicken",
+        "freshly prepared turkey",
+        "freshly prepared beef",
+        "freshly prepared lamb"
       ]
     },
 
-    "PREMIUM_FISH_PROTEINS": {
-      "description": "Whole fish sources - rich in omega-3s and complete proteins",
-      "pointValue": 4,
+    "FISH_PROTEINS_NAMED": {
+      "description": "Named whole fish or fish proteins",
+      "defaultPoints": 3,
       "ingredients": [
-        "whole herring", "whole mackerel", "whole sardine", "whole hake", "whole anchovies",
-        "salmon", "trout", "whitefish", "cod", "haddock", "pollock",
-        "raw whole herring", "raw whole mackerel", "raw whole hake"
-      ]
-    },
-
-    "PREMIUM_FISH_PROTEINS": {
-      "description": "Whole fish sources - rich in omega-3s and complete proteins",
-      "pointValue": 4,
-      "ingredients": [
-        "whole herring", "whole mackerel", "whole sardine", "whole hake", "whole anchovies",
-        "salmon", "trout", "whitefish", "cod", "haddock", "pollock",
-        "raw whole herring", "raw whole mackerel", "raw whole hake"
+        "salmon",
+        "herring",
+        "mackerel",
+        "sardine",
+        "trout",
+        "white fish (named species)",
+        "whole herring",
+        "whole mackerel",
+        "whole sardine"
       ]
     },
 
     "ORGAN_MEATS": {
-      "description": "Nutrient-dense organs - vitamin A, B12, iron, essential nutrients (nature's multivitamin)",
-      "pointValue": 3,
+      "description": "Named animal organ meats",
+      "defaultPoints": 3,
       "ingredients": [
-        "chicken liver", "beef liver", "lamb liver", "turkey liver", "duck liver", "pork liver",
-        "chicken heart", "beef heart", "lamb heart", "turkey heart", "duck heart",
-        "chicken kidney", "beef kidney", "lamb kidney",
-        "beef spleen", "lamb spleen",
-        "chicken gizzard", "turkey gizzard", "duck gizzard",
-        "beef lung", "lamb lung", "chicken lung",
-        "beef tripe", "lamb tripe", "green tripe",
-        "liver", "heart", "kidney", "spleen", "lung", "tripe", "offal", "organ meat",
-        "chicken giblets", "giblets"
+        "chicken liver",
+        "beef liver",
+        "lamb liver",
+        "turkey liver",
+        "chicken heart",
+        "beef heart",
+        "lamb heart",
+        "kidney",
+        "tripe",
+        "gizzard"
       ]
     },
 
     "WHOLE_EGGS": {
-      "description": "Complete protein with all essential amino acids - highly digestible (94%)",
-      "pointValue": 3,
+      "description": "Whole egg protein sources",
+      "defaultPoints": 3,
       "ingredients": [
-        "whole egg", "whole eggs", "fresh whole egg", "fresh eggs",
-        "dried whole egg", "dehydrated whole egg",
-        "egg", "eggs", "free range egg", "organic egg",
+        "whole egg",
+        "whole eggs",
+        "dried egg",
         "egg powder"
       ]
     },
 
-    "OMEGA_FATTY_ACIDS": {
-      "description": "Essential omega-3 and omega-6 for skin, coat, brain, and joint health",
-      "pointValue": 2,
+    "NAMED_ANIMAL_FATS": {
+      "description": "Named animal fats",
+      "defaultPoints": 1,
       "ingredients": [
-        "salmon oil", "fish oil", "cod liver oil", "herring oil", "anchovy oil", "krill oil", "pollock oil",
-        "flaxseed oil", "flax seed oil", "linseed oil", "hemp seed oil", "hemp oil",
-        "algal oil", "dha", "dha dried algae", "epa", "omega 3 oil", "omega-3 extract",
-        "cold pressed salmon oil", "cold pressed fish oil", "norwegian salmon oil", "scottish salmon oil",
-        "atlantic salmon oil", "wild salmon oil", "algae omega 3 powder", "algae oil"
+        "chicken fat",
+        "duck fat",
+        "turkey fat",
+        "beef fat",
+        "lamb fat",
+        "salmon oil"
+      ]
+    },
+
+    "OMEGA_FATS": {
+      "description": "Named omega-3 and omega-6 sources",
+      "defaultPoints": 2,
+      "ingredients": [
+        "fish oil",
+        "salmon oil",
+        "herring oil",
+        "cod liver oil",
+        "krill oil",
+        "algal oil"
       ]
     },
 
     "JOINT_SUPPORT": {
-      "description": "Glucosamine, chondroitin, and natural joint support compounds",
-      "pointValue": 2,
+      "description": "Joint health supplements",
+      "defaultPoints": 2,
       "ingredients": [
-        "glucosamine", "glucosamine hcl", "glucosamine hydrochloride", "glucosamine sulfate",
-        "d-glucosamine hydrochloride", "glucosamine- hci", "glucosamine-hcl",
-        "chondroitin", "chondroitin sulfate", "chondroitin sulfate and collagen",
-        "green lipped mussel", "green-lipped mussel", "new zealand green lipped mussel",
-        "green lipped mussel extract", "green lipped mussel powder", "dried green lipped mussels",
-        "mussel meat extract from perna canaliculus",
-        "msm", "methylsulfonylmethane", "methyl sulphonyl methane",
-        "collagen", "collagen hydrolysate",
-        "cartilage", "cartilage hydrolysate", "chicken cartilage", "beef cartilage"
+        "glucosamine",
+        "chondroitin",
+        "green lipped mussel",
+        "msm"
       ]
     },
 
     "PROBIOTICS_PREBIOTICS": {
-      "description": "Gut health support - beneficial bacteria and prebiotic fibers",
-      "pointValue": 2,
+      "description": "Digestive health support",
+      "defaultPoints": 2,
       "ingredients": [
-        "probiotic", "lactobacillus", "lactobacillus acidophilus", "lactobacillus helveticus",
-        "bifidobacterium", "enterococcus faecium", "e faecium", "bacillus velezensis",
-        "prebiotic", "chicory root", "chicory root extract", "chicory inulin", "inulin",
-        "inulin from chicory", "fructooligosaccharides", "fructo-oligosaccharides", "fos",
-        "mannanoligosaccharides", "mannan-oligosaccharides", "mos",
-        "fermented whey", "yeast cell walls", "dried yeast extract", "beta glucans", "beta-glucans",
-        "pre-biotic fructo-oligosaccharide", "pre-biotic mannan oligosaccharides"
+        "probiotic",
+        "prebiotic",
+        "inulin",
+        "chicory root",
+        "fos",
+        "mos"
       ]
     },
 
-    "SUPERFOODS_ANTIOXIDANTS": {
-      "description": "Nutrient-dense superfoods with antioxidant and anti-inflammatory properties",
-      "pointValue": 2,
+    "SUPERFOODS_SIGNAL_ONLY": {
+      "description": "Superfoods and botanicals – signal only, scored in algorithm",
+      "defaultPoints": 0,
       "ingredients": [
-        "blueberries", "blueberry", "cranberries", "cranberry", "blackberries", "blackberry",
-        "raspberries", "raspberry", "strawberries", "strawberry", "bilberries", "bilberry",
-        "acai", "acai berry", "goji berries", "goji berry", "aronia", "aronia berries",
-        "pomegranate", "pomegranate extract", "acerola", "acerola cherry",
-        "kale", "spinach", "broccoli", "chard", "watercress", "spirulina",
-        "turmeric", "curcumin", "green tea", "green tea extract",
-        "ashwagandha", "ginger", "cinnamon", "rosemary extract",
-        "cranberry extract", "pomegranate extract", "green tea extract",
-        "saskatoon berries", "whole cranberries", "whole blueberries", "whole saskatoon berries"
+        "blueberries",
+        "cranberries",
+        "raspberries",
+        "blackberries",
+        "turmeric",
+        "curcumin",
+        "herbs",
+        "botanicals",
+        "antioxidants"
       ]
-    },
+    }
+  },
 
-    "PREMIUM_VEGETABLES": {
-      "description": "Nutrient-rich vegetables - fiber, vitamins, minerals, antioxidants",
-      "pointValue": 1,
-      "ingredients": [
-        "sweet potato", "sweet potatoes", "butternut squash", "pumpkin", "whole pumpkin",
-        "kale", "spinach", "broccoli", "asparagus", "brussels sprouts",
-        "carrots", "carrot", "whole carrots", "parsnips", "parsnip", "beets", "beetroot", "beet greens",
-        "peas", "green pea", "garden pea", "whole peas",
-        "lentil", "red lentil", "green lentil", "whole red lentils", "whole green lentils",
-        "zucchini", "whole zucchini", "courgette", "cucumber", "celery",
-        "fresh kale", "fresh spinach", "fresh beet greens", "fresh turnip greens"
-      ]
-    },
-
-    "LEGUMES_BEANS": {
-      "description": "Protein and fiber from legumes - grain-free carb sources",
-      "pointValue": 0,
-      "ingredients": [
-        "chickpeas", "chickpea", "whole chickpeas", "garbanzo beans",
-        "pinto beans", "whole pinto beans", "navy beans", "whole navy beans",
-        "lentils", "lentil fibre", "pea starch"
-      ]
-    },
-
-    "QUALITY_GRAINS": {
-      "description": "Whole grains with fiber and nutrients - better than refined grains but not ideal as primary carb",
-      "pointValue": -0.5,
-      "ingredients": [
-        "oats", "oatmeal", "whole oats", "steel-cut oats",
-        "barley", "whole barley", "pearled barley",
-        "quinoa", "buckwheat", "amaranth", "millet",
-        "whole grain oats", "spelt"
-      ]
-    },
-
-    "LEGUMES_BEANS": {
-      "description": "Protein and fiber from legumes - grain-free carb sources",
-      "pointValue": 0,
-      "ingredients": [
-        "chickpeas", "chickpea", "whole chickpeas", "garbanzo beans",
-        "pinto beans", "whole pinto beans", "navy beans", "whole navy beans",
-        "lentils", "lentil fibre", "pea starch"
-      ]
-    },
-
-    "QUALITY_GRAINS": {
-      "description": "Whole grains with fiber and nutrients - better than refined grains but not ideal as primary carb",
-      "pointValue": -0.5,
-      "ingredients": [
-        "oats", "oatmeal", "whole oats", "steel-cut oats",
-        "barley", "whole barley", "pearled barley",
-        "quinoa", "buckwheat", "amaranth", "millet",
-        "whole grain oats", "spelt"
-      ]
-    },
-
-    "BROWN_RICE": {
-      "description": "Brown rice - whole grain but high glycemic index, acceptable in moderation",
-      "pointValue": -1,
-      "ingredients": [
-        "brown rice", "whole brown rice", "wholegrain brown rice"
-      ]
-    },
-
-    "LOW_VALUE_GRAINS": {
-      "description": "Refined grains and high-glycemic carbs - minimal nutritional value, filler ingredients",
-      "pointValue": -3,
-      "ingredients": [
-        "white rice", "cooked white rice", "rice",
-        "corn", "maize", "ground maize", "flaked maize", "maize flour", "maize meal",
-        "wheat", "wheat flour", "wheat meal", "ground wheat",
-        "sorghum", "milo"
-      ]
-    },
-
+  "NEUTRAL_INGREDIENTS": {
     "NEUTRAL_STARCHES": {
-      "description": "Neutral carbohydrate sources - not harmful but not nutritionally dense",
-      "pointValue": 0,
+      "description": "Acceptable but non-beneficial carbohydrates",
+      "defaultPoints": 0,
       "ingredients": [
-        "potato", "potatoes", "white potato", "potato starch",
-        "tapioca", "tapioca starch",
-        "cassava", "rice flour", "rice starch"
+        "potato",
+        "potato starch",
+        "tapioca",
+        "cassava"
       ]
     },
 
-    "HIGH_RISK_FILLERS": {
-      "description": "Protein boosters and by-products - artificially inflate protein without meat quality",
-      "pointValue": -5,
+    "LEGUMES_DERIVATIVES": {
+      "description": "Legumes and legume-derived ingredients (splitting detected in algorithm)",
+      "defaultPoints": 0,
       "ingredients": [
-        "corn gluten meal", "corn gluten", "maize gluten meal", "maize gluten",
-        "wheat gluten", "wheat gluten meal",
-        "soy protein isolate", "soya protein isolate",
-        "by product", "by-product", "meat by-product", "poultry by-product",
-        "animal by-product", "meat & meat by product"
+        "peas",
+        "green peas",
+        "lentils",
+        "red lentils",
+        "chickpeas",
+        "pea starch",
+        "pea protein",
+        "lentil fibre",
+        "legume protein"
       ]
     },
 
-    "FIBER_FILLERS": {
-      "description": "Low-cost fiber sources with minimal nutrition - used to reduce cost",
-      "pointValue": -2,
+    "VITAMINS_MINERALS": {
+      "description": "Declared vitamin and mineral supplementation",
+      "defaultPoints": 0,
       "ingredients": [
-        "beet pulp", "dried beet pulp", "sugar beet pulp",
-        "cellulose", "cellulose powder", "cellulose fibre",
-        "pea fibre", "oat fibre", "wheat bran",
-        "rice bran", "soya hulls", "peanut hulls"
+        "vitamins",
+        "minerals",
+        "zinc",
+        "iron",
+        "selenium",
+        "iodine"
+      ]
+    }
+  },
+
+  "NEGATIVE_INGREDIENTS": {
+    "LOW_VALUE_GRAINS": {
+      "description": "High-glycaemic, low-value grains",
+      "defaultPoints": -3,
+      "ingredients": [
+        "rice",
+        "white rice",
+        "brown rice",
+        "maize",
+        "corn",
+        "wheat",
+        "barley",
+        "oats"
       ]
     },
 
-    "ARTIFICIAL_COLORS": {
-      "description": "Artificial coloring - NO nutritional value, potential allergens",
-      "pointValue": -7,
+    "FIBRE_FILLERS": {
+      "description": "Low-cost fibre fillers",
+      "defaultPoints": -2,
       "ingredients": [
-        "artificial color", "artificial colour",
-        "red 40", "yellow 5", "yellow 6", "blue 2",
-        "caramel color", "caramel colour",
-        "coloured with ferrous oxide", "coloured with iron oxide"
-      ]
-    },
-
-    "RED_FLAG_PRESERVATIVES": {
-      "description": "Controversial preservatives linked to health concerns - avoid",
-      "pointValue": -7,
-      "ingredients": [
-        "ethoxyquin",
-        "propylene glycol",
-        "bha", "bht", "tbhq",
-        "propyl gallate"
-      ]
-    },
-
-    "CONTROVERSIAL_ADDITIVES": {
-      "description": "Legal but controversial - digestive issues in sensitive dogs",
-      "pointValue": -3,
-      "ingredients": [
-        "carrageenan",
-        "guar gum",
-        "xanthan gum",
-        "cassia gum",
-        "sodium selenite",
-        "menadione"
-      ]
-    },
-
-    "NATURAL_PRESERVATIVES": {
-      "description": "Natural, safe preservation methods",
-      "pointValue": 1,
-      "ingredients": [
-        "tocopherols", "mixed tocopherols", "vitamin e",
-        "rosemary extract", "rosemary oil", "rosemary oil extract",
-        "ascorbic acid", "vitamin c"
-      ]
-    },
-
-    "AMINO_ACIDS": {
-      "description": "Essential amino acids supplementation",
-      "pointValue": 1,
-      "ingredients": [
-        "taurine", "l-carnitine", "l carnitine", "carnitine",
-        "lysine", "lysine hcl", "methionine", "dl-methionine",
-        "threonine", "tryptophan", "l-tryptophan",
-        "glutamine", "amino acid"
-      ]
-    },
-
-    "BENEFICIAL_HERBS": {
-      "description": "Medicinal herbs with anti-inflammatory and digestive benefits",
-      "pointValue": 1,
-      "ingredients": [
-        "milk thistle", "dandelion", "dandelion root",
-        "nettle", "nettle leaves", "stinging nettle",
-        "chamomile", "peppermint", "spearmint",
-        "parsley", "basil", "oregano", "thyme", "rosemary",
-        "ginger", "turmeric", "cinnamon",
-        "yucca", "yucca schidigera", "yucca extract",
-        "aloe vera", "aloe vera without aloin",
-        "echinacea", "ginseng", "ashwagandha",
-        "fennel", "fenugreek", "aniseed",
-        "burdock root", "lavender", "marshmallow root", "rosehips"
-      ]
-    },
-
-    "SEAWEED_KELP": {
-      "description": "Marine vegetables - natural iodine, minerals, trace elements",
-      "pointValue": 1,
-      "ingredients": [
-        "kelp", "seaweed", "sea kelp", "kelp powder", "dried kelp",
-        "ascophyllum nodosum", "scottish kelp",
-        "irish kelp", "marine algae", "sea algae",
-        "algae", "spirulina", "chlorella"
-      ]
-    },
-
-    "BENEFICIAL_OILS_FATS": {
-      "description": "Healthy fat sources beyond omega-3 supplements",
-      "pointValue": 1,
-      "ingredients": [
-        "coconut oil", "olive oil", "extra virgin olive oil",
-        "sunflower oil", "cold pressed sunflower oil",
-        "rapeseed oil", "canola oil",
-        "flaxseed", "flax seed", "linseed",
-        "chia seeds", "hemp seeds", "pumpkin seeds"
-      ]
-    },
-
-    "NAMED_ANIMAL_FATS": {
-      "description": "Specific animal fats - good palatability and essential fatty acids",
-      "pointValue": 1,
-      "ingredients": [
-        "chicken fat", "beef fat", "lamb fat", "turkey fat", "duck fat",
-        "salmon fat", "chicken gravy"
-      ]
-    },
-
-    "FRUITS": {
-      "description": "Natural fruit sources - vitamins, antioxidants, fiber",
-      "pointValue": 1,
-      "ingredients": [
-        "apple", "apples", "whole apples", "fresh whole apples", "pear", "pears", "fresh whole pears",
-        "banana", "bananas", "mango", "papaya", "pineapple",
-        "orange", "citrus", "grapefruit", "mandarin",
-        "tomato", "tomatoes"
-      ]
-    },
-"FRUITS": {
-      "description": "Natural fruit sources - vitamins, antioxidants, fiber",
-      "pointValue": 1,
-      "ingredients": [
-        "apple", "apples", "whole apples", "fresh whole apples", "pear", "pears", "fresh whole pears",
-        "banana", "bananas", "mango", "papaya", "pineapple",
-        "orange", "citrus", "grapefruit", "mandarin",
-        "tomato", "tomatoes"
+        "beet pulp",
+        "cellulose",
+        "pea fibre"
       ]
     },
 
     "UNNAMED_PROTEINS": {
-      "description": "Generic, unspecified meat sources - low quality, unknown origin",
-      "pointValue": -4,
+      "description": "Generic animal protein sources",
+      "defaultPoints": -4,
       "ingredients": [
-        "meat meal", "meat and bone meal",
-        "poultry", "poultry meal", "poultry protein",
-        "animal protein", "animal meal",
-        "meat & animal derivative", "meat and animal derivative",
-        "fish", "fish meal", "white fish",
-        "game", "game meat"
+        "meat meal",
+        "poultry meal",
+        "animal protein",
+        "animal meal",
+        "fish meal"
       ]
     },
 
     "UNNAMED_FATS": {
-      "description": "Generic rendered fats - quality and source unknown",
-      "pointValue": -2,
+      "description": "Generic or unspecified fats",
+      "defaultPoints": -2,
       "ingredients": [
-        "animal fat", "poultry fat",
-        "lard", "rendered fat", "greaves", "greaves meal"
+        "animal fat",
+        "poultry fat"
       ]
     },
 
-    "DIGEST_HYDROLYSATES": {
-      "description": "Chemically processed proteins for palatability - quality concerns",
-      "pointValue": -2,
+    "SUGARS_SWEETENERS": {
+      "description": "Added sugars and syrups",
+      "defaultPoints": -5,
       "ingredients": [
-        "digest", "animal digest", "poultry digest",
-        "beef digest", "lamb digest", "turkey digest",
-        "hydrolysate", "protein hydrolysate", "liver hydrolysate",
-        "hydrolyzed animal protein", "hydrolysed animal protein"
+        "sugar",
+        "molasses",
+        "corn syrup",
+        "glucose syrup"
       ]
     },
 
-    "SUGAR_SWEETENERS": {
-      "description": "Added sugars - no nutritional benefit, promotes obesity",
-      "pointValue": -5,
+    "ARTIFICIAL_ADDITIVES": {
+      "description": "Artificial colours and preservatives",
+      "defaultPoints": -7,
       "ingredients": [
-        "sugar", "cane sugar", "beet molasses", "cane molasses",
-        "glucose syrup", "corn syrup", "wheat glucose syrup",
-        "dextrose", "fructose", "sucrose",
-        "honey", "manuka honey", "syrup"
-      ]
-    },
-
-    "BLOOD_MEAL_PLASMA": {
-      "description": "Blood products - cheap protein source, controversial",
-      "pointValue": -3,
-      "ingredients": [
-        "blood meal", "plasma powder", "plasma protein",
-        "dried plasma", "hemoglobin powder", "haemoglobin powder"
-      ]
-    },
-
-    "YEAST_PRODUCTS": {
-      "description": "Nutritional yeast and fermentation products - B vitamins",
-      "pointValue": 1,
-      "ingredients": [
-        "brewers yeast", "brewer yeast", "nutritional yeast",
-        "yeast extract", "dried yeast", "yeast",
-        "saccharomyces cerevisiae"
-      ]
-    },
-
-    "MINERALS_SUPPLEMENTS": {
-      "description": "Essential vitamin and mineral supplementation",
-      "pointValue": 0,
-      "ingredients": [
-        "minerals", "vitamins", "mineral supplement", "vitamin supplement",
-        "calcium", "phosphorus", "zinc", "iron", "copper", "manganese",
-        "selenium", "iodine", "salt", "sodium chloride"
+        "bha",
+        "bht",
+        "ethoxyquin",
+        "propylene glycol",
+        "artificial colour",
+        "artificial color",
+        "red 40",
+        "yellow 5",
+        "yellow 6"
       ]
     }
   }

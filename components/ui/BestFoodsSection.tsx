@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Product } from '@/types';
 import { LoadingSpinner } from './LoadingSpinner';
+import { logger } from '@/lib/utils/logger';
 
 // GraphQL query for top products
 const GET_TOP_PRODUCTS = gql`
@@ -96,8 +97,8 @@ export function BestFoodsSection({ className = '' }: BestFoodsSectionProps) {
 
   const cleanedFilters = cleanFilters(filters);
 
-  console.log('BestFoodsSection - filters:', JSON.stringify(filters, null, 2));
-  console.log('BestFoodsSection - cleaned filters:', JSON.stringify(cleanedFilters, null, 2));
+  logger.debug('BestFoodsSection - filters:', JSON.stringify(filters, null, 2));
+  logger.debug('BestFoodsSection - cleaned filters:', JSON.stringify(cleanedFilters, null, 2));
 
   const { data, loading, error } = useQuery<{ products?: { data?: Product[]; total?: number } }>(GET_TOP_PRODUCTS, {
     variables: { filters: cleanedFilters },
@@ -205,7 +206,7 @@ export function BestFoodsSection({ className = '' }: BestFoodsSectionProps) {
                       <div className="bg-[var(--color-trust-light)] rounded-lg p-2.5 border border-[var(--color-border)] text-center">
                         <p className="text-xs text-[var(--color-text-secondary)]">ODF Score</p>
                         <p className="text-lg font-bold text-[var(--color-trust)]">
-                          {product.overall_score || 0}
+                          {Math.round(product.overall_score || 0)}<span className="text-sm font-normal text-[var(--color-text-secondary)]">/100</span>
                         </p>
                       </div>
 

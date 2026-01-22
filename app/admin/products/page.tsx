@@ -6,7 +6,7 @@ import { Product, Brand } from '@/types';
 import { Search, Edit, Trash2, Plus, Filter } from 'lucide-react';
 import Link from 'next/link';
 import { formatPrice } from '@/lib/utils/format';
-import { getScoreColor } from '@/scoring/calculator';
+import { getScoreColor } from '@/lib/utils/scoring';
 
 export default function ProductsManagementPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -175,17 +175,14 @@ export default function ProductsManagementPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div
-                        className={`inline-flex items-center justify-center w-10 h-10 rounded-full ${
-                          getScoreColor(product.overall_score || 0).bgColor
+                        className={`inline-flex flex-col items-center justify-center w-10 h-10 rounded-full ${
+                          getScoreColor(product.overall_score || 0)
                         }`}
                       >
-                        <span
-                          className={`font-bold text-sm ${
-                            getScoreColor(product.overall_score || 0).color
-                          }`}
-                        >
+                        <span className="font-bold text-xs text-white leading-none">
                           {Math.round(product.overall_score || 0)}
                         </span>
+                        <span className="text-[9px] text-white opacity-75 leading-none">/100</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -236,6 +233,3 @@ export default function ProductsManagementPage() {
     </Container>
   );
 }
-
-
-

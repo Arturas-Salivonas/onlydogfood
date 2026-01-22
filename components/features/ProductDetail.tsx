@@ -605,8 +605,10 @@ export function ProductDetail({ product, relatedProducts, structuredIngredients 
                         />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-3xl font-bold text-[var(--color-text-primary)]">{Math.round(product.overall_score || 0)}</span>
-                        <span className="text-xs text-[var(--color-text-secondary)]">out of 100</span>
+                        <div className="flex items-baseline">
+                          <span className="text-3xl font-bold text-[var(--color-text-primary)]">{Math.round(product.overall_score || 0)}</span>
+                          <span className="text-lg text-[var(--color-text-secondary)] ml-0.5">/100</span>
+                        </div>
                       </div>
                     </div>
 

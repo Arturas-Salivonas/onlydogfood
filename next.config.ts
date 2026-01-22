@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', '@supabase/supabase-js', '@tanstack/react-query'],
   },
+  // Enable React Cache Components (PPR functionality in Next.js 16)
+  cacheHandlers: {},
+  cacheMaxMemorySize: 50 * 1024 * 1024, // 50 MB
   images: {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],

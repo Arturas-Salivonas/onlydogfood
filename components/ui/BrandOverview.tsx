@@ -137,7 +137,7 @@ export function BrandOverview({ brand, bestProduct, priceRange }: BrandOverviewP
               {bestProduct.name}
             </Link>
             <p className="text-xs text-gray-600 mt-1">
-              Score: {Math.round(bestProduct.overall_score)}/100
+              Score: <span className="font-semibold">{Math.round(bestProduct.overall_score)}</span><span className="text-[10px]">/100</span>
             </p>
           </div>
         )}

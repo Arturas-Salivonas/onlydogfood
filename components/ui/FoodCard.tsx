@@ -154,7 +154,8 @@ export function FoodCard({
                       border: 'none',
                     }}
                   >
-                    {product.overall_score || 0}
+                    <span className="font-bold">{Math.round(product.overall_score || 0)}</span>
+                    <span className="text-xs opacity-80">/100</span>
                   </div>
                 </div>
               </div>

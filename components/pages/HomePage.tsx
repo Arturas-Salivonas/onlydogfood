@@ -8,6 +8,7 @@ import { Container } from '@/components/layout/Container';
 import { PageSEO } from '@/components/seo';
 import { DogSearchBar, StatsSection, BestFoodsSection } from '@/components/ui';
 import { Quiz } from '@/components/ui/Quiz';
+import { logger } from '@/lib/utils/logger';
 
 export default function HomePage() {
   const [isQuizOpen, setIsQuizOpen] = useState(false);
@@ -42,7 +43,7 @@ export default function HomePage() {
                 <div className="flex flex-col gap-3 items-start relative z-30">
                   <button
                     onClick={() => {
-                      console.log('Button clicked!');
+                      logger.log('Button clicked!');
                       setIsQuizOpen(true);
                     }}
                     className="arrow-button group inline-flex items-center gap-2 px-8 py-4 rounded-[30px] font-bold text-base hover:opacity-90 transition-all bg-[var(--color-trust)] text-[var(--color-background-card)] shadow-[var(--shadow-medium)] cursor-pointer"

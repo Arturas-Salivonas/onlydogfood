@@ -142,7 +142,7 @@ export default function BrandsManagementPage() {
                 {brand.overall_score && (
                   <div className="text-center">
                     <div className="text-2xl font-bold text-gray-900">
-                      {Math.round(brand.overall_score)}
+                      {Math.round(brand.overall_score)}<span className="text-base text-gray-500">/100</span>
                     </div>
                     <div className="text-xs text-gray-500">Score</div>
                   </div>
@@ -190,6 +190,3 @@ export default function BrandsManagementPage() {
     </Container>
   );
 }
-
-
-
