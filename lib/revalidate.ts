@@ -1,4 +1,4 @@
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 
 // Revalidate specific paths after admin updates
 export async function revalidateAfterUpdate(paths: string[] = []) {
@@ -7,11 +7,6 @@ export async function revalidateAfterUpdate(paths: string[] = []) {
     for (const path of paths) {
       revalidatePath(path);
     }
-
-    // Revalidate common tags
-    revalidateTag('products', 'page');
-    revalidateTag('brands', 'page');
-    revalidateTag('categories', 'page');
 
     console.log('Revalidation completed for paths:', paths);
   } catch (error) {

@@ -26,11 +26,17 @@ export async function GET(
     const supabase = getServiceSupabase();
 
     // Fetch ingredients
-    const { data: ingredients, error: ingredientsError } = await supabase
+    const { data: ingredientsData, error: ingredientsError } = await supabase
       .from('product_ingredients')
       .select('*')
-      .eq('product_id', productId)
-      .order('position', { ascending: true });
+      .eq('product_id', productId);
+
+    // Sort by percentage (declared or estimated) descending
+    const ingredients = ingredientsData?.sort((a: any, b: any) => {
+      const percentA = a.percentage_declared ?? a.percentage_estimated ?? 0;
+      const percentB = b.percentage_declared ?? b.percentage_estimated ?? 0;
+      return percentB - percentA;
+    }) || null;
 
     if (ingredientsError) {
       throw ingredientsError;

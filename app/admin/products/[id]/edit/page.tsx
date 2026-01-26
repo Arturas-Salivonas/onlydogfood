@@ -371,10 +371,11 @@ export default function EditProductPage({ params }: Props) {
                 Image URL
               </label>
               <input
-                type="url"
+                type="text"
                 name="image_url"
                 value={formData.image_url}
                 onChange={handleChange}
+                placeholder="/products/image.jpg or https://..."
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>

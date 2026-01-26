@@ -35,12 +35,471 @@ import {
   ASH_DEFAULTS,
   DM_OPTIMAL_RANGES,
   RED_FLAG_TIERS,
+  // v4.0 imports
+  SUPERFOODS_TERMS,
+  LEGUME_DERIVATIVES,
+  LOW_VALUE_GRAINS,
+  LEGUME_SPLIT_PENALTIES,
+  GRAIN_POSITION_CAPS,
+  VALUE_CAPS,
+  SUPERFOODS_BUCKET,
+  // v5.0 imports
+  PROTEIN_RANGES,
+  MEAT_THRESHOLDS,
+  ASH_THRESHOLDS,
+  TOP_5_MEAT_DENSITY,
+  CARB_SOURCES,
+  POTATO_FORMS,
+  PEA_FORMS,
+  ORGAN_MEATS,
+  WHOLE_PREY_INDICATORS,
+  GENERIC_PROTEINS,
 } from './config';
 import {
   calculateIngredientBonusPoints,
   hasRedFlags as detectRedFlags,
   getIngredientSummary,
 } from './ingredient-matcher';
+
+// ==========================================
+// v4.0: HELPER FUNCTIONS FOR GUARDRAILS
+// ==========================================
+
+/**
+ * v4.0: Tokenize ingredients into ordered list
+ */
+function tokenizeIngredients(ingredientsText: string): string[] {
+  return ingredientsText
+    .split(/[,;]/)
+    .map(t => t.trim().toLowerCase())
+    .filter(t => t.length > 0);
+}
+
+/**
+ * v4.0: Calculate superfoods bucket score (signal-only, max +1)
+ */
+function calculateSuperfoodsBucket(ingredientTokens: string[]): {
+  score: number;
+  triggeredBy: string | null;
+  position: number | null;
+} {
+  for (let i = 0; i < Math.min(10, ingredientTokens.length); i++) {
+    const token = ingredientTokens[i];
+    const hasSuperfoods = SUPERFOODS_TERMS.some(sf => token.includes(sf));
+    if (hasSuperfoods) {
+      return {
+        score: SUPERFOODS_BUCKET.TOP_10,
+        triggeredBy: token,
+        position: i + 1,
+      };
+    }
+  }
+
+  // Check after position 10
+  for (let i = 10; i < ingredientTokens.length; i++) {
+    const token = ingredientTokens[i];
+    const hasSuperfoods = SUPERFOODS_TERMS.some(sf => token.includes(sf));
+    if (hasSuperfoods) {
+      return {
+        score: SUPERFOODS_BUCKET.AFTER_10,
+        triggeredBy: token,
+        position: i + 1,
+      };
+    }
+  }
+
+  return { score: 0, triggeredBy: null, position: null };
+}
+
+/**
+ * v4.0: Detect legume splitting in top 10 ingredients
+ */
+function detectLegumeSplitting(ingredientTokens: string[]): {
+  penalty: number;
+  matches: Array<{ ingredient: string; position: number }>;
+} {
+  const top10 = ingredientTokens.slice(0, 10);
+  const matches: Array<{ ingredient: string; position: number }> = [];
+
+  top10.forEach((token, index) => {
+    const isLegume = LEGUME_DERIVATIVES.some(leg => token.includes(leg));
+    if (isLegume) {
+      matches.push({ ingredient: token, position: index + 1 });
+    }
+  });
+
+  let penalty = 0;
+  if (matches.length >= 3) {
+    penalty = LEGUME_SPLIT_PENALTIES.THREE_PLUS_IN_TOP_10;
+  } else if (matches.length >= 2) {
+    penalty = LEGUME_SPLIT_PENALTIES.TWO_IN_TOP_10;
+  }
+
+  return { penalty, matches };
+}
+
+/**
+ * v4.0: Apply grain position hard caps to Ingredient Quality
+ */
+function applyGrainPositionCaps(
+  ingredientTokens: string[],
+  currentScore: number
+): {
+  cappedScore: number;
+  capApplied: {
+    capValue: number;
+    reason: string;
+    matchedIngredient: string;
+    position: number;
+  } | null;
+} {
+  const top3 = ingredientTokens.slice(0, 3);
+
+  for (let i = 0; i < top3.length; i++) {
+    const token = top3[i];
+    const isLowValueGrain = LOW_VALUE_GRAINS.some(grain => token.includes(grain));
+
+    if (isLowValueGrain) {
+      let capValue: number;
+      let reason: string;
+
+      if (i === 0) {
+        capValue = GRAIN_POSITION_CAPS.POSITION_1;
+        reason = 'Low-value grain as #1 ingredient';
+      } else {
+        capValue = GRAIN_POSITION_CAPS.POSITION_2_OR_3;
+        reason = `Low-value grain at position #${i + 1}`;
+      }
+
+      if (currentScore > capValue) {
+        return {
+          cappedScore: capValue,
+          capApplied: {
+            capValue,
+            reason,
+            matchedIngredient: token,
+            position: i + 1,
+          },
+        };
+      }
+    }
+  }
+
+  return { cappedScore: currentScore, capApplied: null };
+}
+
+/**
+ * v4.0: Apply value cap based on Ingredient Quality
+ */
+function applyValueCap(
+  rawValueScore: number,
+  ingredientQuality: number
+): {
+  cappedScore: number;
+  capApplied: {
+    capValue: number;
+    reason: string;
+    ingredientQualityUsed: number;
+  } | null;
+} {
+  let maxValue: number;
+  let reason: string;
+
+  if (ingredientQuality >= VALUE_CAPS.EXCELLENT.minIngredientQuality) {
+    maxValue = VALUE_CAPS.EXCELLENT.maxValue;
+    reason = 'No cap (excellent ingredients)';
+  } else if (ingredientQuality >= VALUE_CAPS.GOOD.minIngredientQuality) {
+    maxValue = VALUE_CAPS.GOOD.maxValue;
+    reason = 'Good ingredient quality cap';
+  } else if (ingredientQuality >= VALUE_CAPS.FAIR.minIngredientQuality) {
+    maxValue = VALUE_CAPS.FAIR.maxValue;
+    reason = 'Fair ingredient quality cap';
+  } else {
+    maxValue = VALUE_CAPS.POOR.maxValue;
+    reason = 'Poor ingredient quality cap';
+  }
+
+  if (rawValueScore > maxValue) {
+    return {
+      cappedScore: maxValue,
+      capApplied: {
+        capValue: maxValue,
+        reason,
+        ingredientQualityUsed: ingredientQuality,
+      },
+    };
+  }
+
+  return { cappedScore: rawValueScore, capApplied: null };
+}
+
+// ==========================================
+// v5.0: NEW HELPER FUNCTIONS FOR PHASE 1
+// ==========================================
+
+/**
+ * v5.0: Detect formula type from product name
+ */
+function detectFormulaType(product: Product): keyof typeof PROTEIN_RANGES {
+  const name = (product.name || '').toLowerCase();
+
+  if (name.includes('fit') || name.includes('trim') || name.includes('light') || name.includes('weight')) {
+    return 'WEIGHT_MANAGEMENT';
+  } else if (name.includes('puppy') || name.includes('junior')) {
+    return 'PUPPY';
+  } else if (name.includes('senior') || name.includes('mature')) {
+    return 'SENIOR';
+  } else if (name.includes('active') || name.includes('performance') || name.includes('working') || name.includes('sport')) {
+    return 'ACTIVE';
+  }
+
+  return 'MAINTENANCE';
+}
+
+/**
+ * v5.0: Calculate Top 5 meat density bonus (Phase 1 Critical)
+ */
+function calculateTop5MeatDensity(ingredientTokens: string[]): {
+  bonus: number;
+  meatCount: number;
+  nonMeatInTop5: string[];
+} {
+  const top5 = ingredientTokens.slice(0, 5);
+  let meatCount = 0;
+  const nonMeatInTop5: string[] = [];
+
+  top5.forEach((token) => {
+    const isMeat = (
+      token.includes('chicken') || token.includes('turkey') || token.includes('beef') ||
+      token.includes('lamb') || token.includes('duck') || token.includes('venison') ||
+      token.includes('rabbit') || token.includes('pork') || token.includes('salmon') ||
+      token.includes('herring') || token.includes('mackerel') || token.includes('sardine') ||
+      token.includes('trout') || token.includes('hake') || token.includes('pollock') ||
+      token.includes('cod') || token.includes('whitefish') || token.includes('fish oil') ||
+      token.includes('egg') || token.includes('liver') || token.includes('heart') ||
+      token.includes('kidney') || token.includes('giblets') || token.includes('tripe') ||
+      token.includes('meat') || token.includes('poultry')
+    ) && !token.includes('meal'); // Exclude "chicken meal" type strings
+
+    if (isMeat) {
+      meatCount++;
+    } else {
+      nonMeatInTop5.push(token);
+    }
+  });
+
+  let bonus = 0;
+  if (meatCount === 5) {
+    bonus = TOP_5_MEAT_DENSITY.FIVE_OF_FIVE; // +10
+  } else if (meatCount === 4) {
+    bonus = TOP_5_MEAT_DENSITY.FOUR_OF_FIVE; // +5
+  } else if (meatCount === 3) {
+    bonus = TOP_5_MEAT_DENSITY.THREE_OF_FIVE; // 0
+  } else {
+    bonus = TOP_5_MEAT_DENSITY.TWO_OR_LESS; // -5
+  }
+
+  return { bonus, meatCount, nonMeatInTop5 };
+}
+
+/**
+ * v5.0: Calculate carb position penalty (Phase 1 Critical)
+ */
+function calculateCarbPositionPenalty(ingredientTokens: string[]): {
+  penalty: number;
+  carbsInTop5: Array<{ ingredient: string; position: number; penaltyAmount: number }>;
+} {
+  const top5 = ingredientTokens.slice(0, 5);
+  const carbsInTop5: Array<{ ingredient: string; position: number; penaltyAmount: number }> = [];
+  let totalPenalty = 0;
+
+  top5.forEach((token, index) => {
+    const isCarb = CARB_SOURCES.some(carb => token.includes(carb));
+
+    if (isCarb) {
+      let penaltyAmount = 0;
+      const position = index + 1;
+
+      if (position === 1 || position === 2) {
+        penaltyAmount = 8; // SEVERE penalty for #1 or #2
+      } else if (position === 3) {
+        penaltyAmount = 5; // Major penalty for #3
+      } else if (position <= 5) {
+        penaltyAmount = 3; // Moderate penalty for #4-5
+      }
+
+      carbsInTop5.push({ ingredient: token, position, penaltyAmount });
+      totalPenalty += penaltyAmount;
+    }
+  });
+
+  return { penalty: totalPenalty, carbsInTop5 };
+}
+
+/**
+ * v5.0: Check for minimum meat threshold (Phase 1 Critical)
+ */
+function calculateMeatThresholdPenalty(effectiveMeat: number): {
+  penalty: number;
+  bonus: number;
+  threshold: string;
+  capScore: number | null;
+} {
+  if (effectiveMeat < MEAT_THRESHOLDS.FAILING.max) {
+    return {
+      penalty: MEAT_THRESHOLDS.FAILING.penalty,
+      bonus: 0,
+      threshold: 'FAILING',
+      capScore: MEAT_THRESHOLDS.FAILING.capScore,
+    };
+  } else if (effectiveMeat < MEAT_THRESHOLDS.LOW.max) {
+    return {
+      penalty: MEAT_THRESHOLDS.LOW.penalty,
+      bonus: 0,
+      threshold: 'LOW',
+      capScore: null,
+    };
+  } else if (effectiveMeat < MEAT_THRESHOLDS.ADEQUATE.max) {
+    return {
+      penalty: 0,
+      bonus: 0,
+      threshold: 'ADEQUATE',
+      capScore: null,
+    };
+  } else if (effectiveMeat < MEAT_THRESHOLDS.PREMIUM.max) {
+    return {
+      penalty: 0,
+      bonus: MEAT_THRESHOLDS.PREMIUM.bonus,
+      threshold: 'PREMIUM',
+      capScore: null,
+    };
+  } else {
+    return {
+      penalty: 0,
+      bonus: MEAT_THRESHOLDS.ULTRA_PREMIUM.bonus,
+      threshold: 'ULTRA_PREMIUM',
+      capScore: null,
+    };
+  }
+}
+
+/**
+ * v5.0: Calculate ash content penalty (Phase 1 Critical)
+ */
+function calculateAshPenalty(ashPercent: number | null): {
+  penalty: number;
+  bonus: number;
+  threshold: string;
+} {
+  if (ashPercent === null || ashPercent === undefined) {
+    return { penalty: 0, bonus: 0, threshold: 'UNKNOWN' };
+  }
+
+  if (ashPercent >= ASH_THRESHOLDS.VERY_HIGH.min) {
+    return {
+      penalty: ASH_THRESHOLDS.VERY_HIGH.penalty,
+      bonus: 0,
+      threshold: 'VERY_HIGH',
+    };
+  } else if (ashPercent >= ASH_THRESHOLDS.HIGH.min) {
+    return {
+      penalty: ASH_THRESHOLDS.HIGH.penalty,
+      bonus: 0,
+      threshold: 'HIGH',
+    };
+  } else if (ashPercent >= ASH_THRESHOLDS.NORMAL.min) {
+    return {
+      penalty: 0,
+      bonus: 0,
+      threshold: 'NORMAL',
+    };
+  } else {
+    return {
+      penalty: 0,
+      bonus: ASH_THRESHOLDS.EXCELLENT.bonus,
+      threshold: 'EXCELLENT',
+    };
+  }
+}
+
+/**
+ * v5.0: Detect potato/pea form manipulation (Phase 1 Critical)
+ */
+function detectPotatoPeaManipulation(ingredientTokens: string[]): {
+  penalty: number;
+  potatoForms: number;
+  peaForms: number;
+  details: string[];
+} {
+  const top10 = ingredientTokens.slice(0, 10);
+  const details: string[] = [];
+
+  // Check potato forms
+  const potatoMatches = top10.filter(token =>
+    POTATO_FORMS.some(form => token.includes(form))
+  );
+
+  // Check pea forms
+  const peaMatches = top10.filter(token =>
+    PEA_FORMS.some(form => token.includes(form))
+  );
+
+  let penalty = 0;
+
+  if (potatoMatches.length >= 4) {
+    penalty += 8;
+    details.push(`${potatoMatches.length} potato forms detected (severe manipulation)`);
+  } else if (potatoMatches.length >= 3) {
+    penalty += 5;
+    details.push(`${potatoMatches.length} potato forms detected`);
+  } else if (potatoMatches.length >= 2) {
+    penalty += 3;
+    details.push(`${potatoMatches.length} potato forms detected`);
+  }
+
+  if (peaMatches.length >= 4) {
+    penalty += 8;
+    details.push(`${peaMatches.length} pea forms detected (severe manipulation)`);
+  } else if (peaMatches.length >= 3) {
+    penalty += 5;
+    details.push(`${peaMatches.length} pea forms detected`);
+  } else if (peaMatches.length >= 2) {
+    penalty += 3;
+    details.push(`${peaMatches.length} pea forms detected`);
+  }
+
+  return {
+    penalty,
+    potatoForms: potatoMatches.length,
+    peaForms: peaMatches.length,
+    details,
+  };
+}
+
+/**
+ * v5.0: Calculate whole prey and organ meat bonuses
+ */
+function calculateWholePreyOrganBonus(ingredientTokens: string[]): {
+  bonus: number;
+  hasWholePrey: boolean;
+  hasOrganMeats: boolean;
+} {
+  const ingredientsLower = ingredientTokens.join(' ');
+
+  const hasWholePrey = WHOLE_PREY_INDICATORS.some(indicator =>
+    ingredientsLower.includes(indicator)
+  );
+
+  const hasOrganMeats = ORGAN_MEATS.some(organ =>
+    ingredientsLower.includes(organ)
+  );
+
+  let bonus = 0;
+  if (hasWholePrey) bonus += 3;
+  if (hasOrganMeats) bonus += 2;
+
+  return { bonus, hasWholePrey, hasOrganMeats };
+}
 
 // ==========================================
 // v2.2: HELPER FUNCTIONS
@@ -107,7 +566,7 @@ function computeDryMatterMacros(product: Product): DryMatterMetrics {
 }
 
 /**
- * v3.0: Calculate Protein Source Diversity Bonus
+ * v5.0: Calculate Protein Source Diversity Bonus (Enhanced 0-8 scale)
  * Rewards foods with multiple different protein sources (Orijen-style formulas)
  * Penalizes single-source formulas
  */
@@ -140,15 +599,23 @@ function calculateProteinDiversity(ingredientsText: string, ingredientsList: str
   let points = 0;
   let diversity = 'poor';
 
-  // Scoring based on protein source diversity
-  if (uniqueTypes >= 3 && totalSources >= 6) {
-    // Exceptional diversity: 3+ types, 6+ sources (Orijen-level)
-    points = 5;
+  // v5.0: Enhanced 0-8 scoring based on protein source diversity
+  if (uniqueTypes >= 4 && totalSources >= 10) {
+    // Exceptional: 4+ types, 10+ sources (ultra-premium)
+    points = 8;
     diversity = 'exceptional';
-  } else if (uniqueTypes >= 3 && totalSources >= 4) {
-    // Excellent diversity: 3+ types, 4-5 sources
-    points = 4;
+  } else if (uniqueTypes >= 3 && totalSources >= 8) {
+    // Outstanding: 3+ types, 8+ sources
+    points = 7;
+    diversity = 'outstanding';
+  } else if (uniqueTypes >= 3 && totalSources >= 6) {
+    // Excellent diversity: 3+ types, 6+ sources (Orijen-level)
+    points = 6;
     diversity = 'excellent';
+  } else if (uniqueTypes >= 3 && totalSources >= 4) {
+    // Very good diversity: 3+ types, 4-5 sources
+    points = 5;
+    diversity = 'very-good';
   } else if (uniqueTypes >= 2 && totalSources >= 3) {
     // Good diversity: 2 types, 3+ sources
     points = 3;
@@ -158,7 +625,7 @@ function calculateProteinDiversity(ingredientsText: string, ingredientsList: str
     points = 2;
     diversity = 'moderate';
   } else if (totalSources === 1) {
-    // Single source: penalty
+    // Single source: no points
     points = 0;
     diversity = 'single-source';
   }
@@ -446,8 +913,17 @@ export function calculateIngredientScore(product: Product): {
   // C2) GRAIN-HEAVY PENALTY (v3.0 MUCH STRONGER)
   // ===========================================
   // Severely penalize foods with grains as primary ingredients
-  const top5Ingredients = ingredientsList.slice(0, 5).map(i => i.toLowerCase());
-  const top3Ingredients = ingredientsList.slice(0, 3).map(i => i.toLowerCase());
+  // Sort ingredients by percentage for accurate top 5 determination
+  const sortedIngredients = [...ingredientsList].sort((a, b) => {
+    // Extract percentages from ingredient strings like "20% Chicken" or "Chicken 20%"
+    const extractPercent = (str: string): number => {
+      const match = str.match(/(\d+(?:\.\d+)?)\s*%/);
+      return match ? parseFloat(match[1]) : 0;
+    };
+    return extractPercent(b) - extractPercent(a);
+  });
+  const top5Ingredients = sortedIngredients.slice(0, 5).map(i => i.toLowerCase());
+  const top3Ingredients = sortedIngredients.slice(0, 3).map(i => i.toLowerCase());
 
   let grainPenalty = 0;
 
@@ -573,33 +1049,143 @@ export function calculateIngredientScore(product: Product): {
   details.namedMeatSources = namedMeatPoints;
 
   // ===========================================
-  // F) INGREDIENT-LEVEL BONUS/PENALTY (Enhancement Layer)
+  // F) INGREDIENT-LEVEL BONUS/PENALTY (v4.0 MEAT-ANCHORED)
   // ===========================================
-  // Granular scoring based on specific ingredient presence
-  // This enhances the existing scoring with detailed ingredient analysis
+  // v4.0: Tokenize ingredients for position-aware analysis
+  const ingredientTokens = tokenizeIngredients(ingredientsText);
+
+  // v4.0: Calculate superfoods bucket (replaces stacking)
+  const superfoodsBucket = calculateSuperfoodsBucket(ingredientTokens);
+  details.superfoodsBucketScore = superfoodsBucket.score;
+  if (superfoodsBucket.triggeredBy) {
+    details.superfoodsTriggeredBy = superfoodsBucket.triggeredBy;
+    details.superfoodsPosition = superfoodsBucket.position;
+  }
+
+  // Calculate raw ingredient bonus (including superfoods bucket)
   const ingredientAnalysis = calculateIngredientBonusPoints(ingredientsText);
+  const ingredientBonusRaw = ingredientAnalysis.totalPoints + superfoodsBucket.score;
 
-  // Cap bonus/penalty at ±7 points to maintain balance (increased from ±5)
-  // Allows rewarding exceptional ingredient diversity
-  const ingredientBonus = Math.min(7, Math.max(-7, ingredientAnalysis.totalPoints));
+  // Cap at ±7 points
+  const ingredientBonusCapped = Math.min(7, Math.max(-7, ingredientBonusRaw));
 
-  // Add to score but respect the 45-point maximum for ingredient scoring
-  score = Math.max(0, Math.min(45, score + ingredientBonus));
+  // v4.0: Apply meat-anchored scaling
+  const meatPercent = product.effective_meat_percent ?? product.meat_content_percent ?? 0;
+  const bonusMultiplier = Math.min(1, meatPercent / 50);
+  let ingredientBonusScaled = ingredientBonusCapped * bonusMultiplier;
 
-  // Store detailed breakdown for transparency
-  details.ingredientLevelBonus = ingredientBonus;
-  details.ingredientBonusRaw = ingredientAnalysis.totalPoints;
+  // v4.0: Hard low-meat cap (only cap positive bonus, allow negative penalties)
+  let lowMeatCapApplied = false;
+  if (meatPercent < 30 && ingredientBonusScaled > 0) {
+    ingredientBonusScaled = Math.min(ingredientBonusScaled, 2);
+    lowMeatCapApplied = true;
+  }
+
+  // Add scaled bonus to score
+  score = Math.max(0, Math.min(45, score + ingredientBonusScaled));
+
+  // Store v4.0 breakdown
+  details.ingredientBonusRaw = Math.round(ingredientBonusRaw * 100) / 100;
+  details.ingredientBonusCapped = Math.round(ingredientBonusCapped * 100) / 100;
+  details.bonusMultiplier = Math.round(bonusMultiplier * 100) / 100;
+  details.ingredientBonusScaled = Math.round(ingredientBonusScaled * 100) / 100;
+  details.lowMeatCapApplied = lowMeatCapApplied;
   details.ingredientBreakdown = ingredientAnalysis.breakdown;
 
   // Check for red flags from ingredient-level analysis
   const ingredientRedFlags = detectRedFlags(ingredientsText);
   if (ingredientRedFlags && ingredientRedFlags.length > 0) {
-    // Add detected red flag ingredients
     const flagMessage = `Red flag ingredients detected: ${ingredientRedFlags.join(', ')}`;
     if (!redFlags.includes(flagMessage)) {
       redFlags.push(flagMessage);
     }
   }
+
+  // ===========================================
+  // v4.0: APPLY LEGUME SPLITTING PENALTY
+  // ===========================================
+  const legumeSplitting = detectLegumeSplitting(ingredientTokens);
+  if (legumeSplitting.penalty < 0) {
+    score = Math.max(0, score + legumeSplitting.penalty);
+    details.legumeSplitPenalty = legumeSplitting.penalty;
+    details.legumeMatchesTop10 = legumeSplitting.matches;
+    redFlags.push(`Legume splitting detected: ${legumeSplitting.matches.length} legume forms in top 10`);
+  }
+
+  // ===========================================
+  // v4.0: APPLY GRAIN POSITION HARD CAP
+  // ===========================================
+  const grainCap = applyGrainPositionCaps(ingredientTokens, score);
+  if (grainCap.capApplied) {
+    score = grainCap.cappedScore;
+    details.ingredientQualityCapApplied = grainCap.capApplied;
+    redFlags.push(grainCap.capApplied.reason);
+  }
+
+  // ===========================================
+  // v5.0: APPLY ALL PHASE 1 CRITICAL FEATURES
+  // ===========================================
+  const top5MeatDensity = calculateTop5MeatDensity(ingredientTokens);
+  const carbPositionPenalty = calculateCarbPositionPenalty(ingredientTokens);
+  const meatThreshold = calculateMeatThresholdPenalty(meatPercent);
+  const ashPenalty = calculateAshPenalty(product.ash_percent || null);
+  const potatoPeaManipulation = detectPotatoPeaManipulation(ingredientTokens);
+  const wholePreyOrganBonus = calculateWholePreyOrganBonus(ingredientTokens);
+
+  // Apply all bonuses and penalties
+  score += top5MeatDensity.bonus;
+  score += meatThreshold.bonus;
+  score += ashPenalty.bonus;
+  score += wholePreyOrganBonus.bonus;
+  score -= meatThreshold.penalty;
+  score -= carbPositionPenalty.penalty;
+  score -= ashPenalty.penalty;
+  score -= potatoPeaManipulation.penalty;
+
+  // Store all v5.0 details for transparency
+  details.top5MeatDensity = top5MeatDensity.meatCount;
+  details.top5MeatBonus = top5MeatDensity.bonus;
+  details.nonMeatInTop5 = top5MeatDensity.nonMeatInTop5;
+  details.carbPositionPenalty = -carbPositionPenalty.penalty;
+  details.carbsInTop5 = carbPositionPenalty.carbsInTop5;
+  details.meatThresholdPenalty = -meatThreshold.penalty;
+  details.meatThresholdBonus = meatThreshold.bonus;
+  details.meatThresholdLevel = meatThreshold.threshold;
+  details.ashPenalty = -ashPenalty.penalty;
+  details.ashBonus = ashPenalty.bonus;
+  details.ashThreshold = ashPenalty.threshold;
+  details.potatoPeaPenalty = -potatoPeaManipulation.penalty;
+  details.potatoForms = potatoPeaManipulation.potatoForms;
+  details.peaForms = potatoPeaManipulation.peaForms;
+  details.wholePreyOrganBonus = wholePreyOrganBonus.bonus;
+  details.hasWholePrey = wholePreyOrganBonus.hasWholePrey;
+  details.hasOrganMeats = wholePreyOrganBonus.hasOrganMeats;
+
+  // Add red flags for significant penalties
+  if (top5MeatDensity.bonus < 0) {
+    redFlags.push(`Low meat density: Only ${top5MeatDensity.meatCount}/5 meat ingredients in top 5`);
+  }
+  if (carbPositionPenalty.penalty > 0) {
+    redFlags.push(`High-glycemic carbs in prime positions: ${carbPositionPenalty.carbsInTop5.join(', ')}`);
+  }
+  if (meatThreshold.capScore !== null) {
+    redFlags.push(`Critical: <20% effective meat content - score capped at ${meatThreshold.capScore}`);
+  }
+  if (ashPenalty.penalty >= 5) {
+    redFlags.push(`High ash content (${product.ash_percent}%) suggests by-products`);
+  }
+  if (potatoPeaManipulation.penalty > 5) {
+    redFlags.push(`Ingredient manipulation detected: ${potatoPeaManipulation.details}`);
+  }
+
+  // v5.0: Hard cap for failing meat threshold (<20% meat = cap at 25 points)
+  if (meatThreshold.capScore !== null && score > meatThreshold.capScore) {
+    score = meatThreshold.capScore;
+    details.meatThresholdCapApplied = true;
+  }
+
+  // Final cap: ensure score doesn't exceed max (52 points in v5.0)
+  score = Math.max(0, Math.min(SCORING_WEIGHTS.INGREDIENT_QUALITY, score));
 
   // Safety check: ensure score is valid
   const safeScore = isNaN(score) || !isFinite(score) ? 0 : score;
@@ -629,6 +1215,11 @@ export function calculateNutritionScore(
   const details: Record<string, number> = {};
   const ingredientsText = product.ingredients_raw?.toLowerCase() || '';
 
+  // v5.0: Detect formula type for appropriate protein ranges
+  const formulaType = detectFormulaType(product);
+  // Store as string for details
+  (details as any).formulaType = formulaType;
+
   // v2.2: Determine if using DM basis
   const useDM = FEATURE_FLAGS.USE_DM_NUTRITION && dmMetrics !== undefined;
   const nutritionMeta: NutritionMeta = {
@@ -652,11 +1243,12 @@ export function calculateNutritionScore(
     const proteinPercent = proteinValue;
     let proteinPoints = 0;
 
-    // v2.2: Use DM optimal ranges if on DM basis, else as-fed ranges
-    const optimalMin = useDM ? DM_OPTIMAL_RANGES.PROTEIN_OPTIMAL_MIN : OPTIMAL_RANGES.PROTEIN_OPTIMAL_MIN;
-    const optimalMax = useDM ? DM_OPTIMAL_RANGES.PROTEIN_OPTIMAL_MAX : OPTIMAL_RANGES.PROTEIN_OPTIMAL_MAX;
-    const lowThreshold = useDM ? DM_OPTIMAL_RANGES.PROTEIN_LOW_THRESHOLD : OPTIMAL_RANGES.PROTEIN_LOW_THRESHOLD;
-    const plateau = useDM ? DM_OPTIMAL_RANGES.PROTEIN_PLATEAU : OPTIMAL_RANGES.PROTEIN_PLATEAU;
+    // v5.0: Use formula-specific protein ranges
+    const formulaRange = PROTEIN_RANGES[formulaType];
+    const optimalMin = formulaRange.min;
+    const optimalMax = formulaRange.max;
+    const lowThreshold = formulaRange.min - 6; // 6% below optimal min
+    const plateau = formulaRange.max + 10; // 10% above optimal max
 
     // Optimal Range → full points
     if (proteinPercent >= optimalMin && proteinPercent <= optimalMax) {
@@ -870,6 +1462,9 @@ export function calculateNutritionScore(
   score += fiberMicroPoints;
   details.fiberAndMicronutrients = fiberMicroPoints;
 
+  // v5.0: Hard cap to prevent overflow (max 33 points)
+  score = Math.min(score, SCORING_WEIGHTS.NUTRITIONAL_VALUE);
+
   // Safety check: ensure score is valid
   const safeScore = isNaN(score) || !isFinite(score) ? 0 : score;
 
@@ -881,10 +1476,10 @@ export function calculateNutritionScore(
 }
 
 /**
- * Calculate value for money score (max 22 points) - Algorithm v2.2
+ * Calculate value for money score (v5.0: max 15 points, split 10+5) - Algorithm v5.0
  *
- * A) Price Competitiveness (15 points) - Category-anchored
- * B) Ingredient-Adjusted Value (7 points)
+ * A) Price Competitiveness (10 points) - Category-anchored
+ * B) Ingredient-Adjusted Value (5 points)
  *
  * v2.2: Optional energy-based pricing (price per 1000kcal) for fair comparison
  * IMPORTANT: Comparisons are made only within the same food category
@@ -897,10 +1492,10 @@ export function calculateValueScore(
   energyMetrics?: EnergyMetrics
 ): {
   score: number;
-  details: Record<string, number>;
+  details: Record<string, number | Record<string, number>>;
 } {
   let score = 0;
-  const details: Record<string, number> = {};
+  const details: Record<string, number | Record<string, number> | any> = {};
 
   // v2.2: Prefer energy-based pricing if available and feature flag enabled
   const useEnergyPricing = FEATURE_FLAGS.USE_KCAL_VALUE &&
@@ -920,49 +1515,49 @@ export function calculateValueScore(
     details.pricingMethod = 0; // 0 = per kg
   } else {
     // No pricing data available
-    return { score: 11, details: { valueRating: 11 } }; // Neutral score (50%)
+    return { score: 7.5, details: { valueRating: 7.5 } }; // Neutral score (50% of 15)
   }
 
   // ===========================================
-  // A) PRICE COMPETITIVENESS (15 points)
+  // A) PRICE COMPETITIVENESS (10 points) - v5.0 updated
   // ===========================================
   // Compared to category average price per kg
   let pricePoints = 0;
 
   if (priceRatio < 0.7) {
-    // <70% of category average → 15 points
-    pricePoints = 15;
+    // <70% of category average → 10 points
+    pricePoints = VALUE_SCORING.PRICE_PER_FEED;
   } else if (priceRatio < 0.9) {
-    // 70-90% → 12 points
-    pricePoints = 12;
+    // 70-90% → 8 points
+    pricePoints = 8;
   } else if (priceRatio <= 1.1) {
-    // 90-110% → 9 points (fair/average)
-    pricePoints = 9;
-  } else if (priceRatio <= 1.3) {
-    // 110-130% → 6 points
+    // 90-110% → 6 points (fair/average)
     pricePoints = 6;
+  } else if (priceRatio <= 1.3) {
+    // 110-130% → 4 points
+    pricePoints = 4;
   } else {
-    // >130% → 3 points
-    pricePoints = 3;
+    // >130% → 2 points
+    pricePoints = 2;
   }
 
   score += pricePoints;
   details.pricePerFeed = pricePoints;
 
   // ===========================================
-  // B) INGREDIENT-ADJUSTED VALUE (7 points) - v2.2 smooth formula
+  // B) INGREDIENT-ADJUSTED VALUE (5 points) - v5.0 updated
   // ===========================================
   let qualityValuePoints = 0;
 
   if (ingredientQuality > 0) {
-    const qualityRatio = ingredientQuality / 45; // Ingredient score out of 45
+    const qualityRatio = ingredientQuality / SCORING_WEIGHTS.INGREDIENT_QUALITY; // Out of 52 in v5.0
 
     // Junk food penalty: cheap + poor quality
     if (priceRatio < 0.8 && qualityRatio < 0.5) {
-      qualityValuePoints = 2;
-      details.junkFoodPenalty = -3;
+      qualityValuePoints = 1.5;
+      details.junkFoodPenalty = -2;
     } else {
-      // v2.2: Smooth weighted formula
+      // v5.0: Smooth weighted formula adapted for 5 points
       // Quality component (55% weight): qualityRatio directly
       const qualityComponent = qualityRatio;
 
@@ -978,15 +1573,24 @@ export function calculateValueScore(
         valueComponent = 1.0 - ((priceRatio - 0.7) / 0.6);
       }
 
-      // Combine: 7 * (55% quality + 45% value)
-      qualityValuePoints = 7 * (0.55 * qualityComponent + 0.45 * valueComponent);
+      // Combine: 5 * (55% quality + 45% value)
+      qualityValuePoints = VALUE_SCORING.INGREDIENT_VALUE * (0.55 * qualityComponent + 0.45 * valueComponent);
     }
   } else {
-    qualityValuePoints = 4; // Neutral if no ingredient data
+    qualityValuePoints = 2.5; // Neutral if no ingredient data (50% of 5)
   }
 
   score += qualityValuePoints;
   details.ingredientAdjustedValue = qualityValuePoints;
+
+  // ===========================================
+  // v4.0: APPLY VALUE CAP BASED ON INGREDIENT QUALITY
+  // ===========================================
+  const valueCap = applyValueCap(score, ingredientQuality);
+  if (valueCap.capApplied) {
+    score = valueCap.cappedScore;
+    details.valueCapApplied = valueCap.capApplied;
+  }
 
   // Safety check: ensure score is valid
   const safeScore = isNaN(score) || !isFinite(score) ? 0 : score;
@@ -1008,10 +1612,18 @@ export function checkRedFlagOverride(
   const ingredientsText = product.ingredients_raw?.toLowerCase() || '';
   const redFlagsDetected: RedFlagDetection[] = [];
 
-  // Helper to get top 5 ingredients
+  // Helper to get top 5 ingredients sorted by percentage
   const getTop5Ingredients = (): string[] => {
     if (product.ingredients_list && product.ingredients_list.length > 0) {
-      return product.ingredients_list.slice(0, 5).map(i => i.toLowerCase());
+      // Sort by percentage (descending) for accurate top 5
+      const sortedIngredients = [...product.ingredients_list].sort((a, b) => {
+        const extractPercent = (str: string): number => {
+          const match = str.match(/(\d+(?:\.\d+)?)\s*%/);
+          return match ? parseFloat(match[1]) : 0;
+        };
+        return extractPercent(b) - extractPercent(a);
+      });
+      return sortedIngredients.slice(0, 5).map(i => i.toLowerCase());
     }
     // Fallback: split by comma
     const tokens = ingredientsText.split(/[,;]/);

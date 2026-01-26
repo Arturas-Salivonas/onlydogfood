@@ -41,11 +41,18 @@ export default async function ProductPage({ params }: Props) {
   const supabase = getSupabase();
 
   // Fetch structured ingredients (v3.0)
-  const { data: structuredIngredients } = await supabase
+  // Sort by actual percentage (declared or estimated) descending for accurate composition display
+  const { data: ingredientsData } = await supabase
     .from('product_ingredients')
     .select('*')
-    .eq('product_id', typedProduct.id)
-    .order('position', { ascending: true });
+    .eq('product_id', typedProduct.id);
+
+  // Sort by percentage: declared first (if available), then estimated - highest to lowest
+  const structuredIngredients = ingredientsData?.sort((a: any, b: any) => {
+    const percentA = a.percentage_declared ?? a.percentage_estimated ?? 0;
+    const percentB = b.percentage_declared ?? b.percentage_estimated ?? 0;
+    return percentB - percentA; // Descending order
+  }) || null;
 
   // Fetch ingredient groups (for split detection)
   const { data: ingredientGroups } = await supabase

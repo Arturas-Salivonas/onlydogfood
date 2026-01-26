@@ -229,9 +229,9 @@ export default function HowWeRatePage() {
                 Product: "Premium Chicken & Rice Dog Food"
               </p>
               <div className="space-y-3 pl-4 border-l-2 border-[var(--color-border)]">
-                <p><strong className="text-[var(--color-text-primary)]">Ingredient score: 38/45</strong> - Good meat content (chicken meal, fresh chicken) but includes some corn. Named sources get points.</p>
+                <p><strong className="text-[var(--color-text-primary)]">Ingredient score: 44/52</strong> - Good meat content (chicken meal, fresh chicken) but includes some corn. Named sources get points.</p>
                 <p><strong className="text-[var(--color-text-primary)]">Nutrition score: 30/33</strong> - Protein and fat levels meet AAFCO standards. Balanced minerals.</p>
-                <p><strong className="text-[var(--color-text-primary)]">Value score: 18/22</strong> - £2.80 per meal is fair for this quality level.</p>
+                <p><strong className="text-[var(--color-text-primary)]">Value score: 12/15</strong> - £2.80 per meal is fair for this quality level.</p>
               </div>
               <p className="text-xl font-bold text-[var(--color-trust)] pt-4">
                 Total: 86/100 ⭐⭐⭐⭐⭐ (Excellent)

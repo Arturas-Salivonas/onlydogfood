@@ -137,7 +137,7 @@ export function ScoringDebugPanel({ product }: ScoringDebugPanelProps) {
                 {expandedSections.has('ingredients') ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                 <h4 className="font-semibold text-gray-900">Ingredient Quality</h4>
               </div>
-              <span className="text-lg font-bold">{(breakdown.ingredientScore || 0).toFixed(1)}/45</span>
+              <span className="text-lg font-bold">{(breakdown.ingredientScore || 0).toFixed(1)}/52</span>
             </button>
 
             {expandedSections.has('ingredients') && (
@@ -154,9 +154,9 @@ export function ScoringDebugPanel({ product }: ScoringDebugPanelProps) {
                     renderSubItem('Fresh meat water penalty', details.freshMeatPenalty, 'negative')
                   )}
                   <div className="mt-2 pt-2 border-t border-gray-200 text-sm text-gray-600">
-                    <strong>Meat %:</strong> {product.meat_content_percent?.toFixed(1) || 'N/A'}%
-                    {product.effective_meat_percent && (
-                      <span className="ml-2">| <strong>Effective:</strong> {product.effective_meat_percent.toFixed(1)}%</span>
+                    <strong>Effective Meat:</strong> {product.effective_meat_percent?.toFixed(1) || 'N/A'}%
+                    {product.meat_content_percent && (
+                      <span className="ml-2">| <strong>Raw:</strong> {product.meat_content_percent.toFixed(1)}%</span>
                     )}
                   </div>
                 </div>
@@ -164,7 +164,7 @@ export function ScoringDebugPanel({ product }: ScoringDebugPanelProps) {
                 {/* Protein Diversity */}
                 {details.proteinDiversity !== undefined && (
                   <div className="bg-gray-50 rounded-lg p-3">
-                    <div className="font-medium text-gray-900 mb-2">B) Protein Source Diversity (5 pts)</div>
+                    <div className="font-medium text-gray-900 mb-2">B) Protein Source Diversity (8 pts)</div>
                     {renderSubItem('Diversity bonus', details.proteinDiversity, details.proteinDiversity > 3 ? 'positive' : 'neutral')}
                     {details.proteinDiversityDetails && (
                       <div className="mt-2 pt-2 border-t border-gray-200 text-sm text-gray-600">
@@ -357,7 +357,7 @@ export function ScoringDebugPanel({ product }: ScoringDebugPanelProps) {
                 {expandedSections.has('value') ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                 <h4 className="font-semibold text-gray-900">Value for Money</h4>
               </div>
-              <span className="text-lg font-bold">{(breakdown.valueScore || 0).toFixed(1)}/22</span>
+              <span className="text-lg font-bold">{(breakdown.valueScore || 0).toFixed(1)}/15</span>
             </button>
 
             {expandedSections.has('value') && (

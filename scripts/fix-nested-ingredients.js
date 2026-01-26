@@ -1,0 +1,588 @@
+/**
+ * Fix Nested Ingredients Script
+ *
+ * This script identifies and fixes products with nested ingredient structures like:
+ * "Chicken 61% (Fresh Chicken 25%, Dehydrated Chicken 20%, Chicken Fat 6%)"
+ *
+ * It will:
+ * 1. Find all products with nested ingredients (containing parentheses with commas)
+ * 2. Parse and flatten the nested structure into individual ingredients
+ * 3. Update the database with corrected ingredient lists
+ * 4. Recalculate product scores
+ */
+
+const { createClient } = require('@supabase/supabase-js');
+const fs = require('fs');
+
+const supabase = createClient(
+  'https://hjdxainmdvzqsybznywj.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhqZHhhaW5tZHZ6cXN5YnpueXdqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NTU2Mzg0NCwiZXhwIjoyMDgxMTM5ODQ0fQ.jhINe4GRm6HgKZ464c2YUebKlN5lii_26o_CfE1bjD0'
+);
+
+// ============================================
+// NESTED INGREDIENT DETECTION
+// ============================================
+
+/**
+ * Check if ingredient string contains nested structure
+ * Patterns:
+ * 1. "Something X% (Item1 Y%, Item2 Z%, ...)"
+ * 2. "X% Something (Item1 Y%, Item2 Z%, ...)"
+ * 3. "Something (Item1, Item2, Item3)" - with commas inside parentheses
+ */
+function hasNestedIngredients(text) {
+  if (!text) return false;
+
+  // Pattern 1: X% Something (Item1 Y%, Item2 Z%)
+  const pattern1 = /\d+(?:\.\d+)?\s*%\s+[^(]+\([^)]*,\s*[^)]*\)/;
+
+  // Pattern 2: Something X% (Item1 Y%, Item2 Z%)
+  const pattern2 = /[^(]+\s+\d+(?:\.\d+)?\s*%\s*\([^)]*,\s*[^)]*\)/;
+
+  // Pattern 3: Something (Item1, Item2, Item3) - parentheses with commas but not just dosage
+  // Exclude patterns like (200mg/kg) or (min 20%) - these are single values, not nested lists
+  const pattern3 = /[^(]+\([^)]*,\s*[^)]*\)/;
+  const notDosage = !/\(\d+\s*(?:mg|g|mcg|iu|cfu)(?:\/kg)?\)/i;
+  const notMinMax = !/\(min(?:imum)?\s+\d+/i;
+
+  return pattern1.test(text) || pattern2.test(text) || (pattern3.test(text) && notDosage.test(text) && notMinMax.test(text));
+}
+
+/**
+ * Extract nested ingredients from a string
+ * Handles multiple patterns:
+ * 1. "Chicken 61% (Fresh Chicken 25%, Dehydrated Chicken 20%)"
+ * 2. "65% Chicken (29% Dehydrated Chicken, 26% Freshly Prepared Chicken)"
+ * 3. "Herbs (Parsley, Rosemary, Nettle)"
+ */
+function extractNestedIngredients(text) {
+  const results = [];
+
+  // Pattern 1: X% Something (Item1 Y%, Item2 Z%)
+  const pattern1 = /(\d+(?:\.\d+)?)\s*%\s+([^(]+)\(([^)]+)\)/g;
+
+  // Pattern 2: Something X% (Item1 Y%, Item2 Z%)
+  const pattern2 = /([^(]+?)\s+(\d+(?:\.\d+)?)\s*%\s*\(([^)]+)\)/g;
+
+  // Pattern 3: Something (Item1, Item2, Item3)
+  const pattern3 = /([^(]+)\(([^)]+)\)/g;
+
+  let match;
+
+  // Try Pattern 1: "65% Chicken (29% Dehydrated Chicken, ...)"
+  while ((match = pattern1.exec(text)) !== null) {
+    const totalPercentage = parseFloat(match[1]);
+    const mainIngredient = match[2].trim();
+    const nestedContent = match[3];
+
+    const nestedItems = nestedContent
+      .split(/,(?![^()]*\))/)
+      .map(item => item.trim())
+      .filter(item => item.length > 0);
+
+    for (const item of nestedItems) {
+      // Try "29% Dehydrated Chicken" format
+      let percentMatch = item.match(/(\d+(?:\.\d+)?)\s*%\s+(.+)/);
+      if (percentMatch) {
+        results.push({
+          name: percentMatch[2].trim(),
+          percentage: parseFloat(percentMatch[1]),
+          isNested: true,
+          parentIngredient: mainIngredient,
+          parentPercentage: totalPercentage
+        });
+        continue;
+      }
+
+      // Try "Dehydrated Chicken 29%" format
+      percentMatch = item.match(/(.+?)\s+(\d+(?:\.\d+)?)\s*%/);
+      if (percentMatch) {
+        results.push({
+          name: percentMatch[1].trim(),
+          percentage: parseFloat(percentMatch[2]),
+          isNested: true,
+          parentIngredient: mainIngredient,
+          parentPercentage: totalPercentage
+        });
+      } else {
+        results.push({
+          name: item.trim(),
+          percentage: null,
+          isNested: true,
+          parentIngredient: mainIngredient,
+          parentPercentage: totalPercentage
+        });
+      }
+    }
+  }
+
+  // Reset regex
+  pattern2.lastIndex = 0;
+
+  // Try Pattern 2: "Chicken 61% (Fresh Chicken 25%, ...)"
+  while ((match = pattern2.exec(text)) !== null) {
+    const mainIngredient = match[1].trim();
+    const totalPercentage = parseFloat(match[2]);
+    const nestedContent = match[3];
+
+    const nestedItems = nestedContent
+      .split(/,(?![^()]*\))/)
+      .map(item => item.trim())
+      .filter(item => item.length > 0);
+
+    for (const item of nestedItems) {
+      const percentMatch = item.match(/(.+?)\s+(\d+(?:\.\d+)?)\s*%/);
+      if (percentMatch) {
+        results.push({
+          name: percentMatch[1].trim(),
+          percentage: parseFloat(percentMatch[2]),
+          isNested: true,
+          parentIngredient: mainIngredient,
+          parentPercentage: totalPercentage
+        });
+      } else {
+        results.push({
+          name: item.trim(),
+          percentage: null,
+          isNested: true,
+          parentIngredient: mainIngredient,
+          parentPercentage: totalPercentage
+        });
+      }
+    }
+  }
+
+  // Reset regex
+  pattern3.lastIndex = 0;
+
+  // Try Pattern 3: "Herbs (Parsley, Rosemary)" - only if no percentage in main part
+  // Skip dosages like (200mg/kg)
+  while ((match = pattern3.exec(text)) !== null) {
+    const mainPart = match[1].trim();
+    const nestedContent = match[2];
+
+    // Skip if this is a dosage pattern
+    if (/\d+\s*(?:mg|g|mcg|iu|cfu)(?:\/kg)?/i.test(nestedContent)) {
+      continue;
+    }
+
+    // Skip if mainPart has a percentage (already handled by pattern 1 or 2)
+    if (/\d+(?:\.\d+)?\s*%/.test(mainPart)) {
+      continue;
+    }
+
+    // Check if nested content has commas (indicates multiple items)
+    if (nestedContent.includes(',')) {
+      const nestedItems = nestedContent
+        .split(',')
+        .map(item => item.trim())
+        .filter(item => item.length > 0);
+
+      for (const item of nestedItems) {
+        results.push({
+          name: item.trim(),
+          percentage: null,
+          isNested: true,
+          parentIngredient: mainPart,
+          parentPercentage: null
+        });
+      }
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Flatten ingredients by expanding nested structures
+ * Returns flat list with only top-level ingredients
+ */
+function flattenIngredients(ingredientsRaw) {
+  const parts = ingredientsRaw.split(/,(?![^()]*\))/).map(s => s.trim());
+  const flattened = [];
+
+  for (const part of parts) {
+    if (hasNestedIngredients(part)) {
+      // Extract nested ingredients
+      const nested = extractNestedIngredients(part);
+      flattened.push(...nested);
+    } else {
+      // Regular ingredient - extract name and percentage
+      const percentMatch = part.match(/(.+?)\s+(\d+(?:\.\d+)?)\s*%/);
+      if (percentMatch) {
+        flattened.push({
+          name: percentMatch[1].trim(),
+          percentage: parseFloat(percentMatch[2]),
+          isNested: false
+        });
+      } else {
+        flattened.push({
+          name: part.trim(),
+          percentage: null,
+          isNested: false
+        });
+      }
+    }
+  }
+
+  return flattened;
+}
+
+/**
+ * Rebuild ingredients_raw string from flattened structure
+ */
+function rebuildIngredientsRaw(flattenedIngredients) {
+  return flattenedIngredients
+    .map(ing => {
+      if (ing.percentage !== null) {
+        return `${ing.name} ${ing.percentage}%`;
+      }
+      return ing.name;
+    })
+    .join(', ');
+}
+
+/**
+ * Rebuild ingredients_list array from flattened structure
+ */
+function rebuildIngredientsList(flattenedIngredients) {
+  return flattenedIngredients.map(ing => {
+    if (ing.percentage !== null) {
+      return `${ing.percentage}% ${ing.name}`;
+    }
+    return ing.name;
+  });
+}
+
+/**
+ * Update a product's ingredients in the database
+ */
+async function updateProduct(productId, rebuiltRaw, rebuiltList, dryRun = true) {
+  if (dryRun) {
+    console.log('\n⚠️  DRY RUN - Not updating database');
+    return { success: true, dryRun: true };
+  }
+
+  console.log('\n💾 Updating database...');
+
+  try {
+    // 1. Update both ingredients_raw AND ingredients_list in products table
+    const { error: updateError } = await supabase
+      .from('products')
+      .update({
+        ingredients_raw: rebuiltRaw,
+        ingredients_list: rebuiltList, // IMPORTANT: Also update ingredients_list
+        ingredients_analyzed: false, // Mark for re-analysis
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', productId);
+
+    if (updateError) {
+      console.error('Error updating product:', updateError);
+      return { success: false, error: updateError };
+    }
+
+    // 2. Delete existing parsed ingredients (they'll be re-parsed)
+    const { error: deleteError } = await supabase
+      .from('product_ingredients')
+      .delete()
+      .eq('product_id', productId);
+
+    if (deleteError) {
+      console.error('Error deleting old ingredients:', deleteError);
+      return { success: false, error: deleteError };
+    }
+
+    console.log('✅ Database updated successfully (both ingredients_raw and ingredients_list)');
+    return { success: true };
+
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return { success: false, error };
+  }
+}
+
+/**
+ * Re-parse ingredients after updating
+ */
+async function reparseIngredients(productId, ingredientsRaw) {  console.log('\n📝 ORIGINAL:');
+  console.log(product.ingredients_raw);
+  t rebuiltList = rebuildIngredientsList(flattened);
+
+  console.log('\n🔄 REBUILT ingredients_raw:');
+  console.log(rebuiltRaw);
+
+  console.log('\n🔄 REBUILT ingredients_list:');
+  console.log(JSON.stringify(rebuiltList, null, 2));
+
+  return {
+    product,
+    flattened,
+    rebuiltRaw,
+    rebuiltListrEach((ing, idx) => {
+    const marker = ing.isNested ? '  ↳ ' : '';
+    const percentage = ing.percentage !== null ? ` ${ing.percentage}%` : '';
+    console.log(`${idx + 1}. ${marker}${ing.name}${percentage}`);
+  });
+
+  const rebuiltRaw = rebuildIngredientsRaw(flattened);
+  console.log('\n🔄 REBUILT ingredients_raw:');
+  console.log(rebuiltRaw);
+
+  return {
+    product,
+    flattened,
+    rebuiltRaw
+  };
+}
+
+/**
+ * Update a product's ingredients in the database
+ */
+async function updateProduct(productId, rebuiltRaw, dryRun = true) {
+  if (dryRun) {
+    console.log('\n⚠️  DRY RUN - Not updating database');
+    return { success: true, dryRun: true };
+  }
+
+  console.log('\n💾 Updating database...');
+
+  try {
+    // 1. Update ingredients_raw in products table
+    const { error: updateError } = await supabase
+      .from('products')
+      .update({
+        ingredients_raw: rebuiltRaw,
+        ingredients_analyzed: false, // Mark for re-analysis
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', productId);
+
+    if (updateError) {
+      console.error('Error updating product:', updateError);
+      return { success: false, error: updateError };
+    }
+
+    // 2. Delete existing parsed ingredients (they'll be re-parsed)
+    const { error: deleteError } = await supabase
+      .from('product_ingredients')
+      .delete()
+      .eq('product_id', productId);
+
+    if (deleteError) {
+      console.error('Error deleting old ingredients:', deleteError);
+      return { success: false, error: deleteError };
+    }
+
+    console.log('✅ Database updated successfully');
+    return { success: true };
+
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return { success: false, error };
+  }
+}
+
+/**
+ * Re-parse ingredients for a product
+ */
+async function reparseIngredients(productId, ingredientsRaw) {
+  console.log('\n🔄 Re-parsing ingredients...');
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/admin/products/${productId}/ingredients`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ingredients_raw: ingredientsRaw,
+        force: true
+      })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(`✅ Re-parsed ${data.ingredients?.length || 0} ingredients`);
+      return { success: true, data };
+    } else {
+      const error = await response.json();
+      console.error('Error re-parsing:', JSON.stringify(error));
+      return { success: false, error };
+    }
+  } catch (error) {
+    console.error('Error calling parse API:', error);
+    return { success: false, error };
+  }
+}
+
+/**
+ * Recalculate score for a product
+ */
+async function recalculateScore(productId) {
+  console.log('\n📊 Recalculating score...');
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/admin/products/${productId}/recalculate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(`✅ New scores: Overall ${data.scores?.overall || 'N/A'}, Ingredient ${data.scores?.ingredient || 'N/A'}`);
+      return { success: true, data };
+    } else {
+      const error = await response.text();
+      console.error('Error recalculating:', error);
+      return { success: false, error };
+    }
+  } catch (error) {
+    console.error('Error calling recalculate API:', error);
+    return { success: false, error };
+  }
+}
+
+// ============================================
+// MAIN EXECUTION
+// ============================================
+
+async function main() {
+  const args = process.argv.slice(2);
+  const dryRun = !args.includes('--apply');
+  const productSlug = args.find(arg => arg.startsWith('--product='))?.split('=')[1];
+  const generateReport = args.includes('--report');
+  const batchSize = parseInt(args.find(arg => arg.startsWith('--batch='))?.split('=')[1] || '10');
+
+  console.log('\n' + '='.repeat(80));
+  console.log('🔧 NESTED INGREDIENTS FIX SCRIPT');
+  console.log('='.repeat(80));
+  console.log(`Mode: ${dryRun ? '⚠️  DRY RUN (use --apply to actually update)' : '✅ APPLY CHANGES'}`);
+  if (productSlug) {
+    console.log(`Target: Single product (${productSlug})`);
+  }
+  if (!dryRun) {
+    console.log(`Batch size: ${batchSize} products at a time`);
+  }
+  console.log('='.repeat(80) + '\n');
+
+  let productsToFix;
+
+  if (productSlug) {
+    // Single product mode
+    const { data: product, error } = await supabase
+      .from('products')
+      .select('id, slug, name, ingredients_raw')
+      .eq('slug', productSlug)
+      .single();
+
+    if (error || !product) {
+      console.error(`❌ Product not found: ${productSlug}`);
+      return;
+    }
+
+    if (!hasNestedIngredients(product.ingredients_raw)) {
+      console.log(`ℹ️  Product "${product.name}" does not have nested ingredients`);
+      return;
+    }
+
+    productsToFix = [product];
+  } else {
+    // Scan all products
+    productsToFix = await findProductsWithNestedIngredients();
+  }
+
+  if (productsToFix.length === 0) {
+    console.log('✅ No products with nested ingredients found!');
+    return;analysis.rebuiltList,
+  }
+
+  // Analyze and optionally fix each product
+  const report = [];
+  let successCount = 0;
+  let errorCount = 0;
+
+  for (let i = 0; i < productsToFix.length; i++) {
+    const product = productsToFix[i];
+
+    console.log(`\n\n[${i + 1}/${productsToFix.length}]`);
+
+    const analysis = analyzeProduct(product);
+    report.push(analysis);
+
+    if (!dryRun) {
+      // Update database
+      const updateResult = await updateProduct(product.id, analysis.rebuiltRaw, false);
+
+      if (updateResult.success) {
+        // Re-parse ingredients
+        const parseResult = await reparseIngredients(product.id, analysis.rebuiltRaw);
+
+        if (parseResult.success) {
+          // Recalculate score
+          const scoreResult = await recalculateScore(product.id);
+
+          if (scoreResult.success) {
+            successCount++;
+            console.log('✅ Product fully updated and scored');
+          } else {
+            errorCount++;
+            console.log('⚠️  Updated but scoring failed');
+          }
+        } else {
+          errorCount++;
+          console.log('⚠️  Updated but re-parsing failed');
+        }
+      } else {
+        errorCount++;
+        console.log('❌ Failed to update product');
+      }
+
+      // Wait a bit to avoid overwhelming the server
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Pause after each batch to allow review
+      if ((i + 1) % batchSize === 0 && (i + 1) < productsToFix.length) {
+        console.log(`\n\n⏸️  Batch complete: ${i + 1}/${productsToFix.length} (${successCount} success, ${errorCount} errors)`);
+        console.log('   Press Ctrl+C to stop, or wait 3 seconds to continue...\n');
+        await new Promise(resolve => setTimeout(resolve, 3000));
+      }
+    }
+  }
+
+  // Generate report file
+  if (generateReport) {
+    const reportPath = `reports/nested-ingredients-${Date.now()}.json`;
+    fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
+    console.log(`\n\n📄 Report saved to: ${reportPath}`);
+  }
+
+  // Summary
+  console.log('\n\n' + '='.repeat(80));
+  console.log('📊 SUMMARY');
+  console.log('='.repeat(80));
+  console.log(`Total products analyzed: ${productsToFix.length}`);
+  console.log(`Mode: ${dryRun ? 'DRY RUN (no changes made)' : 'APPLIED CHANGES'}`);
+
+  if (!dryRun) {
+    console.log(`✅ Successfully updated: ${successCount}`);
+    console.log(`❌ Errors: ${errorCount}`);
+  }
+
+  if (dryRun) {
+    console.log('\n⚠️  To apply these changes, run:');
+    console.log('   node scripts/fix-nested-ingredients.js --apply');
+    console.log('\n⚠️  To fix in smaller batches (safer):');
+    console.log('   node scripts/fix-nested-ingredients.js --apply --batch=20');
+    console.log('\n⚠️  To fix a single product:');
+    console.log('   node scripts/fix-nested-ingredients.js --product=wellness-core-puppy-large-breed --apply');
+  } else {
+    console.log('\n✅ All products have been updated!');
+    console.log('   - ingredients_raw corrected (nested structures flattened)');
+    console.log('   - product_ingredients re-parsed');
+    console.log('   - Scores recalculated');
+  }
+
+  console.log('='.repeat(80) + '\n');
+}
+
+// Run the script
+main().catch(console.error);

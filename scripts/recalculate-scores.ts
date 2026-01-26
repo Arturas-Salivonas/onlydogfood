@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
 /**
- * Recalculate Scores Script - Algorithm v2.2
- * Recalculates scores with new v2.2 features:
- * - Dry matter normalization (fair comparison across food types)
- * - Energy-based pricing (price per 1000kcal)
- * - Position-weighted ingredients (fixes "pixie dust")
- * - Split ingredient detection (gaming prevention)
- * - Tiered red flag system (nuanced caps)
- * - All v2.1 features preserved
+ * Recalculate Scores Script - Algorithm v4.0
+ * Recalculates scores with new v4.0 dog-first anti-gaming guardrails:
+ * - Superfoods bucket scoring (max +1, no stacking)
+ * - Meat-anchored ingredient bonus (scaled by meat content)
+ * - Legume splitting penalty (2-5 points for top 10 manipulation)
+ * - Grain position hard caps (35-38/45 if grain in top 3)
+ * - Value caps based on ingredient quality
+ * - Concentrated meals downgraded (+4 → +2)
+ * - All v2.2 features preserved (DM normalization, energy pricing, position weighting)
  *
  * Usage: npm run recalculate-scores
  */
@@ -249,6 +250,24 @@ async function recalculateScores() {
         ingredientsList = parseIngredients(product.ingredients_raw);
       }
 
+      // Calculate carbs if not already present
+      const carbsPercent = product.carbs_percent ?? (
+        100 -
+        (product.protein_percent ?? 0) -
+        (product.fat_percent ?? 0) -
+        (product.fiber_percent ?? 0) -
+        (product.moisture_percent ?? 10) - // Default 10%
+        (product.ash_percent ?? 8)         // Default 8%
+      );
+
+      // Calculate energy if not present (Modified Atwater formula)
+      // Round to nearest integer since calories_per_100g is INTEGER in database
+      const calculatedKcal = product.calories_per_100g ?? Math.round(
+        3.5 * (product.protein_percent ?? 0) +
+        8.5 * (product.fat_percent ?? 0) +
+        3.5 * carbsPercent
+      );
+
       // Update the product with v2.1 fields
       const { error: updateError } = await supabase
         .from('products')
@@ -267,6 +286,8 @@ async function recalculateScores() {
           food_category: foodCategory,
           sub_category: subCategoryValue,
           ingredients_list: ingredientsList,
+          carbs_percent: carbsPercent,
+          calories_per_100g: calculatedKcal,
         })
         .eq('id', product.id);
 
@@ -290,8 +311,9 @@ async function recalculateScores() {
 
   console.log('\n✅ Recalculation completed!');
   console.log(`📊 Results: ${updated} updated, ${errors} errors`);
-  console.log(`🔬 Algorithm: v2.2.0 (Jan 2026)`);
-  console.log(`🎯 Features: DM normalization, Energy pricing, Position weighting, Split detection, Tiered red flags`);
+  console.log(`🔬 Algorithm: v4.0.0 (Jan 2026)`);
+  console.log(`🎯 v4.0 Guardrails: Superfoods bucket, Meat-anchored bonus, Legume splitting penalty, Grain position caps, Value caps`);
+  console.log(`🎯 v2.2 Features: DM normalization, Energy pricing, Position weighting, Split detection, Tiered red flags`);
 }
 
 // Run if called directly

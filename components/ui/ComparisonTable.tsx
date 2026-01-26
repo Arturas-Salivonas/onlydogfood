@@ -183,7 +183,7 @@ export function ComparisonTable({ selectedProducts }: ComparisonTableProps) {
                   <td key={product.id} className={`px-4 py-2 text-center relative ${isWinner ? 'bg-gradient-to-b from-yellow-50 to-transparent' : ''}`}>
                     {isWinner && <Crown className="w-4 h-4 text-yellow-500 fill-yellow-400 absolute top-1 right-1" />}
                     <span className={`text-base font-bold ${isWinner ? 'text-yellow-700' : 'text-[var(--color-text-primary)]'}`}>
-                      {score > 0 ? score : 0}<span className="text-xs text-[var(--color-text-secondary)]">/45</span>
+                      {score > 0 ? score : 0}<span className="text-xs text-[var(--color-text-secondary)]">/52</span>
                     </span>
                   </td>
                 );
@@ -217,7 +217,7 @@ export function ComparisonTable({ selectedProducts }: ComparisonTableProps) {
                   <td key={product.id} className={`px-4 py-2 text-center relative ${isWinner ? 'bg-gradient-to-b from-yellow-50 to-transparent' : ''}`}>
                     {isWinner && <Crown className="w-4 h-4 text-yellow-500 fill-yellow-400 absolute top-1 right-1" />}
                     <span className={`text-base font-bold ${isWinner ? 'text-yellow-700' : 'text-[var(--color-text-primary)]'}`}>
-                      {score > 0 ? score : 0}<span className="text-xs text-[var(--color-text-secondary)]">/22</span>
+                      {score > 0 ? score : 0}<span className="text-xs text-[var(--color-text-secondary)]">/15</span>
                     </span>
                   </td>
                 );
@@ -284,13 +284,26 @@ export function ComparisonTable({ selectedProducts }: ComparisonTableProps) {
 
             {/* Carbs */}
             <ComparisonRow label="Carbohydrates">
-              {selectedProducts.map((product) => (
-                <td key={product.id} className="px-4 py-2 text-center">
-                  <span className="text-base text-[var(--color-text-primary)]">
-                    {product.carbs_percent && product.carbs_percent > 0 ? `${product.carbs_percent.toFixed(1)}%` : 'N/A'}
-                  </span>
-                </td>
-              ))}
+              {selectedProducts.map((product) => {
+                // Use database carbs_percent if available, otherwise calculate
+                let carbs = product.carbs_percent;
+                if (!carbs && product.protein_percent && product.fat_percent) {
+                  const protein = product.protein_percent;
+                  const fat = product.fat_percent;
+                  const fiber = product.fiber_percent || 0;
+                  const moisture = product.moisture_percent || 10;
+                  const ash = product.ash_percent || 8;
+                  carbs = 100 - protein - fat - fiber - moisture - ash;
+                }
+
+                return (
+                  <td key={product.id} className="px-4 py-2 text-center">
+                    <span className="text-base text-[var(--color-text-primary)]">
+                      {carbs && carbs > 0 ? `${carbs.toFixed(1)}%` : 'N/A'}
+                    </span>
+                  </td>
+                );
+              })}
             </ComparisonRow>
 
             {/* Meat Content */}
@@ -298,7 +311,7 @@ export function ComparisonTable({ selectedProducts }: ComparisonTableProps) {
               {selectedProducts.map((product) => (
                 <td key={product.id} className="px-4 py-2 text-center">
                   <span className="text-base font-bold text-[var(--color-text-primary)]">
-                    {product.meat_content_percent ? `${product.meat_content_percent}%` : 'N/A'}
+                    {product.effective_meat_percent ? `${product.effective_meat_percent.toFixed(1)}%` : 'N/A'}
                   </span>
                 </td>
               ))}

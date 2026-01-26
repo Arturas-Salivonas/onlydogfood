@@ -5,6 +5,7 @@ import { Product } from '@/types';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { IngredientFlag, IngredientFlagType } from './IngredientFlag';
 import { HIGH_RISK_FILLERS, LOW_VALUE_CARBS, RED_FLAG_ADDITIVES, ARTIFICIAL_COLORS, ARTIFICIAL_PRESERVATIVES, NAMED_MEAT_SOURCES, UNNAMED_MEAT_SOURCES } from '@/scoring/config';
+import { parseIngredients } from '@/lib/services/ingredient-parser';
 
 interface IngredientBreakdownProps {
   product: Product;
@@ -25,8 +26,9 @@ export function IngredientBreakdown({ product, defaultExpanded = false }: Ingred
     }
   }
 
+  // Use proper ingredient parser that handles nested parentheses
   const ingredients = product.ingredients_list ||
-    (product.ingredients_raw ? product.ingredients_raw.split(',').map(i => i.trim()) : []);
+    (product.ingredients_raw ? parseIngredients(product.ingredients_raw).map(p => p.ingredient_name) : []);
 
   const categorizedIngredients = categorizeIngredients(ingredients);
   const analysis = analyzeIngredients(product);
@@ -48,12 +50,12 @@ export function IngredientBreakdown({ product, defaultExpanded = false }: Ingred
             </div>
             <div className="text-xs text-gray-600 font-medium">Total Ingredients</div>
           </div>
-          {product.meat_content_percent && (
+          {product.effective_meat_percent && (
             <div className="text-center">
               <div className="text-2xl font-bold text-green-700">
-                {product.meat_content_percent}%
+                {product.effective_meat_percent.toFixed(1)}%
               </div>
-              <div className="text-xs text-gray-600 font-medium">Meat Content</div>
+              <div className="text-xs text-gray-600 font-medium">Effective Meat</div>
             </div>
           )}
           <div className="text-center">

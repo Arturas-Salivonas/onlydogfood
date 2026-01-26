@@ -1,0 +1,269 @@
+{
+  "version": "4.0",
+  "lastUpdated": "2026-01-22",
+  "notes": [
+    "v4.0 JSON supports dog-first scoring logic",
+    "Concentrated meat meals downgraded from +4 to +2",
+    "Superfoods carry zero intrinsic points (signal-only, scored in algorithm)",
+    "Position logic and structural caps handled in algorithm layer"
+  ],
+
+  "categories": {
+    "NAMED_CONCENTRATED_MEAT_MEALS": {
+      "description": "Named dehydrated or meal-based animal proteins (downgraded from +4 to +2 in v4.0)",
+      "pointValue": 2,
+      "ingredients": [
+        "chicken meal",
+        "turkey meal",
+        "duck meal",
+        "beef meal",
+        "lamb meal",
+        "venison meal",
+        "salmon meal",
+        "herring meal",
+        "fish meal (named species)",
+        "dehydrated chicken",
+        "dehydrated turkey",
+        "dehydrated beef",
+        "dehydrated lamb",
+        "dehydrated duck",
+        "dehydrated fish (named)",
+        "dried chicken",
+        "dried turkey",
+        "dried beef",
+        "dried lamb",
+        "dried duck"
+      ]
+    },
+    "FRESH_AND_RAW_MEATS": {
+      "description": "Fresh, raw, or minimally processed named meats",
+      "pointValue": 3,
+      "ingredients": [
+        "fresh chicken",
+        "fresh turkey",
+        "fresh beef",
+        "fresh lamb",
+        "fresh duck",
+        "raw chicken",
+        "raw turkey",
+        "raw beef",
+        "raw lamb",
+        "raw duck",
+        "deboned chicken",
+        "deboned turkey",
+        "deboned beef",
+        "deboned lamb",
+        "freshly prepared chicken",
+        "freshly prepared turkey",
+        "freshly prepared beef",
+        "freshly prepared lamb"
+      ]
+    },
+    "FISH_PROTEINS_NAMED": {
+      "description": "Named whole fish or fish proteins",
+      "pointValue": 3,
+      "ingredients": [
+        "salmon",
+        "herring",
+        "mackerel",
+        "sardine",
+        "trout",
+        "white fish (named species)",
+        "whole herring",
+        "whole mackerel",
+        "whole sardine"
+      ]
+    },
+    "ORGAN_MEATS": {
+      "description": "Named animal organ meats",
+      "pointValue": 3,
+      "ingredients": [
+        "chicken liver",
+        "beef liver",
+        "lamb liver",
+        "turkey liver",
+        "chicken heart",
+        "beef heart",
+        "lamb heart",
+        "kidney",
+        "tripe",
+        "gizzard"
+      ]
+    },
+    "WHOLE_EGGS": {
+      "description": "Whole egg protein sources",
+      "pointValue": 3,
+      "ingredients": [
+        "whole egg",
+        "whole eggs",
+        "dried egg",
+        "egg powder"
+      ]
+    },
+    "NAMED_ANIMAL_FATS": {
+      "description": "Named animal fats",
+      "pointValue": 1,
+      "ingredients": [
+        "chicken fat",
+        "duck fat",
+        "turkey fat",
+        "beef fat",
+        "lamb fat",
+        "salmon oil"
+      ]
+    },
+    "OMEGA_FATS": {
+      "description": "Named omega-3 and omega-6 sources",
+      "pointValue": 2,
+      "ingredients": [
+        "fish oil",
+        "salmon oil",
+        "herring oil",
+        "cod liver oil",
+        "krill oil",
+        "algal oil"
+      ]
+    },
+    "JOINT_SUPPORT": {
+      "description": "Joint health supplements",
+      "pointValue": 2,
+      "ingredients": [
+        "glucosamine",
+        "chondroitin",
+        "green lipped mussel",
+        "msm"
+      ]
+    },
+    "PROBIOTICS_PREBIOTICS": {
+      "description": "Digestive health support",
+      "pointValue": 2,
+      "ingredients": [
+        "probiotic",
+        "prebiotic",
+        "inulin",
+        "chicory root",
+        "fos",
+        "mos"
+      ]
+    },
+    "SUPERFOODS_SIGNAL_ONLY": {
+      "description": "Superfoods and botanicals – signal only, scored in algorithm",
+      "pointValue": 0,
+      "ingredients": [
+        "blueberries",
+        "cranberries",
+        "raspberries",
+        "blackberries",
+        "turmeric",
+        "curcumin",
+        "herbs",
+        "botanicals",
+        "antioxidants"
+      ]
+    },
+    "NEUTRAL_STARCHES": {
+      "description": "Acceptable but non-beneficial carbohydrates",
+      "pointValue": 0,
+      "ingredients": [
+        "potato",
+        "potato starch",
+        "tapioca",
+        "cassava"
+      ]
+    },
+    "LEGUMES_DERIVATIVES": {
+      "description": "Legumes and legume-derived ingredients (splitting detected in algorithm)",
+      "pointValue": 0,
+      "ingredients": [
+        "peas",
+        "green peas",
+        "lentils",
+        "red lentils",
+        "chickpeas",
+        "pea starch",
+        "pea protein",
+        "lentil fibre",
+        "legume protein"
+      ]
+    },
+    "VITAMINS_MINERALS": {
+      "description": "Declared vitamin and mineral supplementation",
+      "pointValue": 0,
+      "ingredients": [
+        "vitamins",
+        "minerals",
+        "zinc",
+        "iron",
+        "selenium",
+        "iodine"
+      ]
+    },
+    "LOW_VALUE_GRAINS": {
+      "description": "High-glycaemic, low-value grains",
+      "pointValue": -3,
+      "ingredients": [
+        "rice",
+        "white rice",
+        "brown rice",
+        "maize",
+        "corn",
+        "wheat",
+        "barley",
+        "oats"
+      ]
+    },
+    "FIBRE_FILLERS": {
+      "description": "Low-cost fibre fillers",
+      "pointValue": -2,
+      "ingredients": [
+        "beet pulp",
+        "cellulose",
+        "pea fibre"
+      ]
+    },
+    "UNNAMED_PROTEINS": {
+      "description": "Generic animal protein sources",
+      "pointValue": -4,
+      "ingredients": [
+        "meat meal",
+        "poultry meal",
+        "animal protein",
+        "animal meal",
+        "fish meal"
+      ]
+    },
+    "UNNAMED_FATS": {
+      "description": "Generic or unspecified fats",
+      "pointValue": -2,
+      "ingredients": [
+        "animal fat",
+        "poultry fat"
+      ]
+    },
+    "SUGARS_SWEETENERS": {
+      "description": "Added sugars and syrups",
+      "pointValue": -5,
+      "ingredients": [
+        "sugar",
+        "molasses",
+        "corn syrup",
+        "glucose syrup"
+      ]
+    },
+    "ARTIFICIAL_ADDITIVES": {
+      "description": "Artificial colours and preservatives",
+      "pointValue": -7,
+      "ingredients": [
+        "bha",
+        "bht",
+        "ethoxyquin",
+        "propylene glycol",
+        "artificial colour",
+        "artificial color",
+        "red 40",
+        "yellow 5",
+        "yellow 6"
+      ]
+    }
+  }
+}

@@ -1,17 +1,19 @@
-// Scoring Configuration for OnlyDogFood.com - Algorithm v3.0
+// Scoring Configuration for OnlyDogFood.com - Algorithm v5.0
 
 export const SCORING_WEIGHTS = {
-  INGREDIENT_QUALITY: 45, // 45 points max
+  INGREDIENT_QUALITY: 52, // 52 points max (increased from 45 in v5.0)
   NUTRITIONAL_VALUE: 33,  // 33 points max
-  VALUE_FOR_MONEY: 22,    // 22 points max
+  VALUE_FOR_MONEY: 15,    // 15 points max (reduced from 22 in v5.0)
 } as const;
 
 export const INGREDIENT_SCORING = {
   EFFECTIVE_MEAT_CONTENT: 15,  // ≥50% meat (soft cap at 65%, quality modifier)
-  PROTEIN_DIVERSITY: 5,        // NEW: Bonus for multiple protein sources
+  PROTEIN_DIVERSITY: 8,        // v5.0: Enhanced 0-8 points for exceptional diversity
   LOW_VALUE_FILLERS: 10,       // Start at 10, -2 per high-risk filler, -1 per low-value carb
   NO_ARTIFICIAL_ADDITIVES: 10, // Immediate 0 for red flags, -3 first, -2 each additional
   NAMED_MEAT_SOURCES: 5,       // All named → 5pts, mix → 2.5pts, generic → 0pts
+  TOP_5_MEAT_DENSITY: 10,      // v5.0: Bonus for meat dominance in first 5 ingredients
+  WHOLE_PREY_ORGANS: 5,        // v5.0: Bonus for whole prey + organ meats
 } as const;
 
 export const NUTRITION_SCORING = {
@@ -22,8 +24,8 @@ export const NUTRITION_SCORING = {
 } as const;
 
 export const VALUE_SCORING = {
-  PRICE_PER_FEED: 15,         // Category-anchored price competitiveness
-  INGREDIENT_VALUE: 7,        // Quality-adjusted value scoring
+  PRICE_PER_FEED: 10,         // v5.0: Reduced from 15, category-anchored price competitiveness
+  INGREDIENT_VALUE: 5,        // v5.0: Reduced from 7, quality-adjusted value scoring
 } as const;
 
 // High-Risk Fillers (-2 each)
@@ -307,8 +309,8 @@ export const CONFIDENCE_CRITERIA = {
 } as const;
 
 // Algorithm version for transparency
-export const ALGORITHM_VERSION = '3.1.0'; // Updated with Fresh/Raw bonuses and improved categorization
-export const LAST_UPDATED = '2026-01-16';
+export const ALGORITHM_VERSION = '5.0.0'; // v5.0: 7-tier meat quality + Phase 1 critical features
+export const LAST_UPDATED = '2026-01-23';
 
 // v2.2: Feature Flags for gradual rollout
 // IMPORTANT: Start with all flags FALSE for safe deployment
@@ -353,6 +355,46 @@ export const DM_OPTIMAL_RANGES = {
   FIBER_MAX: 8,
 } as const;
 
+// v4.0: Superfoods list for bucket scoring (signal-only)
+export const SUPERFOODS_TERMS = [
+  'blueberry', 'blueberries',
+  'cranberry', 'cranberries',
+  'raspberry', 'raspberries',
+  'blackberry', 'blackberries',
+  'strawberry', 'strawberries',
+  'apple', 'apples',
+  'turmeric', 'curcumin',
+  'ginger',
+  'green tea extract',
+  'rosemary extract',
+  'pomegranate',
+  'kale',
+  'spinach',
+  'spirulina',
+  'kelp',
+  'seaweed',
+] as const;
+
+// v4.0: Legume derivatives for splitting detection
+export const LEGUME_DERIVATIVES = [
+  'pea', 'peas', 'whole peas', 'green peas', 'yellow peas',
+  'pea protein', 'pea flour', 'pea starch', 'pea fibre', 'pea fiber',
+  'lentil', 'lentils', 'red lentils', 'green lentils',
+  'lentil flour', 'lentil fibre', 'lentil fiber',
+  'chickpea', 'chickpeas', 'garbanzo',
+  'chickpea flour',
+  'bean', 'beans',
+  'legume protein',
+] as const;
+
+// v4.0: Low-value grains for position-based caps
+export const LOW_VALUE_GRAINS = [
+  'rice', 'white rice', 'brewers rice',
+  'maize', 'corn',
+  'wheat', 'wheat flour',
+  'sorghum', 'millet',
+] as const;
+
 // v2.2: Split ingredient groups for anti-gaming detection
 export const SPLIT_INGREDIENT_GROUPS = {
   LEGUMES: [
@@ -384,6 +426,125 @@ export const SPLIT_INGREDIENT_PENALTIES = {
   TWO_IN_TOP_10: -1.5,
   THREE_PLUS_IN_TOP_10: -3,
 } as const;
+
+// v4.0: Legume splitting penalties (stricter)
+export const LEGUME_SPLIT_PENALTIES = {
+  TWO_IN_TOP_10: -2,
+  THREE_PLUS_IN_TOP_10: -5,
+} as const;
+
+// v4.0: Grain position hard caps for Ingredient Quality
+export const GRAIN_POSITION_CAPS = {
+  POSITION_1: 35, // If low-value grain is #1, cap Ingredient Quality at 35/45
+  POSITION_2_OR_3: 38, // If low-value grain is #2 or #3, cap at 38/45
+} as const;
+
+// v4.0: Value for Money caps based on Ingredient Quality
+export const VALUE_CAPS = {
+  EXCELLENT: { minIngredientQuality: 40, maxValue: 22 }, // No cap
+  GOOD: { minIngredientQuality: 35, maxValue: 14 },
+  FAIR: { minIngredientQuality: 28, maxValue: 12 },
+  POOR: { minIngredientQuality: 0, maxValue: 10 },
+} as const;
+
+// v4.0: Superfoods bucket scoring
+export const SUPERFOODS_BUCKET = {
+  TOP_10: 1.0,   // If superfood in top 10 ingredients
+  AFTER_10: 0.5, // If superfood after position 10
+  MAX: 1.0,      // Maximum contribution from superfoods bucket
+} as const;
+
+// ==========================================
+// v5.0: NEW CONSTANTS FOR PHASE 1 FEATURES
+// ==========================================
+
+// v5.0: Formula type-specific protein ranges
+export const PROTEIN_RANGES = {
+  MAINTENANCE: { min: 22, max: 28, optimal: 25 },
+  ACTIVE: { min: 28, max: 38, optimal: 32 },
+  WEIGHT_MANAGEMENT: { min: 35, max: 45, optimal: 40 },
+  SENIOR: { min: 28, max: 38, optimal: 32 },
+  PUPPY: { min: 28, max: 38, optimal: 32 },
+} as const;
+
+// v5.0: Minimum meat thresholds (Phase 1 Critical)
+export const MEAT_THRESHOLDS = {
+  FAILING: { max: 20, penalty: -10, capScore: 25 }, // <20% = failing quality
+  LOW: { min: 20, max: 30, penalty: -5 },           // 20-30% = penalty
+  ADEQUATE: { min: 30, max: 40, penalty: 0 },       // 30-40% = neutral
+  PREMIUM: { min: 40, max: 60, bonus: 2 },          // 40-60% = small bonus
+  ULTRA_PREMIUM: { min: 60, bonus: 5 },             // 60%+ = significant bonus
+} as const;
+
+// v5.0: Ash content thresholds (Phase 1 Critical)
+export const ASH_THRESHOLDS = {
+  VERY_HIGH: { min: 8, penalty: -5 },    // >8% = likely by-products
+  HIGH: { min: 7, max: 8, penalty: -2 }, // 7-8% = concern
+  NORMAL: { min: 6, max: 7, penalty: 0 }, // 6-7% = acceptable
+  EXCELLENT: { max: 5, bonus: 1 },       // <5% = clean ingredients
+} as const;
+
+// v5.0: Top 5 meat density bonuses (Phase 1 Critical)
+export const TOP_5_MEAT_DENSITY = {
+  FIVE_OF_FIVE: 10,  // 100% meat in first 5 = +10 bonus
+  FOUR_OF_FIVE: 5,   // 80% meat in first 5 = +5 bonus
+  THREE_OF_FIVE: 0,  // 60% meat = neutral
+  TWO_OR_LESS: -5,   // 40% or less = penalty
+} as const;
+
+// v5.0: Carb sources for position penalty
+export const CARB_SOURCES = [
+  'potato', 'potatoes', 'white potato',
+  'sweet potato', 'sweet potatoes',
+  'peas', 'green peas', 'yellow peas',
+  'rice', 'white rice', 'brown rice', 'whole brown rice',
+  'oats', 'oat flour', 'rolled oats',
+  'barley', 'barley flour',
+  'lentils', 'red lentils', 'green lentils',
+  'chickpeas', 'garbanzo',
+  'quinoa',
+  'tapioca', 'tapioca starch',
+  'maize', 'corn',
+  'wheat', 'wheat flour',
+] as const;
+
+// v5.0: Potato/pea form variations for manipulation detection
+export const POTATO_FORMS = [
+  'potato', 'potatoes', 'white potato',
+  'potato protein', 'potato starch', 'potato flour',
+  'tapioca', 'tapioca starch', 'cassava',
+] as const;
+
+export const PEA_FORMS = [
+  'pea', 'peas', 'whole peas', 'green peas', 'yellow peas',
+  'pea protein', 'pea flour', 'pea starch',
+  'pea fibre', 'pea fiber',
+] as const;
+
+// v5.0: Organ meats for bonus recognition
+export const ORGAN_MEATS = [
+  'liver', 'heart', 'kidney', 'kidneys',
+  'giblets', 'gizzard', 'tripe',
+  'chicken liver', 'beef liver', 'lamb liver', 'turkey liver',
+  'chicken heart', 'beef heart',
+  'chicken giblets', 'turkey giblets',
+] as const;
+
+// v5.0: Whole prey indicators
+export const WHOLE_PREY_INDICATORS = [
+  'whole herring', 'whole mackerel', 'whole sardine',
+  'whole hake', 'whole fish',
+  'whole chicken', 'whole turkey',
+  'whole prey',
+] as const;
+
+// v5.0: Generic fish/meat that should be penalized
+export const GENERIC_PROTEINS = [
+  'fish', 'fish meal',           // Must specify species
+  'meat', 'meat meal',           // Must specify animal
+  'poultry', 'poultry meal',     // Must specify bird
+  'animal protein', 'animal meal',
+] as const;
 
 // v2.2: Tiered red flag rules
 export const RED_FLAG_TIERS = {

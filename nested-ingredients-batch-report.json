@@ -1,0 +1,2226 @@
+[
+  {
+    "product": {
+      "id": "b79621e6-6b38-474a-be2e-7741b43a7dad",
+      "slug": "amazon-adult-dry",
+      "name": "Amazon Adult Dry",
+      "ingredients_raw": "Cereals (Maize), Meat and Animal Derivatives 27%, Oils and Fats (Including 4%, Vegetables (Including 4%, Minerals, 1% Beet Pulp, 0.01% Yucca Schidigera, Seeds (Linseed), Algae (0.2% Kelp), Fruits (0.04% Citrus Extract), Yeast (0.03%).",
+      "ingredients_list": [
+        "Cereals (Maize)",
+        "27% Meat and Animal Derivatives",
+        "4% Oils and Fats (Including",
+        "4% Vegetables (Including",
+        "Minerals",
+        "1% Beet Pulp",
+        "0.01% Yucca Schidigera",
+        "Seeds (Linseed)",
+        "Algae (0.2% Kelp)",
+        "Fruits (0.04% Citrus Extract)",
+        "Yeast (0.03%)."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Cereals (Maize)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Meat and Animal Derivatives",
+        "percentage": 27,
+        "isNested": false
+      },
+      {
+        "name": "Oils and Fats (Including",
+        "percentage": 4,
+        "isNested": false
+      },
+      {
+        "name": "Vegetables (Including",
+        "percentage": 4,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "1% Beet Pulp",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "0.01% Yucca Schidigera",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Seeds (Linseed)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Algae (0.2% Kelp)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Fruits (0.04% Citrus Extract)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yeast (0.03%).",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Cereals (Maize), Meat and Animal Derivatives 27%, Oils and Fats (Including 4%, Vegetables (Including 4%, Minerals, 1% Beet Pulp, 0.01% Yucca Schidigera, Seeds (Linseed), Algae (0.2% Kelp), Fruits (0.04% Citrus Extract), Yeast (0.03%).",
+    "rebuiltList": [
+      "Cereals (Maize)",
+      "27% Meat and Animal Derivatives",
+      "4% Oils and Fats (Including",
+      "4% Vegetables (Including",
+      "Minerals",
+      "1% Beet Pulp",
+      "0.01% Yucca Schidigera",
+      "Seeds (Linseed)",
+      "Algae (0.2% Kelp)",
+      "Fruits (0.04% Citrus Extract)",
+      "Yeast (0.03%)."
+    ]
+  },
+  {
+    "product": {
+      "id": "e0e8e94e-db3e-4d7d-a755-95d17f70a882",
+      "slug": "chapel-farm-original-20",
+      "name": "Chapel Farm Original 20",
+      "ingredients_raw": "Cereals (Including 4%, Meat & Animal Derivatives (Including 22%, Including 1% Scottish Salmon Oil, 0.5% Omega 3 Fatty Acids, Vegetables (2.5% Beet Pulp), Minerals and Yeast.",
+      "ingredients_list": [
+        "4% Cereals (Including",
+        "22% Meat & Animal Derivatives (Including",
+        "Including 1% Scottish Salmon Oil",
+        "0.5% Omega 3 Fatty Acids",
+        "Vegetables (2.5% Beet Pulp)",
+        "Minerals and Yeast."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Cereals (Including",
+        "percentage": 4,
+        "isNested": false
+      },
+      {
+        "name": "Meat & Animal Derivatives (Including",
+        "percentage": 22,
+        "isNested": false
+      },
+      {
+        "name": "Including",
+        "percentage": 1,
+        "isNested": false
+      },
+      {
+        "name": "0.5% Omega 3 Fatty Acids",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Vegetables (2.5% Beet Pulp)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Minerals and Yeast.",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Cereals (Including 4%, Meat & Animal Derivatives (Including 22%, Including 1%, 0.5% Omega 3 Fatty Acids, Vegetables (2.5% Beet Pulp), Minerals and Yeast.",
+    "rebuiltList": [
+      "4% Cereals (Including",
+      "22% Meat & Animal Derivatives (Including",
+      "1% Including",
+      "0.5% Omega 3 Fatty Acids",
+      "Vegetables (2.5% Beet Pulp)",
+      "Minerals and Yeast."
+    ]
+  },
+  {
+    "product": {
+      "id": "365919ce-bacb-4c0b-95a2-d113fb12c8ca",
+      "slug": "solimo-adult-medium-large-breed",
+      "name": "Solimo Adult Medium & Large Breed",
+      "ingredients_raw": "Cereals (Maize), Meat and Animal Derivatives 30%, Oils and Fats (min. 4%, Vegetables (min. 4%, min. 1% Beet Pulp, 0.01% Yucca Schidigera, Seeds (Linseed), Minerals, Algae (0.2% Kelp), Fruits (0.04% Citrus Extract), Yeast (0.03% of MOS and Beta-Glucans).",
+      "ingredients_list": [
+        "Cereals (Maize)",
+        "30% Meat and Animal Derivatives",
+        "4% Oils and Fats (min.",
+        "4% Vegetables (min.",
+        "min. 1% Beet Pulp",
+        "0.01% Yucca Schidigera",
+        "Seeds (Linseed)",
+        "Minerals",
+        "Algae (0.2% Kelp)",
+        "Fruits (0.04% Citrus Extract)",
+        "Yeast (0.03% of MOS and Beta-Glucans)."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Cereals (Maize)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Meat and Animal Derivatives",
+        "percentage": 30,
+        "isNested": false
+      },
+      {
+        "name": "Oils and Fats (min.",
+        "percentage": 4,
+        "isNested": false
+      },
+      {
+        "name": "Vegetables (min.",
+        "percentage": 4,
+        "isNested": false
+      },
+      {
+        "name": "min.",
+        "percentage": 1,
+        "isNested": false
+      },
+      {
+        "name": "0.01% Yucca Schidigera",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Seeds (Linseed)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Algae (0.2% Kelp)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Fruits (0.04% Citrus Extract)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yeast (0.03% of MOS and Beta-Glucans).",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Cereals (Maize), Meat and Animal Derivatives 30%, Oils and Fats (min. 4%, Vegetables (min. 4%, min. 1%, 0.01% Yucca Schidigera, Seeds (Linseed), Minerals, Algae (0.2% Kelp), Fruits (0.04% Citrus Extract), Yeast (0.03% of MOS and Beta-Glucans).",
+    "rebuiltList": [
+      "Cereals (Maize)",
+      "30% Meat and Animal Derivatives",
+      "4% Oils and Fats (min.",
+      "4% Vegetables (min.",
+      "1% min.",
+      "0.01% Yucca Schidigera",
+      "Seeds (Linseed)",
+      "Minerals",
+      "Algae (0.2% Kelp)",
+      "Fruits (0.04% Citrus Extract)",
+      "Yeast (0.03% of MOS and Beta-Glucans)."
+    ]
+  },
+  {
+    "product": {
+      "id": "5f6d3b14-e796-4b3d-98c7-96f4bc5dfeff",
+      "slug": "pedigree-adult-small-dog-dry",
+      "name": "Pedigree Adult Small Dog Dry",
+      "ingredients_raw": "Cereals, Meat and Animal Derivatives 20%, Oils, Fats (Including Sunflower Oil 0.4%, Derivatives of Vegetable Origin (Dried Beet Pulp 3%, Minerals (0.3% Sodium Tripolyphosphate), 0.5% Dried Carrots, 1% Dried Peas",
+      "ingredients_list": [
+        "Cereals",
+        "20% Meat and Animal Derivatives",
+        "Oils",
+        "0.4% Fats (Including Sunflower Oil",
+        "3% Derivatives of Vegetable Origin (Dried Beet Pulp",
+        "Minerals (0.3% Sodium Tripolyphosphate)",
+        "0.5% Dried Carrots",
+        "1% Dried Peas"
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Cereals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Meat and Animal Derivatives",
+        "percentage": 20,
+        "isNested": false
+      },
+      {
+        "name": "Oils",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Fats (Including Sunflower Oil",
+        "percentage": 0.4,
+        "isNested": false
+      },
+      {
+        "name": "Derivatives of Vegetable Origin (Dried Beet Pulp",
+        "percentage": 3,
+        "isNested": false
+      },
+      {
+        "name": "Minerals (0.3% Sodium Tripolyphosphate)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "0.5% Dried Carrots",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "1% Dried Peas",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Cereals, Meat and Animal Derivatives 20%, Oils, Fats (Including Sunflower Oil 0.4%, Derivatives of Vegetable Origin (Dried Beet Pulp 3%, Minerals (0.3% Sodium Tripolyphosphate), 0.5% Dried Carrots, 1% Dried Peas",
+    "rebuiltList": [
+      "Cereals",
+      "20% Meat and Animal Derivatives",
+      "Oils",
+      "0.4% Fats (Including Sunflower Oil",
+      "3% Derivatives of Vegetable Origin (Dried Beet Pulp",
+      "Minerals (0.3% Sodium Tripolyphosphate)",
+      "0.5% Dried Carrots",
+      "1% Dried Peas"
+    ]
+  },
+  {
+    "product": {
+      "id": "53d55f7c-25c4-4ffc-bbf9-eba1694e8da4",
+      "slug": "james-ella-cold-pressed",
+      "name": "James & Ella Cold-Pressed",
+      "ingredients_raw": "Dried Ground Fish 49%, Sweet Potato 32.5%, Peas 5%, Beet Pulp 5%, Fish Oil, Soya Oil, Green Lipped Mussel 0.05%, Turmeric, Linseed Oil, Black Pepper, Yucca, Apple Cider Vinegar, Vitamins, Dried Vegetables (Carrot, Celery Root, Sage, Thyme, Oregano, Dried Fruit (Apple), Seaweed, Prebiotic, Yucca, Fennel, Nettle, Rapeseed Oil.",
+      "ingredients_list": [
+        "49% Dried Ground Fish",
+        "32.5% Sweet Potato",
+        "5% Peas",
+        "5% Beet Pulp",
+        "Fish Oil",
+        "Soya Oil",
+        "0.05% Green Lipped Mussel",
+        "Turmeric",
+        "Linseed Oil",
+        "Black Pepper",
+        "Yucca",
+        "Apple Cider Vinegar",
+        "Vitamins",
+        "Dried Vegetables (Carrot",
+        "Celery Root",
+        "Sage",
+        "Thyme",
+        "Oregano",
+        "Dried Fruit (Apple)",
+        "Seaweed",
+        "Prebiotic",
+        "Yucca",
+        "Fennel",
+        "Nettle",
+        "Rapeseed Oil."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Dried Ground Fish",
+        "percentage": 49,
+        "isNested": false
+      },
+      {
+        "name": "Sweet Potato",
+        "percentage": 32.5,
+        "isNested": false
+      },
+      {
+        "name": "Peas",
+        "percentage": 5,
+        "isNested": false
+      },
+      {
+        "name": "Beet Pulp",
+        "percentage": 5,
+        "isNested": false
+      },
+      {
+        "name": "Fish Oil",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Soya Oil",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Green Lipped Mussel",
+        "percentage": 0.05,
+        "isNested": false
+      },
+      {
+        "name": "Turmeric",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Linseed Oil",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Black Pepper",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yucca",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Apple Cider Vinegar",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Vitamins",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Vegetables (Carrot",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Celery Root",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Sage",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Thyme",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Oregano",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Fruit (Apple)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Seaweed",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Prebiotic",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yucca",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Fennel",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Nettle",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Rapeseed Oil.",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Dried Ground Fish 49%, Sweet Potato 32.5%, Peas 5%, Beet Pulp 5%, Fish Oil, Soya Oil, Green Lipped Mussel 0.05%, Turmeric, Linseed Oil, Black Pepper, Yucca, Apple Cider Vinegar, Vitamins, Dried Vegetables (Carrot, Celery Root, Sage, Thyme, Oregano, Dried Fruit (Apple), Seaweed, Prebiotic, Yucca, Fennel, Nettle, Rapeseed Oil.",
+    "rebuiltList": [
+      "49% Dried Ground Fish",
+      "32.5% Sweet Potato",
+      "5% Peas",
+      "5% Beet Pulp",
+      "Fish Oil",
+      "Soya Oil",
+      "0.05% Green Lipped Mussel",
+      "Turmeric",
+      "Linseed Oil",
+      "Black Pepper",
+      "Yucca",
+      "Apple Cider Vinegar",
+      "Vitamins",
+      "Dried Vegetables (Carrot",
+      "Celery Root",
+      "Sage",
+      "Thyme",
+      "Oregano",
+      "Dried Fruit (Apple)",
+      "Seaweed",
+      "Prebiotic",
+      "Yucca",
+      "Fennel",
+      "Nettle",
+      "Rapeseed Oil."
+    ]
+  },
+  {
+    "product": {
+      "id": "1cb01241-70cf-4894-a739-afcc1c30a5cb",
+      "slug": "sainsbury-s-complete-nutrition-adult-dry",
+      "name": "Sainsbury's Complete Nutrition Adult Dry",
+      "ingredients_raw": "Cereals, Meat and Animal Derivatives (23% Including minimum 4%, Vegetables (5% Peas), Oils and Fats, Yeasts, Seeds, Minerals, 0.1% Chicory Extract, 0.01% Yucca Extract, Antioxidants, Preservatives.",
+      "ingredients_list": [
+        "Cereals",
+        "4% Meat and Animal Derivatives (23% Including minimum",
+        "Vegetables (5% Peas)",
+        "Oils and Fats",
+        "Yeasts",
+        "Seeds",
+        "Minerals",
+        "0.1% Chicory Extract",
+        "0.01% Yucca Extract",
+        "Antioxidants",
+        "Preservatives."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Cereals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Meat and Animal Derivatives (23% Including minimum",
+        "percentage": 4,
+        "isNested": false
+      },
+      {
+        "name": "Vegetables (5% Peas)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Oils and Fats",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yeasts",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Seeds",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "0.1% Chicory Extract",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "0.01% Yucca Extract",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Antioxidants",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Preservatives.",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Cereals, Meat and Animal Derivatives (23% Including minimum 4%, Vegetables (5% Peas), Oils and Fats, Yeasts, Seeds, Minerals, 0.1% Chicory Extract, 0.01% Yucca Extract, Antioxidants, Preservatives.",
+    "rebuiltList": [
+      "Cereals",
+      "4% Meat and Animal Derivatives (23% Including minimum",
+      "Vegetables (5% Peas)",
+      "Oils and Fats",
+      "Yeasts",
+      "Seeds",
+      "Minerals",
+      "0.1% Chicory Extract",
+      "0.01% Yucca Extract",
+      "Antioxidants",
+      "Preservatives."
+    ]
+  },
+  {
+    "product": {
+      "id": "5530b8dc-50e4-4f7b-85d5-fe91799d279d",
+      "slug": "lifelong-dry-adult-for-medium-large-breeds",
+      "name": "Lifelong Dry Adult for Medium & Large Breeds",
+      "ingredients_raw": "Chicken Meat Meal min. 18%, Fresh Chicken min. 5%, Rice (min. 18%, Maize, Poultry Fat (min. 6%, Corn Protein, Peas (min. 3%, Hydrolyzed Animal Proteins, Beet Pulp (min. 1%, Minerals, Dried Carrot (min. 1%, Brewer's Yeast, Linseed (min. 0.7%, FOS (min. 0.7%, Yeast Cell Walls (0.05%), Yucca Schidigera (0.027%), Glucosamine Hydrochloride (0.02%), Chondroitin Sulfate (0.01%).",
+      "ingredients_list": [
+        "Chicken Meat Meal min. 18%",
+        "Fresh Chicken min. 5%",
+        "18% Rice (min.",
+        "Maize",
+        "6% Poultry Fat (min.",
+        "Corn Protein",
+        "3% Peas (min.",
+        "Hydrolyzed Animal Proteins",
+        "1% Beet Pulp (min.",
+        "Minerals",
+        "1% Dried Carrot (min.",
+        "Brewer's Yeast",
+        "0.7% Linseed (min.",
+        "0.7% FOS (min.",
+        "Yeast Cell Walls (0.05%)",
+        "Yucca Schidigera (0.027%)",
+        "Glucosamine Hydrochloride (0.02%)",
+        "Chondroitin Sulfate (0.01%)."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Chicken Meat Meal min.",
+        "percentage": 18,
+        "isNested": false
+      },
+      {
+        "name": "Fresh Chicken min.",
+        "percentage": 5,
+        "isNested": false
+      },
+      {
+        "name": "Rice (min.",
+        "percentage": 18,
+        "isNested": false
+      },
+      {
+        "name": "Maize",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Poultry Fat (min.",
+        "percentage": 6,
+        "isNested": false
+      },
+      {
+        "name": "Corn Protein",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Peas (min.",
+        "percentage": 3,
+        "isNested": false
+      },
+      {
+        "name": "Hydrolyzed Animal Proteins",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Beet Pulp (min.",
+        "percentage": 1,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Carrot (min.",
+        "percentage": 1,
+        "isNested": false
+      },
+      {
+        "name": "Brewer's Yeast",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Linseed (min.",
+        "percentage": 0.7,
+        "isNested": false
+      },
+      {
+        "name": "FOS (min.",
+        "percentage": 0.7,
+        "isNested": false
+      },
+      {
+        "name": "Yeast Cell Walls (0.05%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yucca Schidigera (0.027%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Glucosamine Hydrochloride (0.02%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chondroitin Sulfate (0.01%).",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Chicken Meat Meal min. 18%, Fresh Chicken min. 5%, Rice (min. 18%, Maize, Poultry Fat (min. 6%, Corn Protein, Peas (min. 3%, Hydrolyzed Animal Proteins, Beet Pulp (min. 1%, Minerals, Dried Carrot (min. 1%, Brewer's Yeast, Linseed (min. 0.7%, FOS (min. 0.7%, Yeast Cell Walls (0.05%), Yucca Schidigera (0.027%), Glucosamine Hydrochloride (0.02%), Chondroitin Sulfate (0.01%).",
+    "rebuiltList": [
+      "18% Chicken Meat Meal min.",
+      "5% Fresh Chicken min.",
+      "18% Rice (min.",
+      "Maize",
+      "6% Poultry Fat (min.",
+      "Corn Protein",
+      "3% Peas (min.",
+      "Hydrolyzed Animal Proteins",
+      "1% Beet Pulp (min.",
+      "Minerals",
+      "1% Dried Carrot (min.",
+      "Brewer's Yeast",
+      "0.7% Linseed (min.",
+      "0.7% FOS (min.",
+      "Yeast Cell Walls (0.05%)",
+      "Yucca Schidigera (0.027%)",
+      "Glucosamine Hydrochloride (0.02%)",
+      "Chondroitin Sulfate (0.01%)."
+    ]
+  },
+  {
+    "product": {
+      "id": "573b334e-2955-4868-b467-d5c32ddcbad0",
+      "slug": "frolic-complete",
+      "name": "Frolic Complete",
+      "ingredients_raw": "Grains (Includes 4%, By Products of Vegetable Origin, 4% Fresh Meat, 4% Beef, 1% Sunflower Oil, 0.25% Fish Oil, Vegetables (4% Carrots), Mineral Substances, Vegetable Protein Extracts, Fish and Fish By Products.",
+      "ingredients_list": [
+        "4% Grains (Includes",
+        "By Products of Vegetable Origin",
+        "4% Fresh Meat",
+        "4% Beef",
+        "1% Sunflower Oil",
+        "0.25% Fish Oil",
+        "Vegetables (4% Carrots)",
+        "Mineral Substances",
+        "Vegetable Protein Extracts",
+        "Fish and Fish By Products."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Grains (Includes",
+        "percentage": 4,
+        "isNested": false
+      },
+      {
+        "name": "By Products of Vegetable Origin",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "4% Fresh Meat",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "4% Beef",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "1% Sunflower Oil",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "0.25% Fish Oil",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Vegetables (4% Carrots)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Mineral Substances",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Vegetable Protein Extracts",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Fish and Fish By Products.",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Grains (Includes 4%, By Products of Vegetable Origin, 4% Fresh Meat, 4% Beef, 1% Sunflower Oil, 0.25% Fish Oil, Vegetables (4% Carrots), Mineral Substances, Vegetable Protein Extracts, Fish and Fish By Products.",
+    "rebuiltList": [
+      "4% Grains (Includes",
+      "By Products of Vegetable Origin",
+      "4% Fresh Meat",
+      "4% Beef",
+      "1% Sunflower Oil",
+      "0.25% Fish Oil",
+      "Vegetables (4% Carrots)",
+      "Mineral Substances",
+      "Vegetable Protein Extracts",
+      "Fish and Fish By Products."
+    ]
+  },
+  {
+    "product": {
+      "id": "3a2dae87-9a18-4ef2-aac9-f54a2653e55f",
+      "slug": "tilly-ted-adult-wet-trays",
+      "name": "Tilly & Ted Adult Wet Trays",
+      "ingredients_raw": "60% Lamb and Chicken (Including 4%, Potato, Peas, Carrot, Minerals, Salmon Oil (0.4%), Beet Pulp, Chicory Extract (Source of Prebiotic FOS 1500mg/kg), Cranberries (1000 mg/kg), Spinach (1000mg/kg), Seaweed (1000mg/kg).",
+      "ingredients_list": [
+        "4% 60% Lamb and Chicken (Including",
+        "Potato",
+        "Peas",
+        "Carrot",
+        "Minerals",
+        "Salmon Oil (0.4%)",
+        "Beet Pulp",
+        "Chicory Extract (Source of Prebiotic FOS 1500mg/kg)",
+        "Cranberries (1000 mg/kg)",
+        "Spinach (1000mg/kg)",
+        "Seaweed (1000mg/kg)."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "60% Lamb and Chicken (Including",
+        "percentage": 4,
+        "isNested": false
+      },
+      {
+        "name": "Potato",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Peas",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Carrot",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Salmon Oil (0.4%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Beet Pulp",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chicory Extract (Source of Prebiotic FOS 1500mg/kg)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Cranberries (1000 mg/kg)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Spinach (1000mg/kg)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Seaweed (1000mg/kg).",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "60% Lamb and Chicken (Including 4%, Potato, Peas, Carrot, Minerals, Salmon Oil (0.4%), Beet Pulp, Chicory Extract (Source of Prebiotic FOS 1500mg/kg), Cranberries (1000 mg/kg), Spinach (1000mg/kg), Seaweed (1000mg/kg).",
+    "rebuiltList": [
+      "4% 60% Lamb and Chicken (Including",
+      "Potato",
+      "Peas",
+      "Carrot",
+      "Minerals",
+      "Salmon Oil (0.4%)",
+      "Beet Pulp",
+      "Chicory Extract (Source of Prebiotic FOS 1500mg/kg)",
+      "Cranberries (1000 mg/kg)",
+      "Spinach (1000mg/kg)",
+      "Seaweed (1000mg/kg)."
+    ]
+  },
+  {
+    "product": {
+      "id": "0d8c5ce6-cb45-4067-a80f-e744b7d5dc8b",
+      "slug": "harringtons-grain-free-wet-adult-tins",
+      "name": "Harringtons Grain Free Wet Adult Tins",
+      "ingredients_raw": "65% Chicken (Including 26%, Including 3% Green Beans, 2% Carrots, Minerals, Salmon Oil (0.1%), Inulin (0.1%).",
+      "ingredients_list": [
+        "26% 65% Chicken (Including",
+        "Including 3% Green Beans",
+        "2% Carrots",
+        "Minerals",
+        "Salmon Oil (0.1%)",
+        "Inulin (0.1%)."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "65% Chicken (Including",
+        "percentage": 26,
+        "isNested": false
+      },
+      {
+        "name": "Including",
+        "percentage": 3,
+        "isNested": false
+      },
+      {
+        "name": "2% Carrots",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Salmon Oil (0.1%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Inulin (0.1%).",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "65% Chicken (Including 26%, Including 3%, 2% Carrots, Minerals, Salmon Oil (0.1%), Inulin (0.1%).",
+    "rebuiltList": [
+      "26% 65% Chicken (Including",
+      "3% Including",
+      "2% Carrots",
+      "Minerals",
+      "Salmon Oil (0.1%)",
+      "Inulin (0.1%)."
+    ]
+  },
+  {
+    "product": {
+      "id": "d15c958b-740f-4833-b2fb-312e0382f4b6",
+      "slug": "wolf-of-wilderness-the-taste-of-mini-kibbles",
+      "name": "Wolf Of Wilderness 'The Taste Of' Mini Kibbles",
+      "ingredients_raw": "Fresh Salmon (20%), Peas (Shelled), Fresh Reindeer (10%), Fresh Chicken (10%), Dried, 10%, Amaranth, Field Beans (Shelled), Poultry Protein (Dried 6.5%, Chickpeas, Dried Beet Pulp (De-Sugared), Poultry Fat (4%), Dried, Sources of Beta-Glucans and Mannan-Oligosaccharides, Linseed, Carob (Dried), Dried, 1.3%, Salmon Oil (1%), Poultry Liver (Hydrolysed), Dicalcium Phosphate, Fruits of the Forest Mixed Berries (0.3%, Rosehips, Blueberries (0.03%), Blackcurrants), Potassium Chloride, Sodium Chloride, 0.2%, Dried: Nettle Leaves, Camomile, Blackberry Leaves, Yarrow, Dandelion Root, Chicory Inulin (0.1%).",
+      "ingredients_list": [
+        "Fresh Salmon (20%)",
+        "Peas (Shelled)",
+        "Fresh Reindeer (10%)",
+        "Fresh Chicken (10%)",
+        "Dried",
+        "10%",
+        "Amaranth",
+        "Field Beans (Shelled)",
+        "6.5% Poultry Protein (Dried",
+        "Chickpeas",
+        "Dried Beet Pulp (De-Sugared)",
+        "Poultry Fat (4%)",
+        "Dried",
+        "Sources of Beta-Glucans and Mannan-Oligosaccharides",
+        "Linseed",
+        "Carob (Dried)",
+        "Dried",
+        "1.3%",
+        "Salmon Oil (1%)",
+        "Poultry Liver (Hydrolysed)",
+        "Dicalcium Phosphate",
+        "Fruits of the Forest Mixed Berries (0.3%",
+        "Rosehips",
+        "Blueberries (0.03%), Blackcurrants)",
+        "Potassium Chloride",
+        "Sodium Chloride",
+        "0.2%",
+        "Dried: Nettle Leaves",
+        "Camomile",
+        "Blackberry Leaves",
+        "Yarrow",
+        "Dandelion Root",
+        "Chicory Inulin (0.1%)."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Fresh Salmon (20%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Peas (Shelled)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Fresh Reindeer (10%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Fresh Chicken (10%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "10%",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Amaranth",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Field Beans (Shelled)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Poultry Protein (Dried",
+        "percentage": 6.5,
+        "isNested": false
+      },
+      {
+        "name": "Chickpeas",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Beet Pulp (De-Sugared)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Poultry Fat (4%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Sources of Beta-Glucans and Mannan-Oligosaccharides",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Linseed",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Carob (Dried)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "1.3%",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Salmon Oil (1%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Poultry Liver (Hydrolysed)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dicalcium Phosphate",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Fruits of the Forest Mixed Berries (0.3%",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Rosehips",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Blueberries (0.03%), Blackcurrants)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Potassium Chloride",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Sodium Chloride",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "0.2%",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried: Nettle Leaves",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Camomile",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Blackberry Leaves",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yarrow",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dandelion Root",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chicory Inulin (0.1%).",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Fresh Salmon (20%), Peas (Shelled), Fresh Reindeer (10%), Fresh Chicken (10%), Dried, 10%, Amaranth, Field Beans (Shelled), Poultry Protein (Dried 6.5%, Chickpeas, Dried Beet Pulp (De-Sugared), Poultry Fat (4%), Dried, Sources of Beta-Glucans and Mannan-Oligosaccharides, Linseed, Carob (Dried), Dried, 1.3%, Salmon Oil (1%), Poultry Liver (Hydrolysed), Dicalcium Phosphate, Fruits of the Forest Mixed Berries (0.3%, Rosehips, Blueberries (0.03%), Blackcurrants), Potassium Chloride, Sodium Chloride, 0.2%, Dried: Nettle Leaves, Camomile, Blackberry Leaves, Yarrow, Dandelion Root, Chicory Inulin (0.1%).",
+    "rebuiltList": [
+      "Fresh Salmon (20%)",
+      "Peas (Shelled)",
+      "Fresh Reindeer (10%)",
+      "Fresh Chicken (10%)",
+      "Dried",
+      "10%",
+      "Amaranth",
+      "Field Beans (Shelled)",
+      "6.5% Poultry Protein (Dried",
+      "Chickpeas",
+      "Dried Beet Pulp (De-Sugared)",
+      "Poultry Fat (4%)",
+      "Dried",
+      "Sources of Beta-Glucans and Mannan-Oligosaccharides",
+      "Linseed",
+      "Carob (Dried)",
+      "Dried",
+      "1.3%",
+      "Salmon Oil (1%)",
+      "Poultry Liver (Hydrolysed)",
+      "Dicalcium Phosphate",
+      "Fruits of the Forest Mixed Berries (0.3%",
+      "Rosehips",
+      "Blueberries (0.03%), Blackcurrants)",
+      "Potassium Chloride",
+      "Sodium Chloride",
+      "0.2%",
+      "Dried: Nettle Leaves",
+      "Camomile",
+      "Blackberry Leaves",
+      "Yarrow",
+      "Dandelion Root",
+      "Chicory Inulin (0.1%)."
+    ]
+  },
+  {
+    "product": {
+      "id": "3f27f36b-551e-4607-a531-a7c37e1bf2c9",
+      "slug": "lifestage-grain-free-raw-puppy",
+      "name": "Lifestage Grain Free Raw Puppy",
+      "ingredients_raw": "Chicken with Bone (40%), Beef Tripe (15%, Chicken Liver (10%), Beef with Bone (10%), Beef Kidney (5%), Green Vegetables (9%), Carrots (5%), Butternut Squash (4%), Blueberries (1%), Salmon Oil (0.5%), Chicory Root (0.25%), Kelp (0.25%).",
+      "ingredients_list": [
+        "Chicken with Bone (40%)",
+        "Beef Tripe (15%",
+        "Chicken Liver (10%)",
+        "Beef with Bone (10%)",
+        "Beef Kidney (5%)",
+        "Green Vegetables (9%)",
+        "Carrots (5%)",
+        "Butternut Squash (4%)",
+        "Blueberries (1%)",
+        "Salmon Oil (0.5%)",
+        "Chicory Root (0.25%)",
+        "Kelp (0.25%)."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Chicken with Bone (40%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Beef Tripe (15%",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chicken Liver (10%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Beef with Bone (10%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Beef Kidney (5%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Green Vegetables (9%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Carrots (5%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Butternut Squash (4%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Blueberries (1%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Salmon Oil (0.5%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chicory Root (0.25%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Kelp (0.25%).",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Chicken with Bone (40%), Beef Tripe (15%, Chicken Liver (10%), Beef with Bone (10%), Beef Kidney (5%), Green Vegetables (9%), Carrots (5%), Butternut Squash (4%), Blueberries (1%), Salmon Oil (0.5%), Chicory Root (0.25%), Kelp (0.25%).",
+    "rebuiltList": [
+      "Chicken with Bone (40%)",
+      "Beef Tripe (15%",
+      "Chicken Liver (10%)",
+      "Beef with Bone (10%)",
+      "Beef Kidney (5%)",
+      "Green Vegetables (9%)",
+      "Carrots (5%)",
+      "Butternut Squash (4%)",
+      "Blueberries (1%)",
+      "Salmon Oil (0.5%)",
+      "Chicory Root (0.25%)",
+      "Kelp (0.25%)."
+    ]
+  },
+  {
+    "product": {
+      "id": "a6c569de-ae31-4180-950e-7e57e298a487",
+      "slug": "morrisons-natural-complete-wheat-free-dry",
+      "name": "Morrisons Natural Complete Wheat Free Dry",
+      "ingredients_raw": "Salmon Meal 20%, Fresh Salmon 14%, Salmon 12%, Salmon Oil 4%, Maize, Rice (17%), Barley, Dried Beet Pulp, Dried Brewers Yeast, Poultry Digest, Minerals, Sodium Chloride, Potassium Chloride, Chicory Extract (Prebiotic FOS 0.1%, Marigold Meal, Yucca Extract (0.01%).",
+      "ingredients_list": [
+        "20% Salmon Meal",
+        "14% Fresh Salmon",
+        "12% Salmon",
+        "4% Salmon Oil",
+        "Maize",
+        "Rice (17%)",
+        "Barley",
+        "Dried Beet Pulp",
+        "Dried Brewers Yeast",
+        "Poultry Digest",
+        "Minerals",
+        "Sodium Chloride",
+        "Potassium Chloride",
+        "0.1% Chicory Extract (Prebiotic FOS",
+        "Marigold Meal",
+        "Yucca Extract (0.01%)."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Salmon Meal",
+        "percentage": 20,
+        "isNested": false
+      },
+      {
+        "name": "Fresh Salmon",
+        "percentage": 14,
+        "isNested": false
+      },
+      {
+        "name": "Salmon",
+        "percentage": 12,
+        "isNested": false
+      },
+      {
+        "name": "Salmon Oil",
+        "percentage": 4,
+        "isNested": false
+      },
+      {
+        "name": "Maize",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Rice (17%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Barley",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Beet Pulp",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Brewers Yeast",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Poultry Digest",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Sodium Chloride",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Potassium Chloride",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chicory Extract (Prebiotic FOS",
+        "percentage": 0.1,
+        "isNested": false
+      },
+      {
+        "name": "Marigold Meal",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yucca Extract (0.01%).",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Salmon Meal 20%, Fresh Salmon 14%, Salmon 12%, Salmon Oil 4%, Maize, Rice (17%), Barley, Dried Beet Pulp, Dried Brewers Yeast, Poultry Digest, Minerals, Sodium Chloride, Potassium Chloride, Chicory Extract (Prebiotic FOS 0.1%, Marigold Meal, Yucca Extract (0.01%).",
+    "rebuiltList": [
+      "20% Salmon Meal",
+      "14% Fresh Salmon",
+      "12% Salmon",
+      "4% Salmon Oil",
+      "Maize",
+      "Rice (17%)",
+      "Barley",
+      "Dried Beet Pulp",
+      "Dried Brewers Yeast",
+      "Poultry Digest",
+      "Minerals",
+      "Sodium Chloride",
+      "Potassium Chloride",
+      "0.1% Chicory Extract (Prebiotic FOS",
+      "Marigold Meal",
+      "Yucca Extract (0.01%)."
+    ]
+  },
+  {
+    "product": {
+      "id": "5659dd94-6a30-4ec9-ad4a-19f8a3269355",
+      "slug": "millies-wolfheart-ultima-mix",
+      "name": "Millies Wolfheart Ultima Mix",
+      "ingredients_raw": "Dried Pork 12%, Pork Fat 10%, Freshly Prepared Pork 7%, Dried Salmon 12%, Freshly Prepared Salmon 7%, Salmon Oil 2%, Salmon Gravy 2%, Beef (Freshly Prepared Beef 8%, Potato (23%), Tapioca, Chickpeas, Pea Fibre, Minerals, Tomato Pomace, Mixed Herbs, Dried Apple, Burdock Root, Dried Chamomile, Dried Carrot, Dried Cranberry, Aniseed, Fenugreek, Dried Seaweed, Dried Peppermint.",
+      "ingredients_list": [
+        "12% Dried Pork",
+        "10% Pork Fat",
+        "7% Freshly Prepared Pork",
+        "12% Dried Salmon",
+        "7% Freshly Prepared Salmon",
+        "2% Salmon Oil",
+        "2% Salmon Gravy",
+        "8% Beef (Freshly Prepared Beef",
+        "Potato (23%)",
+        "Tapioca",
+        "Chickpeas",
+        "Pea Fibre",
+        "Minerals",
+        "Tomato Pomace",
+        "Mixed Herbs",
+        "Dried Apple",
+        "Burdock Root",
+        "Dried Chamomile",
+        "Dried Carrot",
+        "Dried Cranberry",
+        "Aniseed",
+        "Fenugreek",
+        "Dried Seaweed",
+        "Dried Peppermint."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Dried Pork",
+        "percentage": 12,
+        "isNested": false
+      },
+      {
+        "name": "Pork Fat",
+        "percentage": 10,
+        "isNested": false
+      },
+      {
+        "name": "Freshly Prepared Pork",
+        "percentage": 7,
+        "isNested": false
+      },
+      {
+        "name": "Dried Salmon",
+        "percentage": 12,
+        "isNested": false
+      },
+      {
+        "name": "Freshly Prepared Salmon",
+        "percentage": 7,
+        "isNested": false
+      },
+      {
+        "name": "Salmon Oil",
+        "percentage": 2,
+        "isNested": false
+      },
+      {
+        "name": "Salmon Gravy",
+        "percentage": 2,
+        "isNested": false
+      },
+      {
+        "name": "Beef (Freshly Prepared Beef",
+        "percentage": 8,
+        "isNested": false
+      },
+      {
+        "name": "Potato (23%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Tapioca",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chickpeas",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Pea Fibre",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Tomato Pomace",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Mixed Herbs",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Apple",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Burdock Root",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Chamomile",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Carrot",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Cranberry",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Aniseed",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Fenugreek",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Seaweed",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Peppermint.",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Dried Pork 12%, Pork Fat 10%, Freshly Prepared Pork 7%, Dried Salmon 12%, Freshly Prepared Salmon 7%, Salmon Oil 2%, Salmon Gravy 2%, Beef (Freshly Prepared Beef 8%, Potato (23%), Tapioca, Chickpeas, Pea Fibre, Minerals, Tomato Pomace, Mixed Herbs, Dried Apple, Burdock Root, Dried Chamomile, Dried Carrot, Dried Cranberry, Aniseed, Fenugreek, Dried Seaweed, Dried Peppermint.",
+    "rebuiltList": [
+      "12% Dried Pork",
+      "10% Pork Fat",
+      "7% Freshly Prepared Pork",
+      "12% Dried Salmon",
+      "7% Freshly Prepared Salmon",
+      "2% Salmon Oil",
+      "2% Salmon Gravy",
+      "8% Beef (Freshly Prepared Beef",
+      "Potato (23%)",
+      "Tapioca",
+      "Chickpeas",
+      "Pea Fibre",
+      "Minerals",
+      "Tomato Pomace",
+      "Mixed Herbs",
+      "Dried Apple",
+      "Burdock Root",
+      "Dried Chamomile",
+      "Dried Carrot",
+      "Dried Cranberry",
+      "Aniseed",
+      "Fenugreek",
+      "Dried Seaweed",
+      "Dried Peppermint."
+    ]
+  },
+  {
+    "product": {
+      "id": "3743609d-8365-43cb-a5a9-cf213cf25135",
+      "slug": "cooper-co-active",
+      "name": "Cooper & Co Active",
+      "ingredients_raw": "Freshly Prepared Duck 22%, Dried Duck 19%, Duck Fat 4%, Duck Stock 1%, Pheasant (Freshly Prepared Pheasant 7%, Sweet Potato (25%), Lentils, Beet Pulp, Salmon Oil, Brewers Yeast, Minerals, Dried Spinach, Chondroitin Sulphate, Glucosamine, Fructooligosaccharides, Mannanoligosaccharides.",
+      "ingredients_list": [
+        "22% Freshly Prepared Duck",
+        "19% Dried Duck",
+        "4% Duck Fat",
+        "1% Duck Stock",
+        "7% Pheasant (Freshly Prepared Pheasant",
+        "Sweet Potato (25%)",
+        "Lentils",
+        "Beet Pulp",
+        "Salmon Oil",
+        "Brewers Yeast",
+        "Minerals",
+        "Dried Spinach",
+        "Chondroitin Sulphate",
+        "Glucosamine",
+        "Fructooligosaccharides",
+        "Mannanoligosaccharides."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Freshly Prepared Duck",
+        "percentage": 22,
+        "isNested": false
+      },
+      {
+        "name": "Dried Duck",
+        "percentage": 19,
+        "isNested": false
+      },
+      {
+        "name": "Duck Fat",
+        "percentage": 4,
+        "isNested": false
+      },
+      {
+        "name": "Duck Stock",
+        "percentage": 1,
+        "isNested": false
+      },
+      {
+        "name": "Pheasant (Freshly Prepared Pheasant",
+        "percentage": 7,
+        "isNested": false
+      },
+      {
+        "name": "Sweet Potato (25%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Lentils",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Beet Pulp",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Salmon Oil",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Brewers Yeast",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Spinach",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chondroitin Sulphate",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Glucosamine",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Fructooligosaccharides",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Mannanoligosaccharides.",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Freshly Prepared Duck 22%, Dried Duck 19%, Duck Fat 4%, Duck Stock 1%, Pheasant (Freshly Prepared Pheasant 7%, Sweet Potato (25%), Lentils, Beet Pulp, Salmon Oil, Brewers Yeast, Minerals, Dried Spinach, Chondroitin Sulphate, Glucosamine, Fructooligosaccharides, Mannanoligosaccharides.",
+    "rebuiltList": [
+      "22% Freshly Prepared Duck",
+      "19% Dried Duck",
+      "4% Duck Fat",
+      "1% Duck Stock",
+      "7% Pheasant (Freshly Prepared Pheasant",
+      "Sweet Potato (25%)",
+      "Lentils",
+      "Beet Pulp",
+      "Salmon Oil",
+      "Brewers Yeast",
+      "Minerals",
+      "Dried Spinach",
+      "Chondroitin Sulphate",
+      "Glucosamine",
+      "Fructooligosaccharides",
+      "Mannanoligosaccharides."
+    ]
+  },
+  {
+    "product": {
+      "id": "680622b1-93be-469d-9667-b17dec1c9779",
+      "slug": "wainwright-s-small-breed-adult-dry-food",
+      "name": "Wainwright's Small Breed Adult Dry Food",
+      "ingredients_raw": "Dried Turkey 31%, Freshly Prepared Turkey 5%, Rice (26%), Whole Grain Barley (17%), Rapeseed Oil, Whole Ground Oats (4.5%), Beet Pulp (4%), Dried Peas (3% Equivalent To 12.5%, Linseed (2%), Dried Carrots (1% Equivalent To 8%, Seaweed (0.2%), Yucca Extract (0.02%).",
+      "ingredients_list": [
+        "31% Dried Turkey",
+        "5% Freshly Prepared Turkey",
+        "Rice (26%)",
+        "Whole Grain Barley (17%)",
+        "Rapeseed Oil",
+        "Whole Ground Oats (4.5%)",
+        "Beet Pulp (4%)",
+        "12.5% Dried Peas (3% Equivalent To",
+        "Linseed (2%)",
+        "8% Dried Carrots (1% Equivalent To",
+        "Seaweed (0.2%)",
+        "Yucca Extract (0.02%)."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Dried Turkey",
+        "percentage": 31,
+        "isNested": false
+      },
+      {
+        "name": "Freshly Prepared Turkey",
+        "percentage": 5,
+        "isNested": false
+      },
+      {
+        "name": "Rice (26%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Whole Grain Barley (17%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Rapeseed Oil",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Whole Ground Oats (4.5%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Beet Pulp (4%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Peas (3% Equivalent To",
+        "percentage": 12.5,
+        "isNested": false
+      },
+      {
+        "name": "Linseed (2%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Carrots (1% Equivalent To",
+        "percentage": 8,
+        "isNested": false
+      },
+      {
+        "name": "Seaweed (0.2%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yucca Extract (0.02%).",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Dried Turkey 31%, Freshly Prepared Turkey 5%, Rice (26%), Whole Grain Barley (17%), Rapeseed Oil, Whole Ground Oats (4.5%), Beet Pulp (4%), Dried Peas (3% Equivalent To 12.5%, Linseed (2%), Dried Carrots (1% Equivalent To 8%, Seaweed (0.2%), Yucca Extract (0.02%).",
+    "rebuiltList": [
+      "31% Dried Turkey",
+      "5% Freshly Prepared Turkey",
+      "Rice (26%)",
+      "Whole Grain Barley (17%)",
+      "Rapeseed Oil",
+      "Whole Ground Oats (4.5%)",
+      "Beet Pulp (4%)",
+      "12.5% Dried Peas (3% Equivalent To",
+      "Linseed (2%)",
+      "8% Dried Carrots (1% Equivalent To",
+      "Seaweed (0.2%)",
+      "Yucca Extract (0.02%)."
+    ]
+  },
+  {
+    "product": {
+      "id": "3e182512-48ff-438c-9842-ad89f6cabc27",
+      "slug": "lifelong-dry-adult-for-small-breeds",
+      "name": "Lifelong Dry Adult For Small Breeds",
+      "ingredients_raw": "Chicken Meat Meal min. 18%, Fresh Chicken min. 5%, Rice (min. 18%, Maize, Poultry Fat (min. 6%, Corn Protein, Peas (min. 3%, Hydrolyzed Animal Proteins, Beet Pulp (min. 1%, Minerals, Dried Carrot (min. 1%, Brewer's Yeast, Linseed (min. 0.7%, FOS (min. 0.7%, Yeast Cell Walls (0.05%), Yucca Schidigera (0.027%), Glucosamine Hydrochloride (0.02%), Chondroitin Sulfate (0.01%).",
+      "ingredients_list": [
+        "Chicken Meat Meal min. 18%",
+        "Fresh Chicken min. 5%",
+        "18% Rice (min.",
+        "Maize",
+        "6% Poultry Fat (min.",
+        "Corn Protein",
+        "3% Peas (min.",
+        "Hydrolyzed Animal Proteins",
+        "1% Beet Pulp (min.",
+        "Minerals",
+        "1% Dried Carrot (min.",
+        "Brewer's Yeast",
+        "0.7% Linseed (min.",
+        "0.7% FOS (min.",
+        "Yeast Cell Walls (0.05%)",
+        "Yucca Schidigera (0.027%)",
+        "Glucosamine Hydrochloride (0.02%)",
+        "Chondroitin Sulfate (0.01%)."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Chicken Meat Meal min.",
+        "percentage": 18,
+        "isNested": false
+      },
+      {
+        "name": "Fresh Chicken min.",
+        "percentage": 5,
+        "isNested": false
+      },
+      {
+        "name": "Rice (min.",
+        "percentage": 18,
+        "isNested": false
+      },
+      {
+        "name": "Maize",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Poultry Fat (min.",
+        "percentage": 6,
+        "isNested": false
+      },
+      {
+        "name": "Corn Protein",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Peas (min.",
+        "percentage": 3,
+        "isNested": false
+      },
+      {
+        "name": "Hydrolyzed Animal Proteins",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Beet Pulp (min.",
+        "percentage": 1,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Carrot (min.",
+        "percentage": 1,
+        "isNested": false
+      },
+      {
+        "name": "Brewer's Yeast",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Linseed (min.",
+        "percentage": 0.7,
+        "isNested": false
+      },
+      {
+        "name": "FOS (min.",
+        "percentage": 0.7,
+        "isNested": false
+      },
+      {
+        "name": "Yeast Cell Walls (0.05%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yucca Schidigera (0.027%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Glucosamine Hydrochloride (0.02%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chondroitin Sulfate (0.01%).",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Chicken Meat Meal min. 18%, Fresh Chicken min. 5%, Rice (min. 18%, Maize, Poultry Fat (min. 6%, Corn Protein, Peas (min. 3%, Hydrolyzed Animal Proteins, Beet Pulp (min. 1%, Minerals, Dried Carrot (min. 1%, Brewer's Yeast, Linseed (min. 0.7%, FOS (min. 0.7%, Yeast Cell Walls (0.05%), Yucca Schidigera (0.027%), Glucosamine Hydrochloride (0.02%), Chondroitin Sulfate (0.01%).",
+    "rebuiltList": [
+      "18% Chicken Meat Meal min.",
+      "5% Fresh Chicken min.",
+      "18% Rice (min.",
+      "Maize",
+      "6% Poultry Fat (min.",
+      "Corn Protein",
+      "3% Peas (min.",
+      "Hydrolyzed Animal Proteins",
+      "1% Beet Pulp (min.",
+      "Minerals",
+      "1% Dried Carrot (min.",
+      "Brewer's Yeast",
+      "0.7% Linseed (min.",
+      "0.7% FOS (min.",
+      "Yeast Cell Walls (0.05%)",
+      "Yucca Schidigera (0.027%)",
+      "Glucosamine Hydrochloride (0.02%)",
+      "Chondroitin Sulfate (0.01%)."
+    ]
+  },
+  {
+    "product": {
+      "id": "5e33ad96-67f6-442a-80d3-eabb2b82bc98",
+      "slug": "wainwright-s-insects-with-superfoods-dry-food",
+      "name": "Wainwright's Insects With Superfoods Dry Food",
+      "ingredients_raw": "Insect Meal 26%, Insect Oil 7%, Sweet Potato (30%), Potato, Potato Protein, Vegetable Stock, Minerals, Dried Carrot, Alfalfa, Beet Pulp (0.5%), Linseed (0.5%), Seaweed Meal (0.5%), Chicory Root Extract (0.1%), Dried Spinach (0.05%), Dried Blueberry (0.05%, Dried Nettle, Dried Parsley, Dried Rosemary, Yucca Extract (0.02%), Glucosamine (0.02%), Chondroitin (0.015%), Turmeric, Dried Spearmint.",
+      "ingredients_list": [
+        "26% Insect Meal",
+        "7% Insect Oil",
+        "Sweet Potato (30%)",
+        "Potato",
+        "Potato Protein",
+        "Vegetable Stock",
+        "Minerals",
+        "Dried Carrot",
+        "Alfalfa",
+        "Beet Pulp (0.5%)",
+        "Linseed (0.5%)",
+        "Seaweed Meal (0.5%)",
+        "Chicory Root Extract (0.1%)",
+        "Dried Spinach (0.05%)",
+        "Dried Blueberry (0.05%",
+        "Dried Nettle",
+        "Dried Parsley",
+        "Dried Rosemary",
+        "Yucca Extract (0.02%)",
+        "Glucosamine (0.02%)",
+        "Chondroitin (0.015%)",
+        "Turmeric",
+        "Dried Spearmint."
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Insect Meal",
+        "percentage": 26,
+        "isNested": false
+      },
+      {
+        "name": "Insect Oil",
+        "percentage": 7,
+        "isNested": false
+      },
+      {
+        "name": "Sweet Potato (30%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Potato",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Potato Protein",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Vegetable Stock",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Minerals",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Carrot",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Alfalfa",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Beet Pulp (0.5%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Linseed (0.5%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Seaweed Meal (0.5%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chicory Root Extract (0.1%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Spinach (0.05%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Blueberry (0.05%",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Nettle",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Parsley",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Rosemary",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Yucca Extract (0.02%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Glucosamine (0.02%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Chondroitin (0.015%)",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Turmeric",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Dried Spearmint.",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Insect Meal 26%, Insect Oil 7%, Sweet Potato (30%), Potato, Potato Protein, Vegetable Stock, Minerals, Dried Carrot, Alfalfa, Beet Pulp (0.5%), Linseed (0.5%), Seaweed Meal (0.5%), Chicory Root Extract (0.1%), Dried Spinach (0.05%), Dried Blueberry (0.05%, Dried Nettle, Dried Parsley, Dried Rosemary, Yucca Extract (0.02%), Glucosamine (0.02%), Chondroitin (0.015%), Turmeric, Dried Spearmint.",
+    "rebuiltList": [
+      "26% Insect Meal",
+      "7% Insect Oil",
+      "Sweet Potato (30%)",
+      "Potato",
+      "Potato Protein",
+      "Vegetable Stock",
+      "Minerals",
+      "Dried Carrot",
+      "Alfalfa",
+      "Beet Pulp (0.5%)",
+      "Linseed (0.5%)",
+      "Seaweed Meal (0.5%)",
+      "Chicory Root Extract (0.1%)",
+      "Dried Spinach (0.05%)",
+      "Dried Blueberry (0.05%",
+      "Dried Nettle",
+      "Dried Parsley",
+      "Dried Rosemary",
+      "Yucca Extract (0.02%)",
+      "Glucosamine (0.02%)",
+      "Chondroitin (0.015%)",
+      "Turmeric",
+      "Dried Spearmint."
+    ]
+  },
+  {
+    "product": {
+      "id": "079eca71-9057-444a-871a-8ea5efce3e18",
+      "slug": "chapel-farm-performance-24",
+      "name": "Chapel Farm Performance 24",
+      "ingredients_raw": "Cereals (Including 14%, Meat & Animal Derivatives (Including 14%, Oils and Fats (Including 0.5%, Vegetable Protein Extracts, Derivatives of Vegetable Origin, Herbs (0.2%)",
+      "ingredients_list": [
+        "14% Cereals (Including",
+        "14% Meat & Animal Derivatives (Including",
+        "0.5% Oils and Fats (Including",
+        "Vegetable Protein Extracts",
+        "Derivatives of Vegetable Origin",
+        "Herbs (0.2%)"
+      ]
+    },
+    "flattened": [
+      {
+        "name": "Cereals (Including",
+        "percentage": 14,
+        "isNested": false
+      },
+      {
+        "name": "Meat & Animal Derivatives (Including",
+        "percentage": 14,
+        "isNested": false
+      },
+      {
+        "name": "Oils and Fats (Including",
+        "percentage": 0.5,
+        "isNested": false
+      },
+      {
+        "name": "Vegetable Protein Extracts",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Derivatives of Vegetable Origin",
+        "percentage": null,
+        "isNested": false
+      },
+      {
+        "name": "Herbs (0.2%)",
+        "percentage": null,
+        "isNested": false
+      }
+    ],
+    "rebuiltRaw": "Cereals (Including 14%, Meat & Animal Derivatives (Including 14%, Oils and Fats (Including 0.5%, Vegetable Protein Extracts, Derivatives of Vegetable Origin, Herbs (0.2%)",
+    "rebuiltList": [
+      "14% Cereals (Including",
+      "14% Meat & Animal Derivatives (Including",
+      "0.5% Oils and Fats (Including",
+      "Vegetable Protein Extracts",
+      "Derivatives of Vegetable Origin",
+      "Herbs (0.2%)"
+    ]
+  }
+]

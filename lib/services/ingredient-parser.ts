@@ -489,13 +489,16 @@ export function parseIngredients(ingredientsRaw: string): ParsedIngredient[] {
     // Clean ingredient name:
     // 1. Remove percentage notation
     // 2. Remove dosage information like (200mg/kg)
-    // 3. Keep original text for subcategory detection (Fresh/Raw)
+    // 3. Remove trailing periods
+    // 4. Keep original text for subcategory detection (Fresh/Raw)
     const cleanName = rawText
       .replace(/\(\d+(?:\.\d+)?\s*%\)/g, '')
       .replace(/\d+(?:\.\d+)?\s*%/g, '')
       .replace(/\(min(?:imum)?\s+\d+(?:\.\d+)?\s*%\)/gi, '')
       // Remove dosage info like (200mg/kg), (1600mg/kg)
       .replace(/\(\d+(?:\.\d+)?\s*(?:mg|g|mcg|iu|cfu)(?:\/kg)?\)/gi, '')
+      // Remove trailing period
+      .replace(/\.$/, '')
       .trim();
 
     const normalized = normalizeIngredient(cleanName);

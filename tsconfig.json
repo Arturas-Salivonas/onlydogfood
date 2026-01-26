@@ -38,6 +38,9 @@
     "scripts/debug-ingredient-matcher.ts",
     "scripts/verify-scores.ts",
     "scripts/check-ingredient-breakdown.ts",
-    "scripts/check-structure.ts"
+    "scripts/check-structure.ts",
+    "scripts/test-v4-features.ts",
+    "scripts/test-v5-algorithm.ts",
+    "scripts/analyze-products.ts"
   ]
 }

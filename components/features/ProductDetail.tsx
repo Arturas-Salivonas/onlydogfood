@@ -8,7 +8,6 @@ import { ExternalLink, AlertTriangle, ChevronDown, ChevronRight, Shield, Info } 
 import { ProtectionIcon } from '@/components/ui/ProtectionIcon';
 import { getScoreGrade } from '@/scoring/calculator';
 import { HIGH_RISK_FILLERS, LOW_VALUE_CARBS, RED_FLAG_ADDITIVES, ARTIFICIAL_COLORS, ARTIFICIAL_PRESERVATIVES } from '@/scoring/config';
-import { ScoringDebugPanel } from '@/components/features/ScoringDebugPanel';
 
 interface ProductDetailProps {
   product: Product;
@@ -248,16 +247,16 @@ function getScoreAnalysis(product: Product) {
 
   // Problem 1: Low meat content (check scoring data, not claimed percentage)
   // effectiveMeatContent score: 0-6 = poor, 6-10 = adequate, 10-13 = good, 13-15 = excellent
-  // undefined = not scored (no meat_content_percent data)
+  // undefined = not scored (no effective_meat_percent data)
   const meatScore = details.effectiveMeatContent;
   if (meatScore !== undefined && meatScore < 10) {
     // Only flag if we have meat scoring data AND it's actually low
-    const claimedMeat = product.meat_content_percent || 0;
+    const claimedMeat = product.effective_meat_percent || 0;
     problems.push({
       severity: meatScore < 6 ? 'high' : 'medium',
       title: meatScore < 6 ? 'Very low meat content' : 'Low meat content',
       description: claimedMeat > 0
-        ? `Only ${claimedMeat}% meat (scored ${Math.round(meatScore)}/15 points). Dogs thrive on meat-based diets. Look for foods with at least 40% quality meat.`
+        ? `Only ${claimedMeat.toFixed(1)}% effective meat (scored ${Math.round(meatScore)}/15 points). Dogs thrive on meat-based diets. Look for foods with at least 40% quality meat.`
         : `Low meat content (scored ${Math.round(meatScore)}/15 points). Dogs thrive on meat-based diets. Look for foods with at least 40% quality meat.`
     });
   }
@@ -809,23 +808,38 @@ export function ProductDetail({ product, relatedProducts, structuredIngredients 
               <div className="bg-[var(--color-trust-light)] rounded-lg border-2 border-[var(--color-trust)] p-6">
                 <div className="flex items-start gap-3">
                   <Shield className="w-5 h-5 text-[var(--color-trust)] flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-bold text-[var(--color-text-primary)] mb-2">Our scoring algorithm (v3.0.0)</div>
-                    <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-3">
-                      We score dog food based on ingredient quality (45pts), nutrition (33pts), and value for money (22pts).
-                      Penalties apply for poor processing, additives, and misleading protein claims. Red flags may cap ratings.
-                    </p>
+                  <div className="flex-1">
+                    <div className="font-bold text-[var(--color-text-primary)] mb-3">How We Score</div>
+                    <div className="space-y-2 text-sm mb-3">
+                      <div className="flex items-start gap-2">
+                        <span className="text-[var(--color-trust)] font-bold">•</span>
+                        <div>
+                          <strong className="text-[var(--color-text-primary)]">Ingredients (52 points)</strong>
+                          <span className="text-[var(--color-text-secondary)]"> - Quality meats, wholesome ingredients, no junk</span>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-[var(--color-trust)] font-bold">•</span>
+                        <div>
+                          <strong className="text-[var(--color-text-primary)]">Nutrition (33 points)</strong>
+                          <span className="text-[var(--color-text-secondary)]"> - Balanced protein, healthy fats, proper fiber</span>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-[var(--color-trust)] font-bold">•</span>
+                        <div>
+                          <strong className="text-[var(--color-text-primary)]">Value (15 points)</strong>
+                          <span className="text-[var(--color-text-secondary)]"> - Fair price for the quality you get</span>
+                        </div>
+                      </div>
+                    </div>
                     <Link href="/how-we-rate-dog-food" className="text-sm text-[var(--color-trust)] hover:opacity-80 font-bold">
-                      Learn how we rate dog food →
+                      See the full methodology →
                     </Link>
                   </div>
                 </div>
               </div>
 
-              {/* Scoring Debug Panel */}
-              <div className="mt-6">
-                <ScoringDebugPanel product={product} />
-              </div>
             </div>
           </div>
 
@@ -844,9 +858,9 @@ export function ProductDetail({ product, relatedProducts, structuredIngredients 
             </div>
           )}
 
-<div className="mt-12">
-                {/* Three-Column Layout: Ingredients, Nutrition, Feeding */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="mt-12">
+            {/* Three-Column Layout: Ingredients, Nutrition, Feeding */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Ingredients Section */}
                 <div id="ingredients" className="scroll-mt-32 bg-[var(--color-background-card)] rounded-lg border-2 border-[var(--color-border)] p-6">
                   <h3 className="text-xl font-normal text-[var(--color-text-primary)] mb-4">Ingredients</h3>
@@ -867,24 +881,6 @@ export function ProductDetail({ product, relatedProducts, structuredIngredients 
 
                 {product.ingredients_raw || hasStructuredIngredients ? (
                   <>
-                    {/* Ingredient Splitting Warning */}
-                    {product.has_ingredient_splitting && ingredientGroups.length > 0 && (
-                      <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                        <div className="flex items-start gap-2">
-                          <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                          <div>
-                            <h6 className="text-sm font-bold text-yellow-900 mb-1">Ingredient Splitting Detected</h6>
-                            <p className="text-xs text-yellow-800">
-                              This product splits ingredients to make them appear lower on the list.
-                              {ingredientGroups.map((group, idx) => (
-                                <span key={idx}> {group.group_type.replace(/-/g, ' ')} appears {group.ingredient_count}× separately.</span>
-                              ))}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
                     {/* Filler Stuffing Warning */}
                     {product.has_filler_stuffing && (
                       <div className="mb-4 p-3 bg-orange-50 border border-orange-200 rounded-lg">
@@ -929,60 +925,51 @@ export function ProductDetail({ product, relatedProducts, structuredIngredients 
                       </div>
                     </div>
 
-                    {/* Full Ingredient List - Collapsible */}
-                    <details className="group">
-                      <summary className="cursor-pointer text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-trust)] transition-colors mb-2">
-                        View all ingredients {hasStructuredIngredients && `(${structuredIngredients.length} total)`}
-                      </summary>
+                    {/* Full Ingredient List - Always Visible */}
+                    <div className="mt-4">
+                      <h6 className="text-sm font-bold text-[var(--color-text-primary)] mb-3">
+                        All ingredients {hasStructuredIngredients && `(${structuredIngredients.length} total)`}
+                      </h6>
                       {hasStructuredIngredients ? (
-                        <div className="mt-2 space-y-1">
+                        <div className="mt-2 bg-[var(--color-background-neutral)] rounded-lg border border-[var(--color-border)] overflow-hidden">
                           <table className="w-full text-sm">
-                            <thead className="text-xs text-[var(--color-text-secondary)] border-b">
+                            <thead className="bg-gray-50 text-xs font-semibold text-[var(--color-text-primary)] border-b-2 border-[var(--color-border)]">
                               <tr>
-                                <th className="text-left py-1">#</th>
-                                <th className="text-left py-1">Ingredient</th>
-                                <th className="text-right py-1">%</th>
-                                <th className="text-left py-1 pl-2">Type</th>
+                                <th className="text-left py-3 px-3 w-12">#</th>
+                                <th className="text-left py-3 px-2">Ingredient</th>
+                                <th className="text-right py-3 px-3 w-20">Amount</th>
+                                <th className="text-left py-3 px-3 w-32">Category</th>
                               </tr>
                             </thead>
-                            <tbody className="text-[var(--color-text-secondary)]">
+                            <tbody className="divide-y divide-[var(--color-border)]">
                               {structuredIngredients.map((ing) => {
                                 const percentage = ing.percentage_declared ?? ing.percentage_estimated;
-                                const rowColor = ing.is_meat_source ? 'bg-green-50' :
-                                               ing.is_filler ? 'bg-red-50' :
-                                               ing.is_artificial ? 'bg-orange-50' : '';
+                                const rowColor = ing.is_meat_source ? 'bg-green-50/50' :
+                                               ing.is_filler ? 'bg-red-50/50' :
+                                               ing.is_artificial ? 'bg-orange-50/50' : 'bg-white';
 
                                 return (
-                                  <tr key={ing.id} className={rowColor}>
-                                    <td className="py-1 text-xs">{ing.position}</td>
-                                    <td className="py-1">
+                                  <tr key={ing.id} className={`${rowColor} hover:bg-gray-50 transition-colors`}>
+                                    <td className="py-2.5 px-3 text-xs font-medium text-[var(--color-text-secondary)]">{ing.position}</td>
+                                    <td className="py-2.5 px-2 text-[var(--color-text-primary)]">
                                       {ing.ingredient_name}
-                                      {ing.is_meat_source && ' 🥩'}
-                                      {ing.is_artificial && ' ⚠️'}
                                     </td>
-                                    <td className="text-right py-1">
+                                    <td className="text-right py-2.5 px-3 text-[var(--color-text-primary)] font-medium">
                                       {percentage ? `${percentage.toFixed(1)}%` : '—'}
-                                      {ing.percentage_confidence === 'declared' && ' ✓'}
                                     </td>
-                                    <td className="py-1 pl-2 text-xs">{ing.category}</td>
+                                    <td className="py-2.5 px-3 text-xs text-[var(--color-text-secondary)] capitalize">{ing.category}</td>
                                   </tr>
                                 );
                               })}
                             </tbody>
                           </table>
-                          {product.effective_meat_percent && (
-                            <div className="mt-3 p-2 bg-green-50 rounded text-xs">
-                              <strong>Effective meat content:</strong> {product.effective_meat_percent.toFixed(1)}%
-                              (moisture-adjusted for fresh ingredients)
-                            </div>
-                          )}
                         </div>
                       ) : (
                         <div className="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed p-3 bg-[var(--color-background-neutral)] rounded-lg">
                           {product.ingredients_raw}
                         </div>
                       )}
-                    </details>
+                    </div>
                   </>
                   ) : (
                     <p className="text-sm text-[var(--color-text-secondary)] italic">No ingredient information available</p>
@@ -991,133 +978,79 @@ export function ProductDetail({ product, relatedProducts, structuredIngredients 
 
                 {/* Nutritional Analysis */}
                 <div id="nutrition" className="scroll-mt-32 bg-[var(--color-background-card)] rounded-lg border-2 border-[var(--color-border)] p-6">
-                  <h3 className="text-xl font-normal text-[var(--color-text-primary)] mb-4">Nutrition analysis</h3>
-                <div className="space-y-4">
-                  {product.protein_percent !== null && (
-                    <div>
-                      <div className="flex justify-between items-baseline mb-2">
-                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Crude protein</span>
-                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.protein_percent}%</span>
+                  <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-6">What's Inside</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    {product.protein_percent !== null && (
+                      <div className="bg-[var(--color-background-neutral)] rounded-lg p-4">
+                        <div className="text-3xl font-bold text-[var(--color-text-primary)] mb-1">{product.protein_percent}%</div>
+                        <div className="text-sm text-[var(--color-text-secondary)] mb-2">Protein</div>
+                        <div className={`text-xs font-semibold ${product.protein_percent >= 25 && product.protein_percent <= 35 ? 'text-green-600' : 'text-orange-600'}`}>
+                          {product.protein_percent >= 25 && product.protein_percent <= 35 ? '✓ Great' : product.protein_percent > 35 ? '↑ High' : '↓ Low'}
+                        </div>
                       </div>
-                      <div className="w-full bg-[var(--color-background-neutral)] rounded-full h-3 overflow-hidden">
-                        <div
-                          className={`h-3 rounded-full transition-all ${product.protein_percent >= 25 && product.protein_percent <= 35 ? 'bg-[var(--color-trust)]' : 'bg-[var(--color-caution)]'}`}
-                          style={{ width: `${Math.min(product.protein_percent * 2, 100)}%` }}
-                        />
+                    )}
+                    {product.fat_percent !== null && (
+                      <div className="bg-[var(--color-background-neutral)] rounded-lg p-4">
+                        <div className="text-3xl font-bold text-[var(--color-text-primary)] mb-1">{product.fat_percent}%</div>
+                        <div className="text-sm text-[var(--color-text-secondary)] mb-2">Fat</div>
+                        <div className={`text-xs font-semibold ${product.fat_percent >= 12 && product.fat_percent <= 20 ? 'text-green-600' : 'text-orange-600'}`}>
+                          {product.fat_percent >= 12 && product.fat_percent <= 20 ? '✓ Great' : product.fat_percent > 20 ? '↑ High' : '↓ Low'}
+                        </div>
                       </div>
-                      <div className="text-xs text-[var(--color-text-secondary)] mt-1">
-                        Optimal: 25-35% • {product.protein_percent >= 25 && product.protein_percent <= 35 ? 'Good' : product.protein_percent > 35 ? 'High' : 'Low'}
+                    )}
+                    {product.fiber_percent !== null && (
+                      <div className="bg-[var(--color-background-neutral)] rounded-lg p-4">
+                        <div className="text-3xl font-bold text-[var(--color-text-primary)] mb-1">{product.fiber_percent}%</div>
+                        <div className="text-sm text-[var(--color-text-secondary)] mb-2">Fiber</div>
+                        <div className={`text-xs font-semibold ${product.fiber_percent >= 2 && product.fiber_percent <= 8 ? 'text-green-600' : 'text-orange-600'}`}>
+                          {product.fiber_percent >= 2 && product.fiber_percent <= 8 ? '✓ Great' : product.fiber_percent > 8 ? '↑ High' : '↓ Low'}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  {product.fat_percent !== null && (
-                    <div>
-                      <div className="flex justify-between items-baseline mb-2">
-                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Crude fat</span>
-                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.fat_percent}%</span>
-                      </div>
-                      <div className="w-full bg-[var(--color-background-neutral)] rounded-full h-3 overflow-hidden">
-                        <div
-                          className={`h-3 rounded-full transition-all ${product.fat_percent >= 12 && product.fat_percent <= 20 ? 'bg-[var(--color-trust)]' : 'bg-[var(--color-caution)]'}`}
-                          style={{ width: `${Math.min(product.fat_percent * 4, 100)}%` }}
-                        />
-                      </div>
-                      <div className="text-xs text-[var(--color-text-secondary)] mt-1">
-                        Optimal: 12-20% • {product.fat_percent >= 12 && product.fat_percent <= 20 ? 'Good' : product.fat_percent > 20 ? 'High' : 'Low'}
-                      </div>
-                    </div>
-                  )}
-                  {product.fiber_percent !== null && (
-                    <div>
-                      <div className="flex justify-between items-baseline mb-2">
-                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Crude fiber</span>
-                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.fiber_percent}%</span>
-                      </div>
-                      <div className="w-full bg-[var(--color-background-neutral)] rounded-full h-3 overflow-hidden">
-                        <div
-                          className={`h-3 rounded-full transition-all ${product.fiber_percent >= 2 && product.fiber_percent <= 8 ? 'bg-[var(--color-trust)]' : 'bg-[var(--color-caution)]'}`}
-                          style={{ width: `${Math.min(product.fiber_percent * 10, 100)}%` }}
-                        />
-                      </div>
-                      <div className="text-xs text-[var(--color-text-secondary)] mt-1">
-                        Optimal: 2-8% • {product.fiber_percent >= 2 && product.fiber_percent <= 8 ? 'Good' : product.fiber_percent > 8 ? 'High' : 'Low'}
-                      </div>
-                    </div>
-                  )}
-                  {product.carbs_percent !== null && (
-                    <div>
-                      <div className="flex justify-between items-baseline mb-2">
-                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Estimated carbs</span>
-                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.carbs_percent}%</span>
-                      </div>
-                      <div className="w-full bg-[var(--color-background-neutral)] rounded-full h-3 overflow-hidden">
-                        <div
-                          className={`h-3 rounded-full transition-all ${product.carbs_percent <= 30 ? 'bg-[var(--color-trust)]' : 'bg-[var(--color-caution)]'}`}
-                          style={{ width: `${Math.min(product.carbs_percent * 1.5, 100)}%` }}
-                        />
-                      </div>
-                      <div className="text-xs text-[var(--color-text-secondary)] mt-1">
-                        Optimal: &lt;30% • {product.carbs_percent <= 30 ? 'Good' : 'High'}
-                      </div>
-                    </div>
-                  )}
-                  {product.ash_percent !== null && (
-                    <div>
-                      <div className="flex justify-between items-baseline mb-2">
-                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Crude ash</span>
-                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.ash_percent}%</span>
-                      </div>
-                      <div className="text-xs text-[var(--color-text-secondary)]">
-                        Mineral content indicator
-                      </div>
-                    </div>
-                  )}
-                  {product.meat_content_percent !== null && (
-                    <div>
-                      <div className="flex justify-between items-baseline mb-2">
-                        <span className="text-sm font-bold text-[var(--color-text-primary)]">Claimed meat content</span>
-                        <span className="text-xl font-bold text-[var(--color-text-primary)]">{product.meat_content_percent}%</span>
-                      </div>
-                      <div className="w-full bg-[var(--color-background-neutral)] rounded-full h-3 overflow-hidden">
-                        <div
-                          className={`h-3 rounded-full transition-all ${product.meat_content_percent >= 30 ? 'bg-[var(--color-trust)]' : 'bg-[var(--color-caution)]'}`}
-                          style={{ width: `${Math.min(product.meat_content_percent, 100)}%` }}
-                        />
-                      </div>
-                      <div className="text-xs text-[var(--color-text-secondary)] mt-1">
-                        Good: &ge;30% • {product.meat_content_percent >= 30 ? 'Good' : 'Low'}
-                      </div>
+                    )}
+                    {product.carbs_percent !== null && (
+                      <div className="bg-[var(--color-background-neutral)] rounded-lg p-4">
+                        <div className="text-3xl font-bold text-[var(--color-text-primary)} mb-1">{product.carbs_percent.toFixed(1)}%</div>
+                        <div className="text-sm text-[var(--color-text-secondary)] mb-2">Carbs</div>
+                        <div className={`text-xs font-semibold ${product.carbs_percent <= 30 ? 'text-green-600' : 'text-orange-600'}`}>
+                          {product.carbs_percent <= 30 ? '✓ Great' : '↑ High'}
+                        </div>
                       </div>
                     )}
                   </div>
-                </div>
-
-                {/* Feeding Guidelines */}
-                {(product.price_gbp || product.price_per_kg_gbp) && (
-                  <div className="bg-[var(--color-background-card)] rounded-lg border-2 border-[var(--color-border)] p-6">
-                    <h3 className="text-xl font-normal text-[var(--color-text-primary)] mb-4">Feeding guidelines</h3>
-                    <div className="space-y-4">
-                      {product.price_per_kg_gbp && (
-                        <div>
-                          <div className="text-sm text-[var(--color-text-secondary)] mb-1">Per day (based on 12kg, basic)</div>
-                          <div className="text-2xl font-bold text-[var(--color-text-primary)]">
-                            {formatPrice(product.price_per_kg_gbp * 0.15)}
-                          </div>
-                        </div>
-                      )}
-                      {product.package_size_g && (
-                        <div>
-                          <div className="text-sm text-[var(--color-text-secondary)] mb-1">Package size</div>
-                          <div className="text-2xl font-bold text-[var(--color-text-primary)]">
-                            {(product.package_size_g / 1000).toFixed(1)}kg
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-xs text-blue-800">
+                      <strong>What this means:</strong> Dogs thrive on moderate protein (25-35%), healthy fats (12-20%), and fiber (2-8%) for digestion. Lower carbs (&lt;30%) are generally better.
+                    </p>
                   </div>
-                )}
+
+                  {/* Feeding Guidelines - Moved inside What's Inside */}
+                  {(product.price_gbp || product.price_per_kg_gbp || product.package_size_g) && (
+                    <div className="mt-6 pt-6 border-t border-[var(--color-border)]">
+                      <h4 className="text-lg font-bold text-[var(--color-text-primary)] mb-4">Feeding Info</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        {product.price_per_kg_gbp && (
+                          <div className="bg-[var(--color-background-neutral)] rounded-lg p-4">
+                            <div className="text-sm text-[var(--color-text-secondary)] mb-1">Daily cost</div>
+                            <div className="text-2xl font-bold text-[var(--color-text-primary)]">
+                              {formatPrice(product.price_per_kg_gbp * 0.15)}
+                            </div>
+                            <div className="text-xs text-[var(--color-text-secondary)] mt-1">For 12kg dog</div>
+                          </div>
+                        )}
+                        {product.package_size_g && (
+                          <div className="bg-[var(--color-background-neutral)] rounded-lg p-4">
+                            <div className="text-sm text-[var(--color-text-secondary)] mb-1">Package size</div>
+                            <div className="text-2xl font-bold text-[var(--color-text-primary)]">
+                              {(product.package_size_g / 1000).toFixed(1)}kg
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-</div>
+            </div>
           {/* You Might Also Like Section */}
           {isSafe && relatedProducts.length > 0 && (
             <div className="mt-12">

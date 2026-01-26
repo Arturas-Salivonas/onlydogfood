@@ -208,11 +208,11 @@ function generateIngredientFlags(product: Product) {
   const ingredientsText = product.ingredients_raw?.toLowerCase() || '';
 
   // High meat content
-  if (product.meat_content_percent && product.meat_content_percent >= 50) {
+  if (product.effective_meat_percent && product.effective_meat_percent >= 50) {
     flags.push({
       type: 'positive',
-      label: `${product.meat_content_percent}% Meat`,
-      reason: 'High meat content provides quality protein',
+      label: `${product.effective_meat_percent.toFixed(1)}% Meat`,
+      reason: 'High effective meat content provides quality protein',
     });
   }
 
