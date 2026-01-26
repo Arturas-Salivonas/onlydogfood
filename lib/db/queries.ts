@@ -9,16 +9,21 @@ import { Product, Brand, FilterOptions, PaginatedResponse } from '@/types';
  * Standard select pattern for products with all relations
  */
 const PRODUCT_FULL_SELECT = `
-  *,
-  brand:brands(*),
-  tags:product_tags(tag:tags(*))
+  id, slug, name, description, image_url, overall_score, protein_score, fat_score, carb_score,
+  ingredient_quality_score, additives_score, allergen_score, sustainability_score,
+  price_gbp, price_per_kg_gbp, size_kg, category, life_stage, breed_size, is_available,
+  ingredients_raw, protein_percent, fat_percent, carbs_percent, fiber_percent, ash_percent,
+  moisture_percent, kcal_per_100g, country_of_manufacture, has_grain, is_premium,
+  meta_description, meta_keywords, brand_id, created_at, updated_at,
+  brand:brands(id, name, slug, logo_url, overall_score, country_of_origin),
+  tags:product_tags(tag:tags(id, name, slug, category))
 `;
 
 /**
  * Standard select pattern for products with minimal relations (for lists)
  */
 const PRODUCT_LIST_SELECT = `
-  *,
+  id, slug, name, image_url, overall_score, price_gbp, price_per_kg_gbp, category, life_stage, breed_size, is_available,
   brand:brands(id, name, slug, logo_url)
 `;
 
@@ -26,7 +31,8 @@ const PRODUCT_LIST_SELECT = `
  * Standard select pattern for brands with relations
  */
 const BRAND_FULL_SELECT = `
-  *
+  id, slug, name, logo_url, description, website_url, country_of_origin,
+  overall_score, total_products, meta_description, meta_keywords, created_at, updated_at
 `;
 
 /**

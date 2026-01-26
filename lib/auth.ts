@@ -2,9 +2,16 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { getServiceSupabase } from './supabase';
 
+// CRITICAL: Set ADMIN_JWT_SECRET in your .env.local file for production!
+// The default value is ONLY for local development and MUST be changed in production
 const JWT_SECRET = new TextEncoder().encode(
   process.env.ADMIN_JWT_SECRET || 'your-secret-key-change-in-production'
 );
+
+// Validate that JWT secret is properly configured in production
+if (process.env.NODE_ENV === 'production' && process.env.ADMIN_JWT_SECRET === 'your-secret-key-change-in-production') {
+  throw new Error('CRITICAL SECURITY ERROR: ADMIN_JWT_SECRET must be set to a secure random value in production!');
+}
 
 export interface AdminUser {
   id: string;
@@ -74,8 +81,10 @@ export async function authenticateAdmin(
     return null;
   }
 
-  // In production, you should use bcrypt to compare hashed passwords
-  // For now, we're using plain text (NOT RECOMMENDED FOR PRODUCTION)
+  // SECURITY WARNING: This uses plain text password comparison
+  // In production, you MUST use bcrypt or similar hashing:
+  // const bcrypt = require('bcryptjs');
+  // const isValid = await bcrypt.compare(password, adminUser.password_hash);
   if (adminUser.password_hash !== password) {
     return null;
   }

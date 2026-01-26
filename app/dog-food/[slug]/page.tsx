@@ -44,7 +44,7 @@ export default async function ProductPage({ params }: Props) {
   // Sort by actual percentage (declared or estimated) descending for accurate composition display
   const { data: ingredientsData } = await supabase
     .from('product_ingredients')
-    .select('*')
+    .select('id, product_id, ingredient_name, percentage_declared, percentage_estimated, is_primary, position, category, score, quality_tier')
     .eq('product_id', typedProduct.id);
 
   // Sort by percentage: declared first (if available), then estimated - highest to lowest
@@ -57,14 +57,14 @@ export default async function ProductPage({ params }: Props) {
   // Fetch ingredient groups (for split detection)
   const { data: ingredientGroups } = await supabase
     .from('product_ingredient_groups')
-    .select('*')
+    .select('id, product_id, group_name, ingredient_names, total_percentage, is_split_suspected')
     .eq('product_id', typedProduct.id)
     .eq('is_split_suspected', true);
 
   // Fetch related products
   const { data: relatedProductsData } = await supabase
     .from('products')
-    .select('*, brand:brands(*), tags:product_tags(tag:tags(*))')
+    .select('id, slug, name, image_url, overall_score, price_gbp, category, brand:brands(id, name, slug, logo_url), tags:product_tags(tag:tags(id, name, slug))')
     .eq('is_available', true)
     .neq('id', typedProduct.id)
     .or(`brand_id.eq.${typedProduct.brand_id},category.eq.${typedProduct.category}`)

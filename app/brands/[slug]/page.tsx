@@ -68,7 +68,7 @@ export default async function BrandPage({ params, searchParams }: Props) {
   // Fetch brand products
   let productsQuery = supabase
     .from('products')
-    .select('*, brand:brands(*)')
+    .select('id, slug, name, image_url, overall_score, price_gbp, category, life_stage, breed_size, brand:brands(id, name, slug, logo_url)')
     .eq('brand_id', typedBrand.id)
     .eq('is_available', true)
     .order('overall_score', { ascending: false, nullsFirst: false });

@@ -14,16 +14,16 @@ async function getDashboardStats() {
     { data: recentProducts },
     { data: topBrands },
   ] = await Promise.all([
-    supabase.from('products').select('*', { count: 'exact', head: true }),
-    supabase.from('brands').select('*', { count: 'exact', head: true }),
+    supabase.from('products').select('id', { count: 'exact', head: true }),
+    supabase.from('brands').select('id', { count: 'exact', head: true }),
     supabase
       .from('products')
-      .select('*, brand:brands(*)')
+      .select('id, name, slug, overall_score, created_at, brand:brands(id, name, slug)')
       .order('created_at', { ascending: false })
       .limit(5),
     supabase
       .from('brands')
-      .select('*')
+      .select('id, name, slug, overall_score, logo_url')
       .order('overall_score', { ascending: false, nullsFirst: false })
       .limit(5),
   ]);
